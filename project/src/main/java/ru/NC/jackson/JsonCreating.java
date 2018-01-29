@@ -18,13 +18,13 @@ public class JsonCreating {
         JsonNodeFactory factory = new JsonNodeFactory(false);
 
         // the root node - album
-        JsonNode object = factory.objectNode();
+        JsonNode jsonObject = factory.objectNode();
 
-        ((ObjectNode) object).put("Id", obj.getId());
-        ((ObjectNode) object).put("Name", obj.getName());
-        ((ObjectNode) object).put("Description", obj.getDescription());
-        ((ObjectNode) object).put("Type id", obj.getTypeId());
-        ((ObjectNode) object).put("Parent id", obj.getParentId());
+        ((ObjectNode) jsonObject).put("Id", obj.getId());
+        ((ObjectNode) jsonObject).put("Name", obj.getName());
+        ((ObjectNode) jsonObject).put("Description", obj.getDescription());
+        ((ObjectNode) jsonObject).put("Type id", obj.getTypeId());
+        ((ObjectNode) jsonObject).put("Parent id", obj.getParentId());
 
         ObjectNode values = factory.objectNode();
         try{
@@ -35,7 +35,7 @@ public class JsonCreating {
             //TODO: logging
             System.out.println("values are null");
         }
-        ((ObjectNode) object).put("values", values);
+        ((ObjectNode) jsonObject).put("values", values);
 
         ObjectNode date = factory.objectNode();
         try {
@@ -46,7 +46,7 @@ public class JsonCreating {
             //TODO: logging
             System.out.println("date is null");
         }
-        ((ObjectNode) object).put("date", date);
+        ((ObjectNode) jsonObject).put("date", date);
 
 
         ObjectNode ref = factory.objectNode();
@@ -58,8 +58,8 @@ public class JsonCreating {
             //TODO: logging
             System.out.println("refs are null");
         }
-        ((ObjectNode) object).put("references", ref);
+        ((ObjectNode) jsonObject).put("references", ref);
 
-        return object;
+        return jsonObject;
     }
 }

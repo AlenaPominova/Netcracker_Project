@@ -26,9 +26,9 @@ public class Obj {
     private long typeId;
     private long parentId;
     private Map<Long, String> values;
-    private Map<Long, String> listValue;
+    private Map<Long, Long> listValue;
     private Map<Long, LocalDate> date;
-    private Map<Long, String> reference;
+    private Map<Long, Long> reference;
 
     public Obj() {
         String uuid = UUID.randomUUID().toString(); //can`t cast to long
@@ -42,8 +42,11 @@ public class Obj {
      * @param id
      * @see Obj#Obj()
      */
-    public Obj(long id){
+    public Obj(long id, long typeId, long parentId, String name){
         this.id = id;
+        this.typeId = typeId;
+        this.parentId = parentId;
+        this.name = name;
     }
 
     public long getId() {
@@ -94,11 +97,11 @@ public class Obj {
         this.values = values;
     }
 
-    public Map<Long, String> getListValue() {
+    public Map<Long, Long> getListValue() {
         return listValue;
     }
 
-    public void setListValue(Map<Long, String> listValue) {
+    public void setListValue(Map<Long, Long> listValue) {
         this.listValue = listValue;
     }
 
@@ -110,11 +113,11 @@ public class Obj {
         this.date = date;
     }
 
-    public Map<Long, String> getReference() {
+    public Map<Long, Long> getReference() {
         return reference;
     }
 
-    public void setReference(Map<Long, String> reference) {
+    public void setReference(Map<Long, Long> reference) {
         this.reference = reference;
     }
 

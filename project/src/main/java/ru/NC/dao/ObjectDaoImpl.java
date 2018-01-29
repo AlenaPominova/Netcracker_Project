@@ -1,12 +1,20 @@
 package ru.NC.dao;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.joda.time.LocalDate;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.lang.Nullable;
 import ru.NC.models.Obj;
 import ru.NC.models.Queries;
 
 import javax.sql.DataSource;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,19 +36,22 @@ public class ObjectDaoImpl {
      * method for reading all information of object by id
      * @param id
      * @return obj
-     * @see ObjectDaoImpl#getValues(int)
-     * @see ObjectDaoImpl#getDate(int)
-     * @see ObjectDaoImpl#getReference(int)
+     * @see ObjectDaoImpl#getValues(long, long)
+     * @see ObjectDaoImpl#getDate(long, long)
+     * @see ObjectDaoImpl#getReference(long, long)
      * @see Queries
      */
     public Obj read(final int id) {
-
+        System.out.println("in read");
         try {
-            Obj object = jdbcTemplateObject.queryForObject(Queries.GET_OBJECT_INFO, new Object[]{id},
+            Obj object = jdbcTemplateObject.queryForObject(Queries.GET_OBJECT_INFO,
                     (resultSet, i) -> {
 
-                        if (resultSet == null) return new Obj();
-
+                        if (resultSet == null) {
+                            System.out.println("null");
+                            return new Obj();
+                        }
+                        System.out.println("ne null");
                         String name = resultSet.getString("name");
                         String description = resultSet.getString("description");
                         Long parentId = resultSet.getLong("parent_id");
@@ -53,11 +64,11 @@ public class ObjectDaoImpl {
                         obj.setParentId(parentId);
                         obj.setTypeId(typeId);
                         return obj;
-                    });
+                    }, id);
 
-            object.setValues(getValues(id));
-            object.setDate(getDate(id));
-            object.setReference(getReference(id));
+            object.setValues(getValues(object.getTypeId(), id));
+            object.setDate(getDate(object.getTypeId(), id));
+            object.setReference(getReference(object.getTypeId(), id));
             //object.setListValue(null);
             return object;
         }
@@ -140,14 +151,14 @@ public class ObjectDaoImpl {
      * @return Map<Long, String>
      * @see Queries
      */
-    private Map<Long, String> getValues(int id) {
+    private Map<Long, String> getValues(long typeId, long id) {
         return jdbcTemplateObject.query(Queries.GET_VALUES, (rs) -> {
             Map<Long, String> map = new HashMap<>();
             while(rs.next()){
                 map.put(rs.getLong("name"), rs.getString("value"));
             }
             return map;
-        }, id, id);
+        }, typeId, id);
     }
 
     /**
@@ -156,14 +167,14 @@ public class ObjectDaoImpl {
      * @return Map<Long, LocalDate>
      * @see Queries
      */
-    private Map<Long, LocalDate> getDate(int id) {
+    private Map<Long, LocalDate> getDate(long typeId, long id) {
         return jdbcTemplateObject.query(Queries.GET_DATE, (rs) -> {
             Map<Long, LocalDate> map = new HashMap<>();
             while(rs.next()){
                 map.put(rs.getLong("name"), new LocalDate(rs.getString("value")));
             }
             return map;
-        }, id, id);
+        }, typeId, id);
     }
 
     /**
@@ -172,19 +183,14 @@ public class ObjectDaoImpl {
      * @return Map<Long, String>
      * @see Queries
      */
-    private Map<Long, String> getReference(int id) {
+    private Map<Long, Long> getReference(long typeId, long id) {
         return jdbcTemplateObject.query(Queries.GET_REFERENCE, (rs) -> {
-            Map<Long, String> map = new HashMap<>();
+            Map<Long, Long> map = new HashMap<>();
             while(rs.next()){
-                map.put(rs.getLong("name"), rs.getString("value"));
+                map.put(rs.getLong("name"), rs.getLong("value"));
             }
             return map;
-        }, id);
-    }
-
-    public String getParameter(int objId, int attributeId) {
-        return jdbcTemplateObject.queryForObject(Queries.GET_PARAMETER,
-                new Object[]{attributeId, attributeId, objId, objId}, String.class);
+        }, typeId, id);
     }
 
     public void setParameter(int objId, int attributeId, String value) {
@@ -197,5 +203,102 @@ public class ObjectDaoImpl {
 
     public void setDate(int objId, int attributeId, Map<Long, String> value) {
         jdbcTemplateObject.update(Queries.SET_DATE, value, attributeId, objId);
+    }
+
+    /**
+     * method creates json by object`s id
+     * @param id
+     * @return JsonNode
+     * @see Queries
+     */
+    public JsonNode getObjectAsJson(long id) {
+        JsonNodeFactory factory = new JsonNodeFactory(false);
+
+        JsonNode jsonObject = factory.objectNode();;
+        try {
+            jsonObject = jdbcTemplateObject.queryForObject(Queries.GET_OBJECT_INFO, new RowMapper<JsonNode>() {
+                @Nullable
+                @Override
+                public JsonNode mapRow(ResultSet rs, int i) throws SQLException {
+                    JsonNode jsonObj = factory.objectNode();
+                    ((ObjectNode) jsonObj).put("name", rs.getString("name"));
+                    ((ObjectNode) jsonObj).put("parent_id", rs.getLong("parent_id"));
+                    ((ObjectNode) jsonObj).put("type_id", rs.getLong("type_id"));
+
+                    return jsonObj;
+                }
+            }, id);
+            ((ObjectNode) jsonObject).put("Id", id);
+        } catch (EmptyResultDataAccessException e){
+            e.printStackTrace();
+        }
+
+        ArrayNode values = factory.arrayNode();
+        try {
+            values = jdbcTemplateObject.queryForObject(Queries.GET_VALUES_JSON, new RowMapper<ArrayNode>() {
+                @Nullable
+                @Override
+                public ArrayNode mapRow(ResultSet rs, int i) throws SQLException {
+                    JsonNodeFactory factory = new JsonNodeFactory(false);
+                    ArrayNode jsonObj1 = factory.arrayNode();
+                    while (rs.next()) {
+                        JsonNode jsonObj = factory.objectNode();
+                        ((ObjectNode) jsonObj).put("id", rs.getLong("id"));
+                        ((ObjectNode) jsonObj).put("name", rs.getString("name"));
+                        ((ObjectNode) jsonObj).put("value", rs.getString("value"));
+                        jsonObj1.add(jsonObj);
+                    }
+                    return jsonObj1;
+                }
+            }, id);
+        } catch (EmptyResultDataAccessException e){
+            e.printStackTrace();
+        }
+
+        JsonNode date;
+        try {
+            date = jdbcTemplateObject.queryForObject(Queries.GET_DATE_JSON, new RowMapper<JsonNode>() {
+                @Nullable
+                @Override
+                public JsonNode mapRow(ResultSet rs, int i) throws SQLException {
+
+                    JsonNode jsonObj = factory.objectNode();
+                    ((ObjectNode) jsonObj).put("id", rs.getLong("id"));
+                    ((ObjectNode) jsonObj).put("name", rs.getString("name"));
+                    ((ObjectNode) jsonObj).put("value", rs.getString("value"));
+
+                    return jsonObj;
+                }
+            }, id);
+            values.add(date);
+            ((ObjectNode) jsonObject).put("values", values);
+        } catch (EmptyResultDataAccessException e){
+            e.printStackTrace();
+        }
+
+        ArrayNode ref = factory.arrayNode();
+        try {
+            ref = jdbcTemplateObject.queryForObject(Queries.GET_REFERENCE_JSON, new RowMapper<ArrayNode>() {
+                @Nullable
+                @Override
+                public ArrayNode mapRow(ResultSet rs, int i) throws SQLException {
+                    ArrayNode jsonObj1 = factory.arrayNode();
+                    //while(rs.next()){
+                    JsonNode jsonObj = factory.objectNode();
+                    ((ObjectNode) jsonObj).put("attr_id", rs.getLong("id"));
+                    ((ObjectNode) jsonObj).put("name", rs.getString("name"));
+                    ((ObjectNode) jsonObj).put("ref_id", rs.getLong("ref_id"));
+                    ((ObjectNode) jsonObj).put("value", rs.getString("value"));
+                    jsonObj1.add(jsonObj);
+                    // }
+                    return jsonObj1;
+                }
+            }, id);
+            ((ObjectNode) jsonObject).put("references", ref);
+        } catch (EmptyResultDataAccessException e){
+            e.printStackTrace();
+        }
+
+        return jsonObject;
     }
 }
