@@ -12,6 +12,9 @@ import ru.NC.models.Obj;
 
 import java.io.IOException;
 import java.util.Map;
+import java.util.UUID;
+
+import static java.util.UUID.randomUUID;
 
 public class App {
 
@@ -21,19 +24,20 @@ public class App {
 
         System.out.println("Begin extract data--------------");
 
-        Obj object = objectDao.read(5);
-
-        // create a json factory to write the treenode as json. for the example
-        // we just write to console
-        JsonFactory jsonFactory = new JsonFactory();
-        try {
-            JsonGenerator generator = jsonFactory.createGenerator(System.out);
-
-            ObjectMapper mapper = new ObjectMapper();
-            mapper.writeTree(generator, JsonCreating.createJson(object));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
+       Obj object = objectDao.read(5);
+//
+//        // create a json factory to write the treenode as json. for the example
+//        // we just write to console
+//        JsonFactory jsonFactory = new JsonFactory();
+//        try {
+//            JsonGenerator generator = jsonFactory.createGenerator(System.out);
+//
+//            ObjectMapper mapper = new ObjectMapper();
+//            mapper.writeTree(generator, JsonCreating.createJson(object));
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+        System.out.println(object);
+        System.out.println(objectDao.getObjectAsJson(5));
     }
 }
