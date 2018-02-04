@@ -3,6 +3,10 @@ package main;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+/**
+ * @author Incurable
+ *
+ */
 public class Main {
 
 	   public static void main(String[] args) {
