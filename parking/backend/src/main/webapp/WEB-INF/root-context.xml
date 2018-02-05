@@ -12,13 +12,14 @@
 
     <context:annotation-config/>
     <context:component-scan base-package="ru.vsu.netcracker.parking.backend"/>
+    <context:property-placeholder location="classpath:db.properties"/>
 
     <bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource">
-        <property name="driverClassName" value="org.postgresql.Driver"></property>
-        <property name="url" value="jdbc:postgresql://localhost:5432/parking"></property>
-        <property name="username" value="postgres"></property>
-        <property name="password" value="postgres"></property>
-        <property name="validationQuery" value="SELECT 1"></property>
+        <property name="driverClassName" value="${jdbc.hsqldb.driverClassName}"></property>
+        <property name="url" value="${jdbc.url}"></property>
+        <property name="username" value="${jdbc.username}"></property>
+        <property name="password" value="${jdbc.password}"></property>
+        <property name="validationQuery" value="${jdbc.validationQuery}"></property>
     </bean>
 
     <bean id="objectsDAO" class="ru.vsu.netcracker.parking.backend.dao.PostgresObjectsDAO">
