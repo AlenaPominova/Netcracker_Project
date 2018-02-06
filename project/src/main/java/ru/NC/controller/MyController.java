@@ -1,6 +1,5 @@
 package ru.NC.controller;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Controller;

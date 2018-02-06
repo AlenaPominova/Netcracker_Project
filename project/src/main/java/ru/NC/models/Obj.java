@@ -5,6 +5,7 @@ import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
+import java.sql.Timestamp;
 import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
@@ -27,7 +28,7 @@ public class Obj {
     private long parentId;
     private Map<Long, String> values;
     private Map<Long, Long> listValue;
-    private Map<Long, LocalDate> date;
+    private Map<Long, Timestamp> date;
     private Map<Long, Long> reference;
 
     public Obj() {
@@ -39,11 +40,12 @@ public class Obj {
     }
 
     /**
-     * @param id
+     * @param typeId
+     * @param parentId
+     * @param name
      * @see Obj#Obj()
      */
-    public Obj(long id, long typeId, long parentId, String name){
-        this.id = id;
+    public Obj(long typeId, long parentId, String name){
         this.typeId = typeId;
         this.parentId = parentId;
         this.name = name;
@@ -105,11 +107,11 @@ public class Obj {
         this.listValue = listValue;
     }
 
-    public Map<Long, LocalDate> getDate() {
+    public Map<Long, Timestamp> getDate() {
         return date;
     }
 
-    public void setDate(Map<Long, LocalDate> date) {
+    public void setDate(Map<Long, Timestamp> date) {
         this.date = date;
     }
 
