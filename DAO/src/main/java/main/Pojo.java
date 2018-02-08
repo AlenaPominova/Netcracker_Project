@@ -8,8 +8,8 @@ public class Pojo {
 	private long object_type_id;
 	private long parent_id;
 	private String name;
-	private String descrition;
-	
+	private String description;
+
     private Map<Long, String> values;
     private Map<Long, Long> listValue;
     private Map<Long, Timestamp> date;
@@ -38,11 +38,11 @@ public class Pojo {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public String getDescrition() {
-		return descrition;
+	public String getDescription() {
+		return description;
 	}
-	public void setDescrition(String descrition) {
-		this.descrition = descrition;
+	public void setDescription(String description) {
+		this.description = description;
 	}
 	public Map<Long, String> getValues() {
 		return values;
@@ -71,9 +71,9 @@ public class Pojo {
 	@Override
 	public String toString() {
 		return "Pojo [object_id=" + object_id + ", object_type_id=" + object_type_id + ", parent_id=" + parent_id
-				+ ", name=" + name + ", descrition=" + descrition + ", values=" + values + ", listValue=" + listValue
+				+ ", name=" + name + ", description=" + description + ", values=" + values + ", listValue=" + listValue
 				+ ", date=" + date + ", reference=" + reference + "]";
 	}
-    
-   
+
+
 }

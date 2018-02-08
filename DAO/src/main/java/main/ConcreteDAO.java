@@ -1,5 +1,7 @@
 package main;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.Map;
@@ -8,10 +10,17 @@ import javax.sql.DataSource;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.eclipse.jdt.annotation.Nullable;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
+
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 public class ConcreteDAO implements myDAO {
-	private JdbcTemplate jdbcTemplateObject;
+	private static JdbcTemplate jdbcTemplateObject;
 	static final Logger log = LogManager.getRootLogger();
 
 	public void setDataSource(DataSource dataSource) {
@@ -79,7 +88,7 @@ public class ConcreteDAO implements myDAO {
 			obj.setObject_type_id(rs.getInt("object_type_id"));
 			obj.setParent_id(rs.getInt("parent_id"));
 			obj.setName(rs.getString("name"));
-			obj.setDescrition(rs.getString("description"));
+			obj.setDescription(rs.getString("description"));
 		    return obj;
 	      });
 	}
@@ -145,7 +154,6 @@ public class ConcreteDAO implements myDAO {
 	}
 
 	public void update(Pojo obj) {
-
 		for(Map.Entry<Long, String> entry : obj.getValues().entrySet()) {
 			jdbcTemplateObject.update("INSERT INTO public.\"PARAMS\" "+
 									 "(attr_id,object_id,value)"+
@@ -188,6 +196,25 @@ public class ConcreteDAO implements myDAO {
 		}
 		
 		log.info("The object "+obj.getObject_id()+" was updated");
+	}
+	
+	public static String getAttrName(long id){
+		String sql = "SELECT NAME "+ 
+				"FROM \"ATTRIBUTES\" "+ 
+				"WHERE ATTR_ID="+id;
+		return jdbcTemplateObject.queryForObject(sql, (rs,rowNum)->{
+			String name=rs.getString("name");
+		    return name;
+		});
+	}
+	public static String getObjectName(long id){
+		String sql = "SELECT NAME "+ 
+				"FROM \"OBJECTS\" "+ 
+				"WHERE OBJECT_ID="+id;
+		return jdbcTemplateObject.queryForObject(sql, (rs,rowNum)->{
+			String name=rs.getString("name");
+		    return name;
+		});
 	}
 
 }

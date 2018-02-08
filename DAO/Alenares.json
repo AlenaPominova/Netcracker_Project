@@ -1,0 +1,18 @@
+﻿{
+	"name":"User1",
+	"parent_id":0,
+	"type_id":2,
+	"Id":4,
+	"values":[
+		{"id":202,"name":"phone","value":"+780065423"},
+		{"id":203,"name":"email","value":"mail@gmail.com"},
+		{"id":204,"name":"password","value":"adfages7ScxQ"},
+		{"id":205,"name":"address","value":"Воронеж"}
+		],
+	"date_values":[
+		{"id":206,"name":"birthdate","value":"1981-11-23 12:11:00"}
+		],
+	"references":[
+		{"attr_id":100,"name":"role_id","ref_id":3,"value":"User1"}
+		]
+}
