@@ -2,6 +2,7 @@ package main;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Field;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -23,11 +24,14 @@ public class Main {
 	 private static final CustomObjectMapper OBJECT_MAPPER =
 	          new CustomObjectMapper();
 
-	   public static void main(String[] args) throws JsonGenerationException, JsonMappingException, IOException {
+	   public static void main(String[] args) throws JsonGenerationException, JsonMappingException, IOException, NoSuchFieldException, SecurityException {
 	      ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
 	      ConcreteDAO myDAO =
 	         (ConcreteDAO)context.getBean("DAO");
-	      OBJECT_MAPPER.writeValue(new File("custresult.json"),myDAO.read(4));
+	   //   OBJECT_MAPPER.writeValue(new File("custresult.json"),myDAO.read(4));
+//	      
+	      Pojo p = OBJECT_MAPPER.readValue(new File("custresult.json"), Pojo.class);
+	      System.out.println(p.toString());
 	   }
 }
 

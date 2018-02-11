@@ -11,6 +11,7 @@ public class MyModule extends SimpleModule {
 
 	  public MyModule() {
 	    super(NAME, VERSION_UTIL.version());
-	    addSerializer(Pojo.class, new MySerializer());
+	    addSerializer(Pojo.class, new PojoSerializer());
+	    addDeserializer(Pojo.class, new PojoDeserializer());
 	  }
 	}

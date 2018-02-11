@@ -1,38 +1,37 @@
 {
   "name" : "User1",
-  "parent_id" : 0,
-  "type_id" : 2,
-  "Id" : 4,
+  "typeId" : 2,
+  "id" : 4,
   "values" : [ {
-    "attr_id" : "201",
+    "attrId" : "201",
     "name" : "fio",
     "value" : "Иванов"
   }, {
-    "attr_id" : "202",
+    "attrId" : "202",
     "name" : "phone",
     "value" : "+780065423"
   }, {
-    "attr_id" : "203",
+    "attrId" : "203",
     "name" : "email",
     "value" : "mail@gmail.com"
   }, {
-    "attr_id" : "204",
+    "attrId" : "204",
     "name" : "password",
     "value" : "adfages7ScxQ"
   }, {
-    "attr_id" : "205",
+    "attrId" : "205",
     "name" : "address",
     "value" : "Воронеж"
   } ],
-  "date_values" : [ {
-    "attr_id" : "206",
+  "dateValues" : [ {
+    "attrId" : "206",
     "name" : "birthdate",
     "value" : "1981-11-23 00:00:00.0"
   } ],
   "references" : [ {
-    "attr_id" : "100",
+    "attrId" : "100",
     "name" : "role_id",
     "ref" : "3",
-    "obj_name" : "USER_ROLE"
+    "objName" : "USER_ROLE"
   } ]
 }

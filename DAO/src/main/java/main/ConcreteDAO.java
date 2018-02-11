@@ -31,14 +31,14 @@ public class ConcreteDAO implements myDAO {
 		jdbcTemplateObject.update("INSERT INTO public.\"OBJECTS\" "+
 									 "(object_id,object_type_id,parent_id, name)"+
 								     "VALUES "+
-								     "("+obj.getObject_id()+","+obj.getObject_type_id()+","+
+								     "("+obj.getId()+","+obj.getTypeId()+","+
 								     1+","+"'"+obj.getName()+"'"+")");
 
 		for(Map.Entry<Long, String> entry : obj.getValues().entrySet()) {
 			jdbcTemplateObject.update("INSERT INTO public.\"PARAMS\" "+
 					 "(attr_id,object_id,value)"+
 				     "VALUES "+
-				     "("+entry.getKey()+","+obj.getObject_id()+","+
+				     "("+entry.getKey()+","+obj.getId()+","+
 				     "'"+entry.getValue()+"'"+")");
 		}
 
@@ -46,7 +46,7 @@ public class ConcreteDAO implements myDAO {
 			jdbcTemplateObject.update("INSERT INTO public.\"PARAMS\" "+
 					 "(attr_id,object_id,list_value_id)"+
 				     "VALUES "+
-				     "("+entry.getKey()+","+obj.getObject_id()+","+
+				     "("+entry.getKey()+","+obj.getId()+","+
 				     entry.getValue()+")");
 		}
 
@@ -54,7 +54,7 @@ public class ConcreteDAO implements myDAO {
 			jdbcTemplateObject.update("INSERT INTO public.\"PARAMS\" "+
 					 "(attr_id,object_id,date_value)"+
 				     "VALUES "+
-				     "("+entry.getKey()+","+obj.getObject_id()+","+
+				     "("+entry.getKey()+","+obj.getId()+","+
 				     "'"+entry.getValue()+"'"+")");
 		}
 
@@ -63,7 +63,7 @@ public class ConcreteDAO implements myDAO {
 					 "(attr_id,reference,object_id)"+
 				     "VALUES "+
 				     "("+entry.getKey()+","+entry.getValue()+","+
-				     obj.getObject_id()+")");
+				     obj.getId()+")");
 		}
 		log.info("The object was inserted");
 	}
@@ -77,16 +77,15 @@ public class ConcreteDAO implements myDAO {
 		obj.setDate(getDate(id));
 		obj.setListValue(getListValues(id));
 		obj.setReference(getReferences(id));
-	    return obj;  
+	    return obj;
 	}
 
 	private Pojo getCommonInfo(Pojo p,long id){
 	      String sql = "select * from \"OBJECTS\" where object_id = "+id;
 	      return jdbcTemplateObject.queryForObject(sql, (rs,rowNum)->{
 	  		Pojo obj = new Pojo();
-			obj.setObject_id(rs.getInt("object_id"));
-			obj.setObject_type_id(rs.getInt("object_type_id"));
-			obj.setParent_id(rs.getInt("parent_id"));
+			obj.setId(rs.getInt("object_id"));
+			obj.setTypeId(rs.getInt("object_type_id"));
 			obj.setName(rs.getString("name"));
 			obj.setDescription(rs.getString("description"));
 		    return obj;
@@ -158,7 +157,7 @@ public class ConcreteDAO implements myDAO {
 			jdbcTemplateObject.update("INSERT INTO public.\"PARAMS\" "+
 									 "(attr_id,object_id,value)"+
 								     "VALUES "+
-								     "("+entry.getKey()+","+obj.getObject_id()+","+
+								     "("+entry.getKey()+","+obj.getId()+","+
 								     "'"+entry.getValue()+"'"+")"
 								     + "ON CONFLICT (OBJECT_ID,ATTR_ID) DO UPDATE SET "+
 								     " value="+"'"+entry.getValue()+"'");
@@ -168,7 +167,7 @@ public class ConcreteDAO implements myDAO {
 			jdbcTemplateObject.update("INSERT INTO public.\"PARAMS\" "+
 					 "(attr_id,object_id,list_value_id)"+
 				     "VALUES "+
-				     "("+entry.getKey()+","+obj.getObject_id()+","+
+				     "("+entry.getKey()+","+obj.getId()+","+
 				     +entry.getValue()+")"
 				     + "ON CONFLICT (attr_id,object_id) DO UPDATE SET "+
 				     "value="+entry.getValue());
@@ -178,7 +177,7 @@ public class ConcreteDAO implements myDAO {
 			jdbcTemplateObject.update("INSERT INTO public.\"PARAMS\" "+
 					 "(attr_id,object_id,date_value)"+
 				     "VALUES "+
-				     "("+entry.getKey()+","+obj.getObject_id()+","+
+				     "("+entry.getKey()+","+obj.getId()+","+
 				     "'"+entry.getValue()+"'"+")"
 				     + "ON CONFLICT (OBJECT_ID,ATTR_ID) DO UPDATE SET "+
 				     "date_value="+"'"+entry.getValue()+"'");
@@ -188,19 +187,19 @@ public class ConcreteDAO implements myDAO {
 			jdbcTemplateObject.update("INSERT INTO public.\"REFERENCES\" "+
 					 "(attr_id,object_id,reference)"+
 				     "VALUES "+
-				     "("+entry.getKey()+","+obj.getObject_id()+","+
+				     "("+entry.getKey()+","+obj.getId()+","+
 				     +entry.getValue()+")"
 				     + "ON CONFLICT (OBJECT_ID,ATTR_ID) DO UPDATE SET "
 				     +"attr_id="+entry.getKey()+
 				     ", value="+"'"+entry.getValue()+"'");
 		}
-		
-		log.info("The object "+obj.getObject_id()+" was updated");
+
+		log.info("The object "+obj.getId()+" was updated");
 	}
-	
+
 	public static String getAttrName(long id){
-		String sql = "SELECT NAME "+ 
-				"FROM \"ATTRIBUTES\" "+ 
+		String sql = "SELECT NAME "+
+				"FROM \"ATTRIBUTES\" "+
 				"WHERE ATTR_ID="+id;
 		return jdbcTemplateObject.queryForObject(sql, (rs,rowNum)->{
 			String name=rs.getString("name");
@@ -208,8 +207,8 @@ public class ConcreteDAO implements myDAO {
 		});
 	}
 	public static String getObjectName(long id){
-		String sql = "SELECT NAME "+ 
-				"FROM \"OBJECTS\" "+ 
+		String sql = "SELECT NAME "+
+				"FROM \"OBJECTS\" "+
 				"WHERE OBJECT_ID="+id;
 		return jdbcTemplateObject.queryForObject(sql, (rs,rowNum)->{
 			String name=rs.getString("name");
