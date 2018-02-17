@@ -3,6 +3,7 @@ package main;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.math.BigInteger;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -28,10 +29,11 @@ public class Main {
 	      ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
 	      ConcreteDAO myDAO =
 	         (ConcreteDAO)context.getBean("DAO");
-	   //   OBJECT_MAPPER.writeValue(new File("custresult.json"),myDAO.read(4));
-//	      
-	      Pojo p = OBJECT_MAPPER.readValue(new File("custresult.json"), Pojo.class);
-	      System.out.println(p.toString());
+	      OBJECT_MAPPER.writeValue(new File("custresult.json"),myDAO.read(new BigInteger("1802177257163")));
+
+
+//	      Pojo p = OBJECT_MAPPER.readValue(new File("custresult.json"), Pojo.class);
+//	      System.out.println(p.toString());
 	   }
 }
 

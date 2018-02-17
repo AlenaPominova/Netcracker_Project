@@ -1,6 +1,7 @@
 package Jackson;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.Map;
 
 import com.fasterxml.jackson.core.JsonGenerator;
@@ -15,9 +16,13 @@ public class PojoSerializer extends JsonSerializer<Pojo> {
 	@Override
 	public void serialize(Pojo obj, JsonGenerator jGen, SerializerProvider arg2) throws IOException {
 	    jGen.writeStartObject();
-	    jGen.writeStringField("name", obj.getName());
+	    jGen.writeNumberField("id",new BigDecimal(obj.getId()));
 	    jGen.writeNumberField("typeId", obj.getTypeId());
-	    jGen.writeNumberField("id",obj.getId());
+	    if(obj.getOwnerId()!=null)
+	    	jGen.writeNumberField("owner_id",new BigDecimal(obj.getOwnerId()));
+	    jGen.writeStringField("name", obj.getName());
+	    if(obj.getDescription()!=null)
+	    jGen.writeStringField("description", obj.getDescription());
 	    if (obj.getValues()!=null) {
 	    	jGen.writeArrayFieldStart("values");
 
@@ -54,9 +59,9 @@ public class PojoSerializer extends JsonSerializer<Pojo> {
 				});
 	        jGen.writeEndArray();
 	    }
-	    if (obj.getListValue()!=null) {
+	    if (obj.getListValues()!=null) {
 	    	jGen.writeArrayFieldStart("listValues");
-	        	obj.getListValue().forEach((k,v) -> {
+	        	obj.getListValues().forEach((k,v) -> {
 					try {
 						String name=ConcreteDAO.getAttrName(k);
 						String value=ConcreteDAO.getAttrName(k);

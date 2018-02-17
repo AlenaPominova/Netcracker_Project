@@ -1,5 +1,7 @@
 package main;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -42,7 +44,7 @@ public class ConcreteDAO implements myDAO {
 				     "'"+entry.getValue()+"'"+")");
 		}
 
-		for(Map.Entry<Long, Long> entry : obj.getListValue().entrySet()) {
+		for(Map.Entry<Long, Long> entry : obj.getListValues().entrySet()) {
 			jdbcTemplateObject.update("INSERT INTO public.\"PARAMS\" "+
 					 "(attr_id,object_id,list_value_id)"+
 				     "VALUES "+
@@ -58,7 +60,7 @@ public class ConcreteDAO implements myDAO {
 				     "'"+entry.getValue()+"'"+")");
 		}
 
-		for(Map.Entry<Long, Long> entry : obj.getReference().entrySet()) {
+		for(Map.Entry<Long, BigInteger> entry : obj.getReference().entrySet()) {
 			jdbcTemplateObject.update("INSERT INTO public.\"REFERENCES\" "+
 					 "(attr_id,reference,object_id)"+
 				     "VALUES "+
@@ -69,46 +71,56 @@ public class ConcreteDAO implements myDAO {
 	}
 
 
-	public Pojo read(long id) {
+	public Pojo read(BigInteger id) {
 		log.info("Reading the object with id"+id);
 		Pojo obj=new Pojo();
 		obj=getCommonInfo(obj,id);
 		obj.setValues(getValues(id));
 		obj.setDate(getDate(id));
-		obj.setListValue(getListValues(id));
+		obj.setListValues(getListValues(id));
 		obj.setReference(getReferences(id));
 	    return obj;
 	}
 
-	private Pojo getCommonInfo(Pojo p,long id){
+	private Pojo getCommonInfo(Pojo p,BigInteger id){
 	      String sql = "select * from \"OBJECTS\" where object_id = "+id;
 	      return jdbcTemplateObject.queryForObject(sql, (rs,rowNum)->{
 	  		Pojo obj = new Pojo();
-			obj.setId(rs.getInt("object_id"));
+			obj.setId(rs.getBigDecimal("object_id").toBigInteger());
 			obj.setTypeId(rs.getInt("object_type_id"));
+			BigDecimal val=rs.getBigDecimal("owner_id");
+			if(val!=null)
+				obj.setOwnerId(val.toBigInteger());
 			obj.setName(rs.getString("name"));
 			obj.setDescription(rs.getString("description"));
 		    return obj;
 	      });
 	}
 
-	private Map<Long,String> getValues(long id){
+	private Map<Long,String> getValues(BigInteger id){
 		String sql = "SELECT ATTR_ID,VALUE "+
 						"FROM    \"PARAMS\"  "+
 						"WHERE OBJECT_ID = "+id;
+		try{
 		return jdbcTemplateObject.queryForObject(sql,(rs,rowNum)->{
 			Map<Long, String> values=new HashMap<Long,String>();
-			do
+			do		
 				if(rs.getString("value")!=null)
-					values.put(rs.getLong("attr_id"), rs.getString("value"));
-				while (rs.next());
+				values.put(rs.getLong("attr_id"), rs.getString("value"));
+			while (rs.next());
 		    return values;
+
 		});
+		}
+		catch(EmptyResultDataAccessException e){
+			return null;
+		}
 	}
-	private Map<Long,Timestamp> getDate(long id){
+	private Map<Long,Timestamp> getDate(BigInteger id){
 		String sql = "SELECT attr_id,date_value "+
 						"FROM    \"PARAMS\" "+
 						"where object_id="+id;
+		try{
 		return jdbcTemplateObject.queryForObject(sql, (rs,rowNum)->{
 			Map<Long, Timestamp> values=new HashMap<Long,Timestamp>();
 			do
@@ -117,11 +129,15 @@ public class ConcreteDAO implements myDAO {
 			while(rs.next());
 		    return values;
 		});
+		}catch(EmptyResultDataAccessException e){
+			return null;
+		}
 	}
-	private Map<Long,Long> getListValues(long id){
+	private Map<Long,Long> getListValues(BigInteger id){
 		String sql = "SELECT * "+
 						"FROM \"PARAMS\" "+
-						"WHERE OBJECT_ID="+id;
+						"WHERE OBJECT_ID="+id+" and list_value_id is not null";
+		try{
 		return jdbcTemplateObject.queryForObject(sql, (rs,rowNum)->{
 			Map<Long, Long> values=new HashMap<Long,Long>();
 			do
@@ -130,23 +146,29 @@ public class ConcreteDAO implements myDAO {
 			while(rs.next());
 		    return values;
 		});
+		}catch(EmptyResultDataAccessException e){
+			return null;
+		}
 	}
 
-	private Map<Long,Long> getReferences(long id){
+	private Map<Long, BigInteger> getReferences(BigInteger id){
 		String sql = "SELECT * "+
 						"FROM \"REFERENCES\" "+
 						"WHERE OBJECT_ID="+id;
+		try{
 		return jdbcTemplateObject.queryForObject(sql, (rs,rowNum)->{
-			Map<Long, Long> values=new HashMap<Long,Long>();
+			Map<Long, BigInteger> values=new HashMap<Long,BigInteger>();
 			do
-				if(rs.getString("attr_id")!=null)
-				values.put(rs.getLong("attr_id"), rs.getLong("reference"));
+				values.put(rs.getLong("attr_id"), rs.getBigDecimal("reference").toBigInteger());
 			while(rs.next());
 		    return values;
 		});
+		}catch(EmptyResultDataAccessException e){
+			return null;
+		}
 	}
 
-	public void delete(long id) {
+	public void delete(BigInteger id) {
 		String sql = "delete from \"OBJECTS\" where object_id = "+id;
 		jdbcTemplateObject.update(sql);
 		log.info("The object "+id+" was deleted");
@@ -163,7 +185,7 @@ public class ConcreteDAO implements myDAO {
 								     " value="+"'"+entry.getValue()+"'");
 		}
 
-		for(Map.Entry<Long, Long> entry : obj.getListValue().entrySet()) {
+		for(Map.Entry<Long, Long> entry : obj.getListValues().entrySet()) {
 			jdbcTemplateObject.update("INSERT INTO public.\"PARAMS\" "+
 					 "(attr_id,object_id,list_value_id)"+
 				     "VALUES "+
@@ -183,15 +205,16 @@ public class ConcreteDAO implements myDAO {
 				     "date_value="+"'"+entry.getValue()+"'");
 		}
 
-		for(Map.Entry<Long, Long> entry : obj.getReference().entrySet()) {
+		for(Map.Entry<Long, BigInteger> entry : obj.getReference().entrySet()) {
+			
 			jdbcTemplateObject.update("INSERT INTO public.\"REFERENCES\" "+
 					 "(attr_id,object_id,reference)"+
 				     "VALUES "+
-				     "("+entry.getKey()+","+obj.getId()+","+
-				     +entry.getValue()+")"
+				     "("+entry.getKey()+","+obj.getId()+","
+				     +entry.getValue().toString()+")"
 				     + "ON CONFLICT (OBJECT_ID,ATTR_ID) DO UPDATE SET "
 				     +"attr_id="+entry.getKey()+
-				     ", value="+"'"+entry.getValue()+"'");
+				     ", value="+"'"+entry.getValue().toString()+"'");
 		}
 
 		log.info("The object "+obj.getId()+" was updated");
@@ -206,7 +229,7 @@ public class ConcreteDAO implements myDAO {
 		    return name;
 		});
 	}
-	public static String getObjectName(long id){
+	public static String getObjectName(BigInteger id){
 		String sql = "SELECT NAME "+
 				"FROM \"OBJECTS\" "+
 				"WHERE OBJECT_ID="+id;

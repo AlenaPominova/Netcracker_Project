@@ -1,5 +1,7 @@
 package main;
 
+import java.math.BigInteger;
+
 import javax.sql.DataSource;
 
 public interface myDAO {
@@ -7,9 +9,9 @@ public interface myDAO {
 	   
 	public void create(Pojo obj);
 	   
-	public Pojo read(long id);   
+	public Pojo read(BigInteger id);   
 	
-	public void delete(long id);
+	public void delete(BigInteger id);
 	
 	public void update(Pojo obj);
 	

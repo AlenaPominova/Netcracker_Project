@@ -1,6 +1,7 @@
 package Jackson;
 
 import java.io.IOException;
+import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -28,20 +29,23 @@ public class PojoDeserializer extends StdDeserializer<Pojo> {
       throws IOException, JsonProcessingException {
     	Pojo result=new Pojo();
         JsonNode node = jp.getCodec().readTree(jp);
-        result.setId((int)node.get("id").numberValue());
+        result.setId(node.get("id").bigIntegerValue());
+        if(node.get("owner_id")!=null)
+        	result.setOwnerId(node.get("owner_id").bigIntegerValue());
         result.setName(node.get("name").asText());
         result.setTypeId((int)node.get("typeId").numberValue());
 
         JsonNode values=node.get("values");
-        HashMap<Long, String> valuess=new HashMap<Long,String>();
-        values.forEach(x->valuess.put(x.get("attrId").asLong(),x.get("value").asText()));
-        result.setValues(valuess);
-
+        if(values!=null){
+	        HashMap<Long, String> valuess=new HashMap<Long,String>();
+	        values.forEach(x->valuess.put(x.get("attrId").asLong(),x.get("value").asText()));
+	        result.setValues(valuess);
+        }
         values=node.get("listValues");
         if(values!=null){
 	        HashMap<Long, Long> listValues=new HashMap<Long,Long>();
 	        values.forEach(x->listValues.put(x.get("attrId").asLong(),x.get("listValueId").asLong()));
-	        result.setListValue(listValues);
+	        result.setListValues(listValues);
         }
 
         values=node.get("dateValues");
@@ -64,8 +68,8 @@ public class PojoDeserializer extends StdDeserializer<Pojo> {
 
         values=node.get("references");
         if(values!=null){
-	        HashMap<Long, Long> refs=new HashMap<Long,Long>();
-	        values.forEach(x->refs.put(x.get("attrId").asLong(),x.get("ref").asLong()));
+	        HashMap<Long, BigInteger> refs=new HashMap<Long,BigInteger>();
+	        values.forEach(x->refs.put(x.get("attrId").asLong(),x.get("ref").bigIntegerValue()));
 	        result.setReference(refs);
         }
 

@@ -1,7 +1,7 @@
 {
-  "name" : "User1",
-  "typeId" : 2,
-  "id" : 4,
+  "id" : 1802177257163,
+  "typeId" : 1,
+  "name" : "OWNER_ROLE",
   "values" : [ {
     "attrId" : "201",
     "name" : "fio",
@@ -27,11 +27,5 @@
     "attrId" : "206",
     "name" : "birthdate",
     "value" : "1981-11-23 00:00:00.0"
-  } ],
-  "references" : [ {
-    "attrId" : "100",
-    "name" : "role_id",
-    "ref" : "3",
-    "objName" : "USER_ROLE"
   } ]
 }
