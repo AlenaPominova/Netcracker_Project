@@ -191,3 +191,26 @@
 2018-02-18 00:39:08,096 INFO  [main] Reading the object with id1802177257163
 2018-02-18 00:41:23,410 INFO  [main] Reading the object with id1802177257163
 2018-02-18 00:43:15,820 INFO  [main] Reading the object with id1802177257163
+2018-02-18 18:22:42,661 INFO  [main] Reading the object with id1802177257163
+2018-02-18 18:22:54,503 INFO  [main] Reading the object with id1802177257163
+2018-02-18 18:23:45,227 INFO  [main] Reading the object with id1802177257142
+2018-02-18 18:23:57,671 INFO  [main] Reading the object with id1802177257163
+2018-02-18 18:28:19,471 INFO  [main] Reading the object with id1802177257163
+2018-02-18 18:32:21,105 INFO  [main] Reading the object with id1802177257149
+2018-02-18 19:05:08,939 INFO  [main] The object 1802177250000 was deleted
+2018-02-18 19:05:09,038 INFO  [main] The object was inserted
+2018-02-18 19:05:38,358 INFO  [main] Reading the object with id1802177257149
+2018-02-18 19:05:38,852 INFO  [main] The object 1802177250000 was deleted
+2018-02-18 19:05:55,497 INFO  [main] Reading the object with id1802177257163
+2018-02-18 19:05:56,295 INFO  [main] The object 1802177250000 was deleted
+2018-02-18 19:08:10,700 INFO  [main] Reading the object with id1802177257163
+2018-02-18 19:08:11,904 INFO  [main] The object was inserted
+2018-02-18 19:38:36,084 INFO  [main] Reading the object with id180218703622
+2018-02-18 19:40:20,269 INFO  [main] Reading the object with id180218703622
+2018-02-18 19:44:56,768 INFO  [main] Reading the object with id180218703622
+2018-02-18 19:46:23,782 INFO  [main] Reading the object with id180218703622
+2018-02-18 21:39:35,957 INFO  [main] Reading the object with id180218703622
+2018-02-18 22:34:13,753 INFO  [main] Reading the object with id180218703622
+2018-02-18 22:38:10,783 INFO  [main] The object 1802177250000 was deleted
+2018-02-18 22:39:42,731 INFO  [main] The object 1802177250000 was deleted
+2018-02-18 22:39:43,184 INFO  [main] The object was inserted

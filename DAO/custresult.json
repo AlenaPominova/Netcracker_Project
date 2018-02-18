@@ -1,31 +1,38 @@
 {
-  "id" : 1802177257163,
-  "typeId" : 1,
-  "name" : "OWNER_ROLE",
+  "id" : 180218703622,
+  "typeId" : 2,
+  "owner_id" : 0,
+  "name" : "User1",
   "values" : [ {
-    "attrId" : "201",
+    "attrId" : 201,
     "name" : "fio",
     "value" : "Иванов"
   }, {
-    "attrId" : "202",
+    "attrId" : 202,
     "name" : "phone",
     "value" : "+780065423"
   }, {
-    "attrId" : "203",
+    "attrId" : 203,
     "name" : "email",
     "value" : "mail@gmail.com"
   }, {
-    "attrId" : "204",
+    "attrId" : 204,
     "name" : "password",
     "value" : "adfages7ScxQ"
   }, {
-    "attrId" : "205",
+    "attrId" : 205,
     "name" : "address",
     "value" : "Воронеж"
   } ],
   "dateValues" : [ {
-    "attrId" : "206",
+    "attrId" : 206,
     "name" : "birthdate",
     "value" : "1981-11-23 00:00:00.0"
+  } ],
+  "references" : [ {
+    "attrId" : 100,
+    "name" : "role_id",
+    "ref" : 180218703623,
+    "objName" : "OWNER_ROLE"
   } ]
 }

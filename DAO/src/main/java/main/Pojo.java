@@ -5,25 +5,24 @@ import java.sql.Timestamp;
 import java.util.*;
 
 public class Pojo {
-	@Override
-	public String toString() {
-		return "Pojo [id=" + id + ", typeId=" + typeId + ", ownerId=" + ownerId + ", name=" + name + ", description="
-				+ description + ", values=" + values + ", listValues=" + listValues + ", date=" + date + ", reference="
-				+ reference + "]";
-	}
-	private BigInteger id;
+	private long id;
 	private long typeId;
-	private BigInteger ownerId;
+	private long ownerId;
 	private String name;
 	private String description;
 	private Map<Long, String> values;
     private Map<Long, Long> listValues;
     private Map<Long, Timestamp> date;
-    private Map<Long, BigInteger> reference;
-	public BigInteger getId() {
+    private Map<Long, Long> reference;
+	public Pojo(long typeId, String name) {
+		super();
+		this.typeId = typeId;
+		this.name = name;
+	}
+	public long getId() {
 		return id;
 	}
-	public void setId(BigInteger id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 	public long getTypeId() {
@@ -32,11 +31,10 @@ public class Pojo {
 	public void setTypeId(long typeId) {
 		this.typeId = typeId;
 	}
-
-	public BigInteger getOwnerId() {
+	public long getOwnerId() {
 		return ownerId;
 	}
-	public void setOwnerId(BigInteger ownerId) {
+	public void setOwnerId(long ownerId) {
 		this.ownerId = ownerId;
 	}
 	public String getName() {
@@ -69,12 +67,18 @@ public class Pojo {
 	public void setDate(Map<Long, Timestamp> date) {
 		this.date = date;
 	}
-	public Map<Long, BigInteger> getReference() {
+	public Map<Long, Long> getReference() {
 		return reference;
 	}
-	public void setReference(Map<Long, BigInteger> reference) {
+	public void setReference(Map<Long, Long> reference) {
 		this.reference = reference;
 	}
-    
-    
+	@Override
+	public String toString() {
+		return "Pojo [id=" + id + ", typeId=" + typeId + ", ownerId=" + ownerId + ", name=" + name + ", description="
+				+ description + ", values=" + values + ", listValues=" + listValues + ", date=" + date + ", reference="
+				+ reference + "]";
+	}
+
+
 }

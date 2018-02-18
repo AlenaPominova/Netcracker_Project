@@ -27,13 +27,11 @@ public class PojoDeserializer extends StdDeserializer<Pojo> {
     @Override
     public Pojo deserialize(JsonParser jp, DeserializationContext ctxt)
       throws IOException, JsonProcessingException {
-    	Pojo result=new Pojo();
-        JsonNode node = jp.getCodec().readTree(jp);
-        result.setId(node.get("id").bigIntegerValue());
+    	JsonNode node = jp.getCodec().readTree(jp);
+    	Pojo result=new Pojo(node.get("typeId").numberValue().longValue(),node.get("name").asText());
+        result.setId(node.get("id").longValue());
         if(node.get("owner_id")!=null)
-        	result.setOwnerId(node.get("owner_id").bigIntegerValue());
-        result.setName(node.get("name").asText());
-        result.setTypeId((int)node.get("typeId").numberValue());
+        	result.setOwnerId(node.get("owner_id").longValue());
 
         JsonNode values=node.get("values");
         if(values!=null){
@@ -68,8 +66,8 @@ public class PojoDeserializer extends StdDeserializer<Pojo> {
 
         values=node.get("references");
         if(values!=null){
-	        HashMap<Long, BigInteger> refs=new HashMap<Long,BigInteger>();
-	        values.forEach(x->refs.put(x.get("attrId").asLong(),x.get("ref").bigIntegerValue()));
+	        HashMap<Long, Long> refs=new HashMap<Long,Long>();
+	        values.forEach(x->refs.put(x.get("attrId").asLong(),x.get("ref").longValue()));
 	        result.setReference(refs);
         }
 

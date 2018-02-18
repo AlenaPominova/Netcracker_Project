@@ -9,9 +9,9 @@ public interface myDAO {
 	   
 	public void create(Pojo obj);
 	   
-	public Pojo read(BigInteger id);   
+	public Pojo read(long id);   
 	
-	public void delete(BigInteger id);
+	public void delete(long id);
 	
 	public void update(Pojo obj);
 	

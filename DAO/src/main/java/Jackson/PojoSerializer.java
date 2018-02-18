@@ -16,10 +16,9 @@ public class PojoSerializer extends JsonSerializer<Pojo> {
 	@Override
 	public void serialize(Pojo obj, JsonGenerator jGen, SerializerProvider arg2) throws IOException {
 	    jGen.writeStartObject();
-	    jGen.writeNumberField("id",new BigDecimal(obj.getId()));
+	    jGen.writeNumberField("id",obj.getId());
 	    jGen.writeNumberField("typeId", obj.getTypeId());
-	    if(obj.getOwnerId()!=null)
-	    	jGen.writeNumberField("owner_id",new BigDecimal(obj.getOwnerId()));
+	    jGen.writeNumberField("owner_id",obj.getOwnerId());
 	    jGen.writeStringField("name", obj.getName());
 	    if(obj.getDescription()!=null)
 	    jGen.writeStringField("description", obj.getDescription());
@@ -30,7 +29,7 @@ public class PojoSerializer extends JsonSerializer<Pojo> {
 					try {
 						String name=ConcreteDAO.getAttrName(k);
 						jGen.writeStartObject();
-						jGen.writeStringField("attrId", k+"");
+						jGen.writeNumberField("attrId", k);
 						jGen.writeStringField("name", name);
 						jGen.writeStringField("value", v);
 						jGen.writeEndObject();
@@ -43,17 +42,15 @@ public class PojoSerializer extends JsonSerializer<Pojo> {
 	    }
 	    if (obj.getDate()!=null) {
 	    	jGen.writeArrayFieldStart("dateValues");
-
 	        	obj.getDate().forEach((k,v) -> {
 					try {
 						String name=ConcreteDAO.getAttrName(k);
 						jGen.writeStartObject();
-						jGen.writeStringField("attrId", k+"");
+						jGen.writeNumberField("attrId", k);
 						jGen.writeStringField("name", name);
 						jGen.writeStringField("value", v.toString());
 						jGen.writeEndObject();
 					} catch (IOException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 				});
@@ -66,9 +63,9 @@ public class PojoSerializer extends JsonSerializer<Pojo> {
 						String name=ConcreteDAO.getAttrName(k);
 						String value=ConcreteDAO.getAttrName(k);
 						jGen.writeStartObject();
-						jGen.writeStringField("attrId", k+"");
+						jGen.writeNumberField("attrId", k);
 						jGen.writeStringField("name", name);
-						jGen.writeStringField("listValueId", v+"");
+						jGen.writeNumberField("listValueId", v);
 						jGen.writeEndObject();
 					} catch (IOException e) {
 						e.printStackTrace();
@@ -83,9 +80,9 @@ public class PojoSerializer extends JsonSerializer<Pojo> {
 						String attr_name=ConcreteDAO.getAttrName(k);
 						String obj_name=ConcreteDAO.getObjectName(v);
 						jGen.writeStartObject();
-						jGen.writeStringField("attrId", k+"");
+						jGen.writeNumberField("attrId", k);
 						jGen.writeStringField("name", attr_name);
-						jGen.writeStringField("ref", v+"");
+						jGen.writeNumberField("ref", v);
 						jGen.writeStringField("objName", obj_name);
 						jGen.writeEndObject();
 					} catch (IOException e) {

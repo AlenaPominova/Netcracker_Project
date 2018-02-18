@@ -27,13 +27,15 @@ public class Main {
 
 	   public static void main(String[] args) throws JsonGenerationException, JsonMappingException, IOException, NoSuchFieldException, SecurityException {
 	      ApplicationContext context = new ClassPathXmlApplicationContext("Beans.xml");
-	      ConcreteDAO myDAO =
-	         (ConcreteDAO)context.getBean("DAO");
-	      OBJECT_MAPPER.writeValue(new File("custresult.json"),myDAO.read(new BigInteger("1802177257163")));
+	      ConcreteDAO myDAO =(ConcreteDAO)context.getBean("DAO");
+	    //  OBJECT_MAPPER.writeValue(new File("custresult.json"),myDAO.read(180218703622L));
+	      myDAO.delete(1802177250000L);
 
-
-//	      Pojo p = OBJECT_MAPPER.readValue(new File("custresult.json"), Pojo.class);
-//	      System.out.println(p.toString());
+	      Pojo p = OBJECT_MAPPER.readValue(new File("custresult.json"), Pojo.class);
+	      System.out.println(p.toString());
+	      p.setId(1802177250000L);
+	      p.setOwnerId(180218703627L);
+	      myDAO.create(p);
 	   }
 }
 

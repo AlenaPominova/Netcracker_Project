@@ -31,50 +31,50 @@ public class ConcreteDAO implements myDAO {
 
 	public void create(Pojo obj) {
 		jdbcTemplateObject.update("INSERT INTO public.\"OBJECTS\" "+
-									 "(object_id,object_type_id,parent_id, name)"+
+									 "(object_id,object_type_id,owner_id, name, description)"+
 								     "VALUES "+
 								     "("+obj.getId()+","+obj.getTypeId()+","+
-								     1+","+"'"+obj.getName()+"'"+")");
-
-		for(Map.Entry<Long, String> entry : obj.getValues().entrySet()) {
-			jdbcTemplateObject.update("INSERT INTO public.\"PARAMS\" "+
-					 "(attr_id,object_id,value)"+
-				     "VALUES "+
-				     "("+entry.getKey()+","+obj.getId()+","+
-				     "'"+entry.getValue()+"'"+")");
-		}
-
-		for(Map.Entry<Long, Long> entry : obj.getListValues().entrySet()) {
-			jdbcTemplateObject.update("INSERT INTO public.\"PARAMS\" "+
-					 "(attr_id,object_id,list_value_id)"+
-				     "VALUES "+
-				     "("+entry.getKey()+","+obj.getId()+","+
-				     entry.getValue()+")");
-		}
-
-		for(Map.Entry<Long, Timestamp> entry : obj.getDate().entrySet()) {
-			jdbcTemplateObject.update("INSERT INTO public.\"PARAMS\" "+
-					 "(attr_id,object_id,date_value)"+
-				     "VALUES "+
-				     "("+entry.getKey()+","+obj.getId()+","+
-				     "'"+entry.getValue()+"'"+")");
-		}
-
-		for(Map.Entry<Long, BigInteger> entry : obj.getReference().entrySet()) {
-			jdbcTemplateObject.update("INSERT INTO public.\"REFERENCES\" "+
-					 "(attr_id,reference,object_id)"+
-				     "VALUES "+
-				     "("+entry.getKey()+","+entry.getValue()+","+
-				     obj.getId()+")");
-		}
+								     obj.getOwnerId()+","+"'"+obj.getName()+"'"+","+obj.getDescription()+")");
+		if(obj.getValues()!=null)
+			for(Map.Entry<Long, String> entry : obj.getValues().entrySet()) {
+				jdbcTemplateObject.update("INSERT INTO public.\"PARAMS\" "+
+						 "(attr_id,object_id,value)"+
+					     "VALUES "+
+					     "("+entry.getKey()+","+obj.getId()+","+
+					     "'"+entry.getValue()+"'"+")");
+			}
+		if(obj.getListValues()!=null)
+			for(Map.Entry<Long, Long> entry : obj.getListValues().entrySet()) {
+				jdbcTemplateObject.update("INSERT INTO public.\"PARAMS\" "+
+						 "(attr_id,object_id,list_value_id)"+
+					     "VALUES "+
+					     "("+entry.getKey()+","+obj.getId()+","+
+					     entry.getValue()+")");
+			}
+		if(obj.getDate()!=null)
+			for(Map.Entry<Long, Timestamp> entry : obj.getDate().entrySet()) {
+				jdbcTemplateObject.update("INSERT INTO public.\"PARAMS\" "+
+						 "(attr_id,object_id,date_value)"+
+					     "VALUES "+
+					     "("+entry.getKey()+","+obj.getId()+","+
+					     "'"+entry.getValue()+"'"+")");
+			}
+		if(obj.getReference()!=null)
+			for(Map.Entry<Long, Long> entry : obj.getReference().entrySet()) {
+				jdbcTemplateObject.update("INSERT INTO public.\"REFERENCES\" "+
+						 "(attr_id,reference,object_id)"+
+					     "VALUES "+
+					     "("+entry.getKey()+","+entry.getValue()+","+
+					     obj.getId()+")");
+			}
 		log.info("The object was inserted");
 	}
 
 
-	public Pojo read(BigInteger id) {
+
+	public Pojo read(long id) {
 		log.info("Reading the object with id"+id);
-		Pojo obj=new Pojo();
-		obj=getCommonInfo(obj,id);
+		Pojo obj=getCommonInfo(id);
 		obj.setValues(getValues(id));
 		obj.setDate(getDate(id));
 		obj.setListValues(getListValues(id));
@@ -82,29 +82,27 @@ public class ConcreteDAO implements myDAO {
 	    return obj;
 	}
 
-	private Pojo getCommonInfo(Pojo p,BigInteger id){
+	private Pojo getCommonInfo(long id){
 	      String sql = "select * from \"OBJECTS\" where object_id = "+id;
 	      return jdbcTemplateObject.queryForObject(sql, (rs,rowNum)->{
-	  		Pojo obj = new Pojo();
-			obj.setId(rs.getBigDecimal("object_id").toBigInteger());
-			obj.setTypeId(rs.getInt("object_type_id"));
-			BigDecimal val=rs.getBigDecimal("owner_id");
+	  		Pojo obj = new Pojo(rs.getLong("object_type_id"),rs.getString("name"));
+			obj.setId(rs.getLong(("object_id")));
+			Long val=rs.getLong("owner_id");
 			if(val!=null)
-				obj.setOwnerId(val.toBigInteger());
-			obj.setName(rs.getString("name"));
+				obj.setOwnerId(val);
 			obj.setDescription(rs.getString("description"));
 		    return obj;
 	      });
 	}
 
-	private Map<Long,String> getValues(BigInteger id){
+	private Map<Long,String> getValues(long id){
 		String sql = "SELECT ATTR_ID,VALUE "+
 						"FROM    \"PARAMS\"  "+
 						"WHERE OBJECT_ID = "+id;
 		try{
 		return jdbcTemplateObject.queryForObject(sql,(rs,rowNum)->{
 			Map<Long, String> values=new HashMap<Long,String>();
-			do		
+			do
 				if(rs.getString("value")!=null)
 				values.put(rs.getLong("attr_id"), rs.getString("value"));
 			while (rs.next());
@@ -116,7 +114,7 @@ public class ConcreteDAO implements myDAO {
 			return null;
 		}
 	}
-	private Map<Long,Timestamp> getDate(BigInteger id){
+	private Map<Long,Timestamp> getDate(long id){
 		String sql = "SELECT attr_id,date_value "+
 						"FROM    \"PARAMS\" "+
 						"where object_id="+id;
@@ -133,7 +131,7 @@ public class ConcreteDAO implements myDAO {
 			return null;
 		}
 	}
-	private Map<Long,Long> getListValues(BigInteger id){
+	private Map<Long,Long> getListValues(long id){
 		String sql = "SELECT * "+
 						"FROM \"PARAMS\" "+
 						"WHERE OBJECT_ID="+id+" and list_value_id is not null";
@@ -151,15 +149,15 @@ public class ConcreteDAO implements myDAO {
 		}
 	}
 
-	private Map<Long, BigInteger> getReferences(BigInteger id){
+	private Map<Long, Long> getReferences(long id){
 		String sql = "SELECT * "+
 						"FROM \"REFERENCES\" "+
 						"WHERE OBJECT_ID="+id;
 		try{
 		return jdbcTemplateObject.queryForObject(sql, (rs,rowNum)->{
-			Map<Long, BigInteger> values=new HashMap<Long,BigInteger>();
+			Map<Long, Long> values=new HashMap<Long,Long>();
 			do
-				values.put(rs.getLong("attr_id"), rs.getBigDecimal("reference").toBigInteger());
+				values.put(rs.getLong("attr_id"), rs.getLong("reference"));
 			while(rs.next());
 		    return values;
 		});
@@ -168,7 +166,7 @@ public class ConcreteDAO implements myDAO {
 		}
 	}
 
-	public void delete(BigInteger id) {
+	public void delete(long id) {
 		String sql = "delete from \"OBJECTS\" where object_id = "+id;
 		jdbcTemplateObject.update(sql);
 		log.info("The object "+id+" was deleted");
@@ -205,8 +203,8 @@ public class ConcreteDAO implements myDAO {
 				     "date_value="+"'"+entry.getValue()+"'");
 		}
 
-		for(Map.Entry<Long, BigInteger> entry : obj.getReference().entrySet()) {
-			
+		for(Map.Entry<Long, Long> entry : obj.getReference().entrySet()) {
+
 			jdbcTemplateObject.update("INSERT INTO public.\"REFERENCES\" "+
 					 "(attr_id,object_id,reference)"+
 				     "VALUES "+
@@ -229,7 +227,7 @@ public class ConcreteDAO implements myDAO {
 		    return name;
 		});
 	}
-	public static String getObjectName(BigInteger id){
+	public static String getObjectName(Long id){
 		String sql = "SELECT NAME "+
 				"FROM \"OBJECTS\" "+
 				"WHERE OBJECT_ID="+id;
@@ -237,6 +235,12 @@ public class ConcreteDAO implements myDAO {
 			String name=rs.getString("name");
 		    return name;
 		});
+	}
+	public long getNewIdFromSQL(){
+	      String sql = "select generate_id()";
+	      return jdbcTemplateObject.queryForObject(sql, (rs,rowNum)->{
+		    return rs.getLong("generate_id");
+	      });
 	}
 
 }
