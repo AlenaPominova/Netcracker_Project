@@ -1,0 +1,396 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataSource name="postgres@localhost">
+  <database-model serializer="dbm" rdbms="POSTGRES" format-version="4.4">
+    <root id="1"/>
+    <database id="2" parent="1" name="postgres">
+      <ObjectId>12401</ObjectId>
+      <Current>1</Current>
+      <Visible>1</Visible>
+    </database>
+    <database id="3" parent="1" name="example">
+      <ObjectId>24576</ObjectId>
+    </database>
+    <schema id="4" parent="2" name="public">
+      <ObjectId>2200</ObjectId>
+      <IntrospectionTimestamp>2018-02-04.16:27:13.465</IntrospectionTimestamp>
+      <IntrospectionStateNumber>657</IntrospectionStateNumber>
+      <Current>1</Current>
+      <Visible>1</Visible>
+    </schema>
+    <schema id="5" parent="2" name="pg_catalog">
+      <ObjectId>11</ObjectId>
+    </schema>
+    <schema id="6" parent="2" name="pg_toast">
+      <ObjectId>99</ObjectId>
+    </schema>
+    <schema id="7" parent="2" name="pg_temp_1">
+      <ObjectId>11848</ObjectId>
+    </schema>
+    <schema id="8" parent="2" name="pg_toast_temp_1">
+      <ObjectId>11849</ObjectId>
+    </schema>
+    <schema id="9" parent="2" name="information_schema">
+      <ObjectId>12113</ObjectId>
+    </schema>
+    <schema id="10" parent="2" name="example">
+      <ObjectId>16384</ObjectId>
+    </schema>
+    <schema id="11" parent="2" name="traning">
+      <ObjectId>24684</ObjectId>
+    </schema>
+    <schema id="12" parent="2" name="test">
+      <ObjectId>32768</ObjectId>
+    </schema>
+    <sequence id="13" parent="4" name="uid_sequence">
+      <ObjectId>32781</ObjectId>
+      <StateNumber>599</StateNumber>
+      <SequenceIdentity>1</SequenceIdentity>
+    </sequence>
+    <table id="14" parent="4" name="ATTRIBUTES">
+      <ObjectId>32801</ObjectId>
+      <StateNumber>619</StateNumber>
+    </table>
+    <table id="15" parent="4" name="ATTR_OBJECT_TYPES">
+      <ObjectId>32810</ObjectId>
+      <StateNumber>613</StateNumber>
+    </table>
+    <table id="16" parent="4" name="ATTR_TYPES">
+      <ObjectId>32816</ObjectId>
+      <StateNumber>611</StateNumber>
+    </table>
+    <table id="17" parent="4" name="LIST_VALUES">
+      <ObjectId>32831</ObjectId>
+      <StateNumber>619</StateNumber>
+    </table>
+    <table id="18" parent="4" name="OBJECTS">
+      <ObjectId>32783</ObjectId>
+      <StateNumber>657</StateNumber>
+    </table>
+    <table id="19" parent="4" name="OBJECT_TYPES">
+      <ObjectId>32792</ObjectId>
+      <StateNumber>613</StateNumber>
+    </table>
+    <table id="20" parent="4" name="PARAMS">
+      <ObjectId>32825</ObjectId>
+      <StateNumber>639</StateNumber>
+    </table>
+    <table id="21" parent="4" name="REFERENCES">
+      <ObjectId>32813</ObjectId>
+      <StateNumber>652</StateNumber>
+    </table>
+    <column id="22" parent="14" name="attr_id">
+      <Position>1</Position>
+      <DataType>bigint|0</DataType>
+      <NotNull>1</NotNull>
+      <StateNumber>603</StateNumber>
+      <DefaultExpression>nextval(&apos;uid_sequence&apos;::regclass)</DefaultExpression>
+    </column>
+    <column id="23" parent="14" name="attr_type_id">
+      <Position>2</Position>
+      <DataType>bigint|0</DataType>
+      <NotNull>1</NotNull>
+      <StateNumber>603</StateNumber>
+    </column>
+    <column id="24" parent="14" name="name">
+      <Position>3</Position>
+      <DataType>varchar|0</DataType>
+      <NotNull>1</NotNull>
+      <StateNumber>603</StateNumber>
+    </column>
+    <column id="25" parent="14" name="def_value">
+      <Position>4</Position>
+      <DataType>varchar|0</DataType>
+      <StateNumber>603</StateNumber>
+    </column>
+    <index id="26" parent="14" name="attributes_pk">
+      <ObjectId>32808</ObjectId>
+      <ColNames>attr_id</ColNames>
+      <Unique>1</Unique>
+    </index>
+    <key id="27" parent="14" name="attributes_pk">
+      <ObjectId>32809</ObjectId>
+      <ColNames>attr_id</ColNames>
+      <UnderlyingIndexName>attributes_pk</UnderlyingIndexName>
+      <Primary>1</Primary>
+    </key>
+    <foreign-key id="28" parent="14" name="ATTRIBUTES_fk0">
+      <ObjectId>32850</ObjectId>
+      <ColNames>attr_type_id</ColNames>
+      <RefTableId>32816</RefTableId>
+      <RefColPositions>1</RefColPositions>
+      <RefTableName>ATTR_TYPES</RefTableName>
+      <RefKeyName>attr_types_pk</RefKeyName>
+      <RefColNames>attr_type_id</RefColNames>
+    </foreign-key>
+    <column id="29" parent="15" name="attr_id">
+      <Position>1</Position>
+      <DataType>bigint|0</DataType>
+      <NotNull>1</NotNull>
+      <StateNumber>604</StateNumber>
+    </column>
+    <column id="30" parent="15" name="object_type_id">
+      <Position>2</Position>
+      <DataType>bigint|0</DataType>
+      <NotNull>1</NotNull>
+      <StateNumber>604</StateNumber>
+    </column>
+    <column id="31" parent="15" name="options">
+      <Position>3</Position>
+      <DataType>bigint|0</DataType>
+      <NotNull>1</NotNull>
+      <StateNumber>604</StateNumber>
+    </column>
+    <foreign-key id="32" parent="15" name="ATTR_OBJECT_TYPES_fk0">
+      <ObjectId>32855</ObjectId>
+      <ColNames>attr_id</ColNames>
+      <RefTableId>32801</RefTableId>
+      <RefColPositions>1</RefColPositions>
+      <RefTableName>ATTRIBUTES</RefTableName>
+      <RefKeyName>attributes_pk</RefKeyName>
+      <RefColNames>attr_id</RefColNames>
+    </foreign-key>
+    <foreign-key id="33" parent="15" name="ATTR_OBJECT_TYPES_fk1">
+      <ObjectId>32860</ObjectId>
+      <ColNames>object_type_id</ColNames>
+      <RefTableId>32792</RefTableId>
+      <RefColPositions>1</RefColPositions>
+      <RefTableName>OBJECT_TYPES</RefTableName>
+      <RefKeyName>object_types_pk</RefKeyName>
+      <RefColNames>object_type_id</RefColNames>
+    </foreign-key>
+    <column id="34" parent="16" name="attr_type_id">
+      <Position>1</Position>
+      <DataType>bigint|0</DataType>
+      <NotNull>1</NotNull>
+      <StateNumber>606</StateNumber>
+      <DefaultExpression>nextval(&apos;uid_sequence&apos;::regclass)</DefaultExpression>
+    </column>
+    <column id="35" parent="16" name="name">
+      <Position>2</Position>
+      <DataType>varchar|0</DataType>
+      <NotNull>1</NotNull>
+      <StateNumber>606</StateNumber>
+    </column>
+    <index id="36" parent="16" name="attr_types_pk">
+      <ObjectId>32823</ObjectId>
+      <ColNames>attr_type_id</ColNames>
+      <Unique>1</Unique>
+    </index>
+    <key id="37" parent="16" name="attr_types_pk">
+      <ObjectId>32824</ObjectId>
+      <ColNames>attr_type_id</ColNames>
+      <UnderlyingIndexName>attr_types_pk</UnderlyingIndexName>
+      <Primary>1</Primary>
+    </key>
+    <column id="38" parent="17" name="list_value_id">
+      <Position>1</Position>
+      <DataType>bigint|0</DataType>
+      <NotNull>1</NotNull>
+      <StateNumber>608</StateNumber>
+      <DefaultExpression>nextval(&apos;uid_sequence&apos;::regclass)</DefaultExpression>
+    </column>
+    <column id="39" parent="17" name="attr_id">
+      <Position>2</Position>
+      <DataType>bigint|0</DataType>
+      <NotNull>1</NotNull>
+      <StateNumber>608</StateNumber>
+    </column>
+    <column id="40" parent="17" name="value">
+      <Position>3</Position>
+      <DataType>varchar|0</DataType>
+      <NotNull>1</NotNull>
+      <StateNumber>608</StateNumber>
+    </column>
+    <index id="41" parent="17" name="list_values_pk">
+      <ObjectId>32838</ObjectId>
+      <ColNames>list_value_id</ColNames>
+      <Unique>1</Unique>
+    </index>
+    <key id="42" parent="17" name="list_values_pk">
+      <ObjectId>32839</ObjectId>
+      <ColNames>list_value_id</ColNames>
+      <UnderlyingIndexName>list_values_pk</UnderlyingIndexName>
+      <Primary>1</Primary>
+    </key>
+    <foreign-key id="43" parent="17" name="LIST_VALUES_fk0">
+      <ObjectId>32890</ObjectId>
+      <ColNames>attr_id</ColNames>
+      <RefTableId>32801</RefTableId>
+      <RefColPositions>1</RefColPositions>
+      <RefTableName>ATTRIBUTES</RefTableName>
+      <RefKeyName>attributes_pk</RefKeyName>
+      <RefColNames>attr_id</RefColNames>
+    </foreign-key>
+    <column id="44" parent="18" name="object_id">
+      <Position>1</Position>
+      <DataType>bigint|0</DataType>
+      <NotNull>1</NotNull>
+      <StateNumber>601</StateNumber>
+      <DefaultExpression>nextval(&apos;uid_sequence&apos;::regclass)</DefaultExpression>
+    </column>
+    <column id="45" parent="18" name="object_type_id">
+      <Position>2</Position>
+      <DataType>bigint|0</DataType>
+      <NotNull>1</NotNull>
+      <StateNumber>601</StateNumber>
+    </column>
+    <column id="46" parent="18" name="name">
+      <Position>3</Position>
+      <DataType>varchar|0</DataType>
+      <NotNull>1</NotNull>
+      <StateNumber>601</StateNumber>
+    </column>
+    <column id="47" parent="18" name="parent_id">
+      <Position>4</Position>
+      <DataType>bigint|0</DataType>
+      <StateNumber>601</StateNumber>
+    </column>
+    <index id="48" parent="18" name="objects_pk">
+      <ObjectId>32790</ObjectId>
+      <ColNames>object_id</ColNames>
+      <Unique>1</Unique>
+    </index>
+    <key id="49" parent="18" name="objects_pk">
+      <ObjectId>32791</ObjectId>
+      <ColNames>object_id</ColNames>
+      <UnderlyingIndexName>objects_pk</UnderlyingIndexName>
+      <Primary>1</Primary>
+    </key>
+    <foreign-key id="50" parent="18" name="OBJECTS_fk0">
+      <ObjectId>32840</ObjectId>
+      <ColNames>object_type_id</ColNames>
+      <RefTableId>32792</RefTableId>
+      <RefColPositions>1</RefColPositions>
+      <RefTableName>OBJECT_TYPES</RefTableName>
+      <RefKeyName>object_types_pk</RefKeyName>
+      <RefColNames>object_type_id</RefColNames>
+    </foreign-key>
+    <foreign-key id="51" parent="18" name="OBJECTS_fk1">
+      <ObjectId>40975</ObjectId>
+      <ColNames>parent_id</ColNames>
+      <RefTableId>32783</RefTableId>
+      <RefColPositions>1</RefColPositions>
+      <RefTableName>OBJECTS</RefTableName>
+      <RefKeyName>objects_pk</RefKeyName>
+      <RefColNames>object_id</RefColNames>
+      <OnDelete>cascade</OnDelete>
+    </foreign-key>
+    <column id="52" parent="19" name="object_type_id">
+      <Position>1</Position>
+      <DataType>bigint|0</DataType>
+      <NotNull>1</NotNull>
+      <StateNumber>602</StateNumber>
+      <DefaultExpression>nextval(&apos;uid_sequence&apos;::regclass)</DefaultExpression>
+    </column>
+    <column id="53" parent="19" name="name">
+      <Position>2</Position>
+      <DataType>varchar|0</DataType>
+      <NotNull>1</NotNull>
+      <StateNumber>602</StateNumber>
+    </column>
+    <index id="54" parent="19" name="object_types_pk">
+      <ObjectId>32799</ObjectId>
+      <ColNames>object_type_id</ColNames>
+      <Unique>1</Unique>
+    </index>
+    <key id="55" parent="19" name="object_types_pk">
+      <ObjectId>32800</ObjectId>
+      <ColNames>object_type_id</ColNames>
+      <UnderlyingIndexName>object_types_pk</UnderlyingIndexName>
+      <Primary>1</Primary>
+    </key>
+    <column id="56" parent="20" name="attr_id">
+      <Position>1</Position>
+      <DataType>bigint|0</DataType>
+      <NotNull>1</NotNull>
+      <StateNumber>607</StateNumber>
+    </column>
+    <column id="57" parent="20" name="object_id">
+      <Position>2</Position>
+      <DataType>bigint|0</DataType>
+      <NotNull>1</NotNull>
+      <StateNumber>607</StateNumber>
+    </column>
+    <column id="58" parent="20" name="value">
+      <Position>3</Position>
+      <DataType>varchar|0</DataType>
+      <StateNumber>607</StateNumber>
+    </column>
+    <column id="59" parent="20" name="date_value">
+      <Position>4</Position>
+      <DataType>timestamp with time zone|0</DataType>
+      <StateNumber>607</StateNumber>
+    </column>
+    <column id="60" parent="20" name="list_value_id">
+      <Position>5</Position>
+      <DataType>bigint|0</DataType>
+      <StateNumber>607</StateNumber>
+    </column>
+    <foreign-key id="61" parent="20" name="PARAMS_fk0">
+      <ObjectId>32880</ObjectId>
+      <ColNames>attr_id</ColNames>
+      <RefTableId>32801</RefTableId>
+      <RefColPositions>1</RefColPositions>
+      <RefTableName>ATTRIBUTES</RefTableName>
+      <RefKeyName>attributes_pk</RefKeyName>
+      <RefColNames>attr_id</RefColNames>
+    </foreign-key>
+    <foreign-key id="62" parent="20" name="PARAMS_fk1">
+      <ObjectId>40960</ObjectId>
+      <ColNames>object_id</ColNames>
+      <RefTableId>32783</RefTableId>
+      <RefColPositions>1</RefColPositions>
+      <RefTableName>OBJECTS</RefTableName>
+      <RefKeyName>objects_pk</RefKeyName>
+      <RefColNames>object_id</RefColNames>
+      <OnDelete>cascade</OnDelete>
+    </foreign-key>
+    <column id="63" parent="21" name="attr_id">
+      <Position>1</Position>
+      <DataType>bigint|0</DataType>
+      <NotNull>1</NotNull>
+      <StateNumber>605</StateNumber>
+    </column>
+    <column id="64" parent="21" name="reference">
+      <Position>2</Position>
+      <DataType>bigint|0</DataType>
+      <NotNull>1</NotNull>
+      <StateNumber>605</StateNumber>
+    </column>
+    <column id="65" parent="21" name="object_id">
+      <Position>3</Position>
+      <DataType>bigint|0</DataType>
+      <NotNull>1</NotNull>
+      <StateNumber>605</StateNumber>
+    </column>
+    <foreign-key id="66" parent="21" name="REFERENCES_fk0">
+      <ObjectId>32865</ObjectId>
+      <ColNames>attr_id</ColNames>
+      <RefTableId>32801</RefTableId>
+      <RefColPositions>1</RefColPositions>
+      <RefTableName>ATTRIBUTES</RefTableName>
+      <RefKeyName>attributes_pk</RefKeyName>
+      <RefColNames>attr_id</RefColNames>
+    </foreign-key>
+    <foreign-key id="67" parent="21" name="REFERENCES_fk1">
+      <ObjectId>40970</ObjectId>
+      <ColNames>reference</ColNames>
+      <RefTableId>32783</RefTableId>
+      <RefColPositions>1</RefColPositions>
+      <RefTableName>OBJECTS</RefTableName>
+      <RefKeyName>objects_pk</RefKeyName>
+      <RefColNames>object_id</RefColNames>
+      <OnDelete>cascade</OnDelete>
+    </foreign-key>
+    <foreign-key id="68" parent="21" name="REFERENCES_fk2">
+      <ObjectId>40965</ObjectId>
+      <ColNames>object_id</ColNames>
+      <RefTableId>32783</RefTableId>
+      <RefColPositions>1</RefColPositions>
+      <RefTableName>OBJECTS</RefTableName>
+      <RefKeyName>objects_pk</RefKeyName>
+      <RefColNames>object_id</RefColNames>
+      <OnDelete>cascade</OnDelete>
+    </foreign-key>
+  </database-model>
+</dataSource>
