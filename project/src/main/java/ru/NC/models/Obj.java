@@ -1,14 +1,7 @@
 package ru.NC.models;
 
-import org.joda.time.DateTime;
-import org.joda.time.LocalDate;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
-
 import java.sql.Timestamp;
 import java.util.Map;
-import java.util.Random;
-import java.util.UUID;
 
 /**
  * Class of person with fields: <b>id</b> - autogenerate,
@@ -25,29 +18,20 @@ public class Obj {
     private String name;
     private String description;
     private long typeId;
-    private long parentId;
     private Map<Long, String> values;
     private Map<Long, Long> listValue;
     private Map<Long, Timestamp> date;
     private Map<Long, Long> reference;
 
-    public Obj() {
-        String uuid = UUID.randomUUID().toString(); //can`t cast to long
-        DateTime jodaTime = new DateTime();
-        Long ms = jodaTime.getMillis();
-        Random rand = new Random();
-        this.id = ms + Math.abs(rand.nextLong());
-    }
+    public Obj() {}
 
     /**
      * @param typeId
-     * @param parentId
      * @param name
      * @see Obj#Obj()
      */
-    public Obj(long typeId, long parentId, String name){
+    public Obj(long typeId, String name){
         this.typeId = typeId;
-        this.parentId = parentId;
         this.name = name;
     }
 
@@ -81,14 +65,6 @@ public class Obj {
 
     public void setTypeId(long typeId) {
         this.typeId = typeId;
-    }
-
-    public long getParentId() {
-        return parentId;
-    }
-
-    public void setParentId(long parentId) {
-        this.parentId = parentId;
     }
 
     public Map<Long, String> getValues() {
@@ -132,7 +108,6 @@ public class Obj {
 
         if (id != obj.id) return false;
         if (typeId != obj.typeId) return false;
-        if (parentId != obj.parentId) return false;
         return name != null ? name.equals(obj.name) : obj.name == null;
     }
 
@@ -141,7 +116,6 @@ public class Obj {
         int result = (int) (id ^ (id >>> 32));
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (int) (typeId ^ (typeId >>> 32));
-        result = 31 * result + (int) (parentId ^ (parentId >>> 32));
         return result;
     }
 
@@ -152,7 +126,6 @@ public class Obj {
                 ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", typeId=" + typeId +
-                ", parentId=" + parentId +
                 ", values=" + values +
                 ", listValue=" + listValue +
                 ", date=" + date +

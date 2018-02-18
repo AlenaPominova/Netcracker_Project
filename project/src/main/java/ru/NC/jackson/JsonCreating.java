@@ -1,21 +1,11 @@
 package ru.NC.jackson;
 
-import com.fasterxml.jackson.core.JsonFactory;
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import org.joda.time.LocalDate;
 import ru.NC.models.Obj;
 
 import java.sql.Timestamp;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,7 +18,7 @@ public class JsonCreating {
         Long parentId = rootNode.path("parent_id").asLong();
         String name = rootNode.path("name").asText();
 
-        Obj object = new Obj(typeId, parentId, name);
+        Obj object = new Obj(typeId, name);
         object.setId(id);
 
         Map<Long, String> values = new HashMap<>();
@@ -77,7 +67,6 @@ public class JsonCreating {
         jsonObject.put("Name", obj.getName());
         jsonObject.put("Description", obj.getDescription());
         jsonObject.put("Type id", obj.getTypeId());
-        jsonObject.put("Parent id", obj.getParentId());
 
         ObjectNode values = factory.objectNode();
         try{

@@ -1,15 +1,10 @@
 package ru.NC.dao;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import org.joda.time.LocalDate;
-import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.PreparedStatementCreator;
-import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.lang.Nullable;
 import ru.NC.models.Obj;
@@ -19,10 +14,6 @@ import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,7 +23,7 @@ import java.util.Map;
  * @author Alena Pominova
  * @version 1.0
  */
-public class ObjectDaoImpl {
+public class ObjectDaoImpl implements IObjectDao{
 
     private JdbcTemplate jdbcTemplateObject;
 
@@ -59,14 +50,12 @@ public class ObjectDaoImpl {
                         }
                         String name = resultSet.getString("name");
                         String description = resultSet.getString("description");
-                        Long parentId = resultSet.getLong("parent_id");
                         Long typeId = resultSet.getLong("type_id");
 
                         Obj obj = new Obj();
                         obj.setId(id);
                         obj.setName(name);
                         obj.setDescription(description);
-                        obj.setParentId(parentId);
                         obj.setTypeId(typeId);
                         return obj;
                     }, id);
@@ -132,7 +121,7 @@ public class ObjectDaoImpl {
 
         if (object.getReference() != null) {
             for (Map.Entry entry : object.getReference().entrySet()) {
-                jdbcTemplateObject.update(Queries.SET_REFERENCE, entry.getValue(), entry.getKey(), object.getId());
+                jdbcTemplateObject.update(Queries.SET_REFERENCE, entry.getKey(), object.getId(), entry.getValue());
             }
         }
     }
@@ -196,15 +185,15 @@ public class ObjectDaoImpl {
     }
 
     public void setParameter(int objId, int attributeId, String value) {
-        jdbcTemplateObject.update(Queries.SET_PARAMETER, value, attributeId, objId);
+        jdbcTemplateObject.update(Queries.SET_PARAMETER, attributeId, objId, value);
     }
 
     public void setReference(int objId, int attributeId, Map<Long, String> value) {
-        jdbcTemplateObject.update(Queries.SET_REFERENCE, value, attributeId, objId);
+        jdbcTemplateObject.update(Queries.SET_REFERENCE, attributeId, objId, value);
     }
 
     public void setDate(int objId, int attributeId, Map<Long, String> value) {
-        jdbcTemplateObject.update(Queries.SET_DATE, value, attributeId, objId);
+        jdbcTemplateObject.update(Queries.SET_DATE, attributeId, objId, value);
     }
 
     /**
@@ -224,7 +213,6 @@ public class ObjectDaoImpl {
                 public ObjectNode mapRow(ResultSet rs, int i) throws SQLException {
                     ObjectNode jsonObj = factory.objectNode();
                     jsonObj.put("name", rs.getString("name"));
-                    jsonObj.put("parent_id", rs.getLong("parent_id"));
                     jsonObj.put("type_id", rs.getLong("type_id"));
 
                     return jsonObj;
@@ -256,7 +244,7 @@ public class ObjectDaoImpl {
             }, id);
             rootNode.put("values", values);
         } catch (EmptyResultDataAccessException e){
-           // e.printStackTrace();
+           e.printStackTrace();
         }
 
         ArrayNode date = factory.arrayNode();
@@ -281,12 +269,11 @@ public class ObjectDaoImpl {
             }, id);
             rootNode.put("date_values", date);
         } catch (EmptyResultDataAccessException e){
-           // e.printStackTrace();
+           e.printStackTrace();
         }
 
         ArrayNode ref = factory.arrayNode();
         try {
-
             ref = jdbcTemplateObject.queryForObject(Queries.GET_REFERENCE_JSON, new RowMapper<ArrayNode>() {
                 @Nullable
                 @Override
@@ -307,7 +294,7 @@ public class ObjectDaoImpl {
             }, id);
             rootNode.put("references", ref);
         } catch (EmptyResultDataAccessException e){
-           // e.printStackTrace();
+           e.printStackTrace();
         }
 
         return rootNode;
