@@ -5,7 +5,6 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class App{
 
@@ -30,15 +29,15 @@ public class App{
         app.connect();
 
         Connection conn = DriverManager.getConnection(url, user, password);
-        PostgresGroupDao DaoFirst = new PostgresGroupDao(conn);
+        com.PostgresGroupDao DaoFirst = new com.PostgresGroupDao(conn);
 
         //DaoFirst.delete(1);
         DaoFirst.create();
-        Object object_test = DaoFirst.read(2);
+        Object object_test = DaoFirst.read(7);
 
-        ObjectMapper mapper = new ObjectMapper();
-        String jsonString = mapper.writeValueAsString(object_test);
-        System.out.println("json " + jsonString);
+        com.Json jsonTest = new com.Json();
+        String s1 = jsonTest.doJson((com.Object) object_test);
+        System.out.print(s1);
 
         //com.Object g = DaoFirst.read(1);
         //System.out.print(g.getName());

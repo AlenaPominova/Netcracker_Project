@@ -25,7 +25,7 @@ public class HelloController {
         PostgresGroupDao DaoFirst = new PostgresGroupDao(conn);
 
         DaoFirst.create();
-        Object object_test = DaoFirst.read(3);
+        Object object_test = DaoFirst.read(16);
 
         ObjectMapper mapper = new ObjectMapper();
         String jsonString = mapper.writeValueAsString(object_test);
