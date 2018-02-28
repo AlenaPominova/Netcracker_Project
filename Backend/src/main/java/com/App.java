@@ -38,7 +38,7 @@ public class App{
 
         com.Json jsonTest = new com.Json();
         String s1 = jsonTest.doJson((com.Object) object_test);
-        //System.out.print(s1);
+        System.out.print(s1);
 
         //com.Object g = DaoFirst.read(1);
         //System.out.print(g.getName());
