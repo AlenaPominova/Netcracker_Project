@@ -13,7 +13,7 @@ public class PostgresSQLQueries {
     //----удаление объекта -----toDo
     public static final String DELETE_OBJECT_QUERY =
             "DELETE FROM public.\"OBJECTS\"\n" +
-                    " WHERE object_id = ?";
+                    "WHERE object_id = ?";
 
     public static final String GET_LIST_OF_PARKING_SPOTS_BY_CUSTOMER_ID_QUERY =
             "SELECT object_id FROM \"REFERENCES\"\n" +
@@ -25,26 +25,10 @@ public class PostgresSQLQueries {
                     "WHERE attr_id = ? AND object_id = ?";
     //-----конец удаления объекта-----
 
-    public static final String INSERT_REFERENCES_QUERY =
-            "INSERT INTO \"REFERENCES\"(attr_id, reference, object_id)\n" +
-                    "VALUES (?, ?, ?)";
-
-    public static final String INSERT_PARAM_QUERY =
-            "INSERT INTO \"PARAMS\" (attr_id, object_id, value) VALUES (?, ?, ?)";
-
-    public static final String INSERT_DATE_PARAM_QUERY =
-            "INSERT INTO \"PARAMS\" (attr_id, object_id, date_value) VALUES (?, ?, ?)";
-
-    public static final String INSERT_LIST_PARAM_QUERY =
-            "INSERT INTO \"PARAMS\" (attr_id, object_id, list_value_id)\n" +
-                    "VALUES (?, ?, (SELECT  lv.list_value_id\n" +
-                    "        FROM \"LIST_VALUES\" lv\n" +
-                    "        WHERE lv.attr_id = ? AND lv.value = ?));";
-
     public static final String UPDATE_OBJECT_NAME_QUERY =
             "UPDATE \"OBJECTS\"\n" +
-                    "   SET name=?\n" +
-                    " WHERE object_id=?";
+                    "SET name=?\n" +
+                    "WHERE object_id=?";
 
     public static final String GET_PARAM_QUERY =
             "SELECT value\n" +
@@ -84,9 +68,8 @@ public class PostgresSQLQueries {
                     "WHERE r.attr_id = ? AND r.object_id = ?";
 
     public static final String SET_REFERENCE_PARAM_QUERY =
-            "UPDATE \"REFERENCES\" r\n" +
-                    "SET reference = ?\n" +
-                    "WHERE r.attr_id = ? AND r.object_id = ?";
+            "INSERT INTO \"REFERENCES\" (attr_id, reference, object_id) values (?, ?, ?)\n" +
+                    "ON CONFLICT (attr_id, reference, object_id) DO UPDATE SET reference = ?";
 
     public static final String GET_OBJECT_INFO_BY_ID_QUERY =
             "SELECT o.name,\n" +

@@ -3,12 +3,8 @@ package ru.vsu.netcracker.parking.backend.dao;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.ResultSetExtractor;
-import org.springframework.jdbc.core.RowCallbackHandler;
 import org.springframework.stereotype.Repository;
 import ru.vsu.netcracker.parking.backend.json.JsonConverter;
 import ru.vsu.netcracker.parking.backend.models.Obj;
@@ -30,61 +26,28 @@ public class PostgresObjectsDAO implements ObjectsDAO {
     }
 
     /**
-     * toDo
+     * Get new GUID from database function in format "YYMMDDSSMS + random'
+     *
+     * @return GUID
      */
-    public String getUUID() {
-        return this.jdbcTemplate.queryForObject(PostgresSQLQueries.GET_GUID, String.class);
-    }
-
-    public String getParkingId() {
-        return this.jdbcTemplate.queryForObject(PostgresSQLQueries.GET_PARKING_ID, String.class);
+    private Long getGUID() {
+        return this.jdbcTemplate.queryForObject(PostgresSQLQueries.GET_GUID, Long.class);
     }
 
     /**
-     * toDo
+     * Get next value from database sequence for Parking objects
      *
-     * @param obj
+     * @return new Parking Id
      */
-    @Override
-    public String createObj(Obj obj) {
-        String objectId = getUUID();
-        if(obj.getTypeId() == 4 || obj.getTypeId() == 5){
-            obj.setName(getParkingId());
-        }
-        jdbcTemplate.update(PostgresSQLQueries.INSERT_OBJECT_QUERY, new Object[]{objectId, obj.getTypeId(), obj.getName(), obj.getDescription()});
-        if (obj.getValues() != null) {
-            obj.getValues().forEach((attrId, value) -> {
-                jdbcTemplate.update(PostgresSQLQueries.INSERT_PARAM_QUERY, new Object[]{attrId, obj.getId(), value});
-            });
-        }
-        if (obj.getDateValues() != null) {
-            obj.getValues().forEach((attrId, value) -> {
-                jdbcTemplate.update(PostgresSQLQueries.INSERT_DATE_PARAM_QUERY, new Object[]{attrId, obj.getId(), value});
-            });
-        }
-        if (obj.getListValues() != null) {
-            obj.getValues().forEach((attrId, value) -> {
-                jdbcTemplate.update(PostgresSQLQueries.INSERT_LIST_PARAM_QUERY, new Object[]{attrId, obj.getId(), attrId, value});
-            });
-        }
-        if (obj.getReferences() != null) {
-            obj.getValues().forEach((attrId, value) -> {
-                jdbcTemplate.update(PostgresSQLQueries.INSERT_REFERENCES_QUERY, new Object[]{attrId, value, obj.getId()});
-            });
-        }
-        return objectId;
+    private Long getParkingId() {
+        return this.jdbcTemplate.queryForObject(PostgresSQLQueries.GET_PARKING_ID, Long.class);
     }
 
     /**
-     * toDo
-     *
+     * Inserts values, On conflict updates values
      * @param obj
      */
-    @Override
-    public void updateObj(Obj obj) {
-        if(obj.getTypeId() == 2){   // Changing name for User
-            jdbcTemplate.update(PostgresSQLQueries.UPDATE_OBJECT_NAME_QUERY, new Object[]{obj.getName(), obj.getId()});
-        }
+    private void insertOrUpdateValues(Obj obj){
         if (obj.getValues() != null) {
             obj.getValues().forEach((attrId, value) -> {
                 jdbcTemplate.update(PostgresSQLQueries.SET_PARAM_QUERY, new Object[]{attrId, obj.getId(), value, value});
@@ -102,9 +65,38 @@ public class PostgresObjectsDAO implements ObjectsDAO {
         }
         if (obj.getReferences() != null) {
             obj.getReferences().forEach((attrId, value) -> {
-                jdbcTemplate.update(PostgresSQLQueries.SET_REFERENCE_PARAM_QUERY, new Object[]{value, attrId, obj.getId()});
+                jdbcTemplate.update(PostgresSQLQueries.SET_REFERENCE_PARAM_QUERY, new Object[]{attrId, value, obj.getId(), value});
             });
         }
+    }
+
+    /**
+     * toDo
+     *
+     * @param obj
+     */
+    @Override
+    public void createObj(Obj obj) {
+        Long objectId = getGUID();
+        if (obj.getTypeId() == 3) {
+            obj.setName(getParkingId().toString());    //  sets unique id from db sequence for parking object
+        }
+        jdbcTemplate.update(PostgresSQLQueries.INSERT_OBJECT_QUERY, new Object[]{objectId, obj.getTypeId(), obj.getName(), obj.getDescription()});
+
+        insertOrUpdateValues(obj);
+    }
+
+    /**
+     * toDo
+     *
+     * @param obj
+     */
+    @Override
+    public void updateObj(Obj obj) {
+        if (obj.getTypeId() == 2) {   // sets new name for User
+            jdbcTemplate.update(PostgresSQLQueries.UPDATE_OBJECT_NAME_QUERY, new Object[]{obj.getName(), obj.getId()});
+        }
+        insertOrUpdateValues(obj);
     }
 
     /**
@@ -129,7 +121,7 @@ public class PostgresObjectsDAO implements ObjectsDAO {
      * @param objectId
      * @return Obj populated with basic information such as name, objectTypeId, parentId and description
      */
-    public Obj getBasicObjInfo(long objectId) {
+    private Obj getBasicObjInfo(long objectId) {
         return this.jdbcTemplate.queryForObject(PostgresSQLQueries.GET_OBJECT_INFO_BY_ID_QUERY, new Object[]{objectId}, (resultSet, i) -> {
             String name = resultSet.getString("name");
             long typeId = resultSet.getLong("object_type_id");
@@ -176,7 +168,6 @@ public class PostgresObjectsDAO implements ObjectsDAO {
         obj.setDateValues(dateValues);
         obj.setListValues(listValues);
         obj.setReferences(references);
-
         return obj;
     }
 
@@ -229,16 +220,16 @@ public class PostgresObjectsDAO implements ObjectsDAO {
 
     /**
      * toDo
+     *
      * @param objectType
      * @return
      */
     @Override
     public ArrayNode getAllObjAsJSON(String objectType) {
-
         JsonNodeFactory factory = new JsonNodeFactory(false);
         ArrayNode jsonObjectsList = factory.arrayNode();
         List<Long> objectsList = jdbcTemplate.queryForList(PostgresSQLQueries.GET_LIST_OF_OBJECTS_BY_OBJECT_TYPE, new Object[]{objectType}, Long.class);
-        for(Long objectId: objectsList){
+        for (Long objectId : objectsList) {
             JsonNode node = getObjAsJSON(objectId);
             jsonObjectsList.add(node);
         }

@@ -6,7 +6,7 @@ import ru.vsu.netcracker.parking.backend.models.Obj;
 
 public interface ObjectsDAO {
 
-    public String createObj(Obj obj);
+    public void createObj(Obj obj);
     public void updateObj(Obj obj);
     public void delete(long objectId);
     public Obj getObj(long objectId);

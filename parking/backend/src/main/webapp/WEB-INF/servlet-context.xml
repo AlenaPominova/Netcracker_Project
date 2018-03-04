@@ -10,11 +10,11 @@
        http://www.springframework.org/schema/mvc
        http://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
-    <context:component-scan base-package="ru.vsu.netcracker.parking.backend.controllers"/>
+    <context:component-scan base-package="ru.vsu.netcracker.parking.backend"/>
 
     <mvc:annotation-driven>
 
-        <!--use int RestController to produce pretty json response-->
+        <!-- pretty json response -->
         <mvc:message-converters>
             <bean id="jacksonHttpMessageConverter" class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
                 <property name="prettyPrint" value="true" />
@@ -24,6 +24,7 @@
 
     <!-- Resolves views selected for rendering by @Controllers to .jsp resourses in the /WEB-INF/views directory -->
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="contentType" value="text/html; charset=UTF-8" />
         <property name="prefix" value="/WEB-INF/views/"></property>
         <property name="suffix" value=".jsp"></property>
     </bean>

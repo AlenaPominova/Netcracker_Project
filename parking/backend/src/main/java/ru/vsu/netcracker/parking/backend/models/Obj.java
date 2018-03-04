@@ -1,11 +1,8 @@
 package ru.vsu.netcracker.parking.backend.models;
 
-//import com.google.common.collect.ListMultimap;
-//import com.google.common.collect.Multimap;
 import org.springframework.stereotype.Component;
 
 import java.sql.Timestamp;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 

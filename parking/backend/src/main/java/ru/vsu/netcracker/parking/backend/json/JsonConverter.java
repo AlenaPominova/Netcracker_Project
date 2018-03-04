@@ -93,7 +93,7 @@ public class JsonConverter {
      * @param obj
      * @return
      */
-    public static ArrayNode addLinksToJson(Obj obj) {
+    private static ArrayNode addLinksToJson(Obj obj) {
         JsonNodeFactory factory = new JsonNodeFactory(false);
         ArrayNode links = factory.arrayNode();
         ObjectNode link = factory.objectNode();
@@ -111,16 +111,6 @@ public class JsonConverter {
             link.put("rel", "owner");
             link.put("href", "http://localhost:8080/backend/profiles/" + obj.getReferences().get(Long.valueOf(300)));
             links.add(link);
-        } else if (obj.getTypeId() == 4) {
-            link = factory.objectNode();
-            link.put("rel", "self");
-          //  link.put("href", "http://localhost:8080/backend/parkings/" + obj.getParentId() + "/spots/" + obj.getId());
-            links.add(link);
-            link = factory.objectNode();
-            link.put("rel", "customer");
-            link.put("href", "http://localhost:8080/backend/profiles/" + obj.getReferences().get(Long.valueOf(400)));
-            links.add(link);
-
         }
         return links;
     }
