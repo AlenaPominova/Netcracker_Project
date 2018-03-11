@@ -6,9 +6,11 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
+    <groupId>Netcracker</groupId>
     <artifactId>Frontend</artifactId>
-    <packaging>pom</packaging>
-    <name>Frontend Maven Webapp</name>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>war</packaging>
+    <name>101 Maven Webapp</name>
     <url>http://maven.apache.org</url>
     <dependencies>
         <dependency>
@@ -19,6 +21,6 @@
         </dependency>
     </dependencies>
     <build>
-        <finalName>Frontend</finalName>
+        <finalName>101</finalName>
     </build>
 </project>
