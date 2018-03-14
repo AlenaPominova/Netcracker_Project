@@ -1,10 +1,13 @@
 
-.block{width: 400px; /* Ширина блока */
+.block{width: 400px;
+    height: 800px;
+    border-radius: 25px;
 padding: 10px; /* Поля */
 margin: 0 auto;
+    vertical-align: center;
 border: 5px inset #000; /* Параметры рамки */
 text-align: center;
-background: #c6c7f9;
+    background: url(landscape_photography.jpg);
 box-sizing: border-box}
 
 
@@ -31,6 +34,7 @@ hr {
 
 /* Set a style for all buttons */
 button {
+    border-radius: 10px;
     background-color: #62af6b;
     color: white;
     padding: 14px 20px;
@@ -47,6 +51,7 @@ button:hover {
 
 /* Extra styles for the cancel button */
 .cancelbtn {
+    border-radius: 10px;
     padding: 14px 20px;
     background-color: #f48b7b;
 }
