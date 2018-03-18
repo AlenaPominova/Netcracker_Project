@@ -1,0 +1,44 @@
+.parent{
+    position: relative;
+    width: 100%;
+    height: 625px;
+}
+
+.header{
+    width: inherit;
+    height: 70px;
+    background-color: darkgrey;
+    position: absolute;
+    top: 0;
+}
+
+.main{
+    width: inherit;
+    height: 520px;
+    background-color: lavender;
+    position: absolute;
+    top: 70px;
+}
+
+#map {
+    width: 80%;
+    height: 520px;
+    position: absolute;
+    right: 20%;
+}
+
+.right-panel{
+    width: 20%;
+    height: 520px;
+    background-color: lightcoral;
+    position: absolute;
+    left: 80%;
+}
+
+.footer{
+    width: inherit;
+    height: 35px;
+    background-color: darkgrey; position: absolute;
+    bottom: 0;
+    top: 590px;
+}
