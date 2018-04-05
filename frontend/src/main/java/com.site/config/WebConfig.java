@@ -24,7 +24,7 @@ public class WebConfig {
     @Bean
     public FreeMarkerConfigurer getFreeMarkerConfigurer(){
         FreeMarkerConfigurer freeMarkerConfigurer = new FreeMarkerConfigurer();
-        freeMarkerConfigurer.setTemplateLoaderPaths("/", "/WEB-INF/views/");
+        freeMarkerConfigurer.setTemplateLoaderPaths("/", "/WEB-INF/");
         return freeMarkerConfigurer;
     }
 }

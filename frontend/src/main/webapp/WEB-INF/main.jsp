@@ -7,7 +7,7 @@
     <meta charset="utf-8" />
     <!-- Stylesheet -->
     <link href="http://yastatic.net/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
-    <link href="WEB-INF/css/inx_styles.css" rel="stylesheet" media="all">
+    <link href="css/inx_styles.css" rel="stylesheet" media="all">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.1/dist/leaflet.css" />
     <!-- JS -->
     <script src="http://yastatic.net/jquery/2.1.4/jquery.min.js"></script>
