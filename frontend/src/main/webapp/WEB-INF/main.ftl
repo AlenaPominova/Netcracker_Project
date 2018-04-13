@@ -25,7 +25,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#"><img src="img/logo.png" alt="Воронежский паркинг"></a>
+            <a class="navbar-brand" href="#"><img src="https://2.downloader.disk.yandex.ru/preview/63f5c51403302a9b55553a7b0fc16cfdb911b33f8c5af56505d47adef3bc57e1/inf/eS5gAm22UDiYgvhUyY1tr8IH7UqxXoP0fGKdHch3EC-Pa0AujPi0S_lHQR8TYJ8-VHwR3sYD2xCkU0ZxQ9xLaA%3D%3D?uid=195905471&filename=logo.png&disposition=inline&hash=&limit=0&content_type=image%2Fpng&tknv=v2&size=1280x732" alt="Воронежский паркинг"></a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
@@ -63,20 +63,28 @@
                     //      zoomSnap: 0.1
                 };
 
+                var ratIcon = L.icon({
+                    iconUrl: 'http://andywoodruff.com/maptime-leaflet/rat.png',
+                    iconSize: [60,50]
+                });
+
                 var map = L.map('map', mapopts).setView([51.6755,39.2089], 14);
                 var trafficMutant = L.gridLayer.googleMutant({
-                    maxZoom: 24,
+                    maxZoom: 17,
+                    minZoom: 9,
                     type:'roadmap'
                 }).addTo(map);
                 trafficMutant.addGoogleLayer('TrafficLayer');
 
-                var vrn = [51.6755, 39.2089];
                 var vrn2 = [51.67, 39.2];
-                var vrn3 = [51.678, 39.2];
-                var marker1 = L.marker(vrn).addTo(map);
                 var marker2 = L.marker(vrn2).addTo(map);
-                var marker2 = L.marker(vrn3).addTo(map);
-
+                marker2.bindPopup("" +
+                        "<h4><b>Парковка №255</b></h4><br>" +
+                        "<b>Открыта:</b> с 00:00 до 00:00<br>" +
+                        "<b>Цена:</b> 100 руб/час<br>" +
+                        "<b>Рейтинг:</b> 4,65<br>" +
+                        "<br>" +
+                        "<b>Владелец:</b> <a href=''>Евгений Карпов</a>");
             </script>
         </div>
         <div class="col-md-3 filter" style="background-color: #0e182e;height: 91.5vh">

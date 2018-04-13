@@ -1,5 +1,6 @@
+<style type="text/css">
 body{
-    background-image: url("../img/reg/bg.jpg");
+    background-image: url("https://4.downloader.disk.yandex.ru/preview/482654477e1052cc177f261bb4b7fa2a9e6014f100df3e49a157c4708f5771d7/inf/eS5gAm22UDiYgvhUyY1trxDNTS22He6lzroiHW-eIdPewYdt4qufa1M-rL_iD7-2H4rkOM4M-Z-sIKy2B5S0OA%3D%3D?uid=195905471&filename=bg.jpg&disposition=inline&hash=&limit=0&content_type=image%2Fjpeg&tknv=v2&size=1280x732");
     background-repeat: no-repeat;
     background-size: cover;
     background-attachment: fixed;
@@ -211,3 +212,5 @@ a:hover,a:focus{
         padding: 40px 20px;
     }
 }
+
+</style>

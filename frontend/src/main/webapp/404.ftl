@@ -21,14 +21,14 @@
         </h2>
         <h2><b>Некоторые ссылки, которые возможно помогут вам:</b></h2>
         <ul>
-            <li><a href="">Главная</a></li>
+            <li><a href="/frontend/index">Главная</a></li>
             <li><a href="">Техническая поддержка</a></li>
             <li><a href="">О нас</a></li>
             <li><a href="">Контакты</a></li>
         </ul>
     </div>
     <div class="col-lg-6 col-md-12 image">
-        <img src="img/404/car.jpg">
+        <img src="https://1.downloader.disk.yandex.ru/preview/b0f7aaa88a1e20083f5561d4e498082b1907ff0f00440629a750b5d50cd03ea2/inf/eS5gAm22UDiYgvhUyY1tr_43M4tWrSGt8VeD4oBCLcBBGs52mTo7cBdq8RUYx3YxUOjwrRCXjKQ71b8lD-i8Gw%3D%3D?uid=195905471&filename=car.jpg&disposition=inline&hash=&limit=0&content_type=image%2Fjpeg&tknv=v2&size=1280x732" />
     </div>
 </div>
 </body>

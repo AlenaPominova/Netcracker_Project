@@ -36,6 +36,11 @@ public class MainController {
         return "login";
     }
 
+    @GetMapping("/registration")
+    public String registration(Model model){
+        return "reg";
+    }
+
     @GetMapping("/index")
     public String index(Model model){
         return "main";
