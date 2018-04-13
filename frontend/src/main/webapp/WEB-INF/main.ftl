@@ -1,22 +1,19 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<#ftl encoding="utf-8">
 <!doctype html>
 <html>
 <head>
     <title>Тестовая страница</title>
-    <meta charset="utf-8" />
     <!-- Stylesheet -->
     <link href="http://yastatic.net/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
-    <link href="css/inx_styles.css" rel="stylesheet" media="all">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.1/dist/leaflet.css" />
     <!-- JS -->
     <script src="http://yastatic.net/jquery/2.1.4/jquery.min.js"></script>
     <script src="http://yastatic.net/bootstrap/3.3.4/js/bootstrap.min.js"></script>
-    <script src="https://maps.googleapis.com/maps/api/js" async defer></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD2psivVcXwi1A-thFsDpKI6aXJEe6y7bs" async defer></script>
     <script src="https://unpkg.com/leaflet@1.0.1/dist/leaflet-src.js"></script>
-    <script type="text/javascript" src="js/Leaflet.GoogleMutant.js"></script>
+    <#include "css/inx_styles.css">
+    <#include "js/Leaflet.GoogleMutant.js">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 </head>
 <body>
 <nav class="navbar navbar-default">
@@ -57,7 +54,7 @@
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
 </nav>
-<div class="container-fluid" style="background-color: black; padding: 0;">
+<div class="container-fluid" style="background-color: black; padding: 0; margin: 0;">
     <div class="row" style="margin: 0; padding: 0; background-color: red;">
         <div class="col-md-9" style="padding: 0;">
             <div id="map" class="map"></div>
