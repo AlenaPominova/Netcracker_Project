@@ -59,14 +59,30 @@
         <div class="col-md-9" style="padding: 0;">
             <div id="map" class="map"></div>
             <script type="text/javascript">
+                function getPrice(info) {
+                    for (var i = 0; i < info.length; i++){
+                        if (info[i].id == 304)
+                            return info[i].value;
+                    }
+                }
+
+                function getLatitude(info) {
+                    for (var i = 0; i < info.length; i++){
+                        if (info[i].id == 301)
+                            return info[i].value;
+                    }
+                }
+
+                function getLongitude(info) {
+                    for (var i = 0; i < info.length; i++){
+                        if (info[i].id == 302)
+                            return info[i].value;
+                    }
+                }
+                
                 var mapopts =  {
                     //      zoomSnap: 0.1
                 };
-
-                var ratIcon = L.icon({
-                    iconUrl: 'http://andywoodruff.com/maptime-leaflet/rat.png',
-                    iconSize: [60,50]
-                });
 
                 var map = L.map('map', mapopts).setView([51.6755,39.2089], 14);
                 var trafficMutant = L.gridLayer.googleMutant({
@@ -76,15 +92,35 @@
                 }).addTo(map);
                 trafficMutant.addGoogleLayer('TrafficLayer');
 
-                var vrn2 = [51.67, 39.2];
-                var marker2 = L.marker(vrn2).addTo(map);
-                marker2.bindPopup("" +
-                        "<h4><b>Парковка №255</b></h4><br>" +
-                        "<b>Открыта:</b> с 00:00 до 00:00<br>" +
-                        "<b>Цена:</b> 100 руб/час<br>" +
-                        "<b>Рейтинг:</b> 4,65<br>" +
-                        "<br>" +
-                        "<b>Владелец:</b> <a href=''>Евгений Карпов</a>");
+                $.ajax({
+                    type: 'GET',
+                    url: 'http://localhost:8082/getByObjectType/asd',
+                    contentType: 'text/plain',
+                    xhrFields: { withCredentials: false },
+                    headers: {},
+                    success: function(data) {
+                        for (var i = 0; i < data.parkings.length; i++){
+                            var temp = [getLatitude(data.parkings[i].values), getLongitude(data.parkings[i].values)];
+                            var marker = L.marker(temp).addTo(map);
+                            marker.bindPopup("<h4><b>Парковка №" + (data.parkings[i].id).toString() + "</b></h4><br>" +
+                                    "<b>Цена:</b>" + getPrice(data.parkings[i].values) + "руб/час<br>" +
+                                    "<b>Владелец:</b> <a href=''>Евгений Карпов</a>");
+                        }
+                    },
+                    error: function() {
+                        alert('Неизвестная валютная пара');
+                    }
+                });
+
+//                var vrn2 = [51.67, 39.2];
+//                var marker2 = L.marker(vrn2).addTo(map);
+//                marker2.bindPopup("" +
+//                        "<h4><b>Парковка №255</b></h4><br>" +
+//                        "<b>Открыта:</b> с 00:00 до 00:00<br>" +
+//                        "<b>Цена:</b> 100 руб/час<br>" +
+//                        "<b>Рейтинг:</b> 4,65<br>" +
+//                        "<br>" +
+//                        "<b>Владелец:</b> <a href=''>Евгений Карпов</a>");
             </script>
         </div>
         <div class="col-md-3 filter" style="background-color: #0e182e;height: 91.5vh">

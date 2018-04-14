@@ -28,4 +28,9 @@ public class ObjService implements IObjService {
     public JsonNode create(Pojo obj) {
         return dao.create(obj);
     }
+
+    @Override
+    public JsonNode getByObjectType(String objectType){
+        return dao.getByObjectType(objectType);
+    }
 }

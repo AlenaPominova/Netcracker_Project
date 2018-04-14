@@ -25,6 +25,12 @@ public class ObjController {
         return objService.getJson(id);
     }
 
+    @RequestMapping(value = "/getByObjectType/{objectType}", method = RequestMethod.GET)
+    @ResponseBody
+    public JsonNode getJSONbyObjectType(@PathVariable String objectType) {
+        return objService.getByObjectType(objectType);
+    }
+
     @RequestMapping(value = "/delete", method = RequestMethod.POST, headers = {"Content-type=application/json"})
     @ResponseBody
     public JsonNode deleteObject(@RequestBody JsonNode node){

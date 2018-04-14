@@ -8,5 +8,6 @@ public interface IObjService {
     JsonNode getJson(long id);
     JsonNode deleteById(long id);
     JsonNode create(Pojo obj);
+    JsonNode getByObjectType(String objectType);
 
 }

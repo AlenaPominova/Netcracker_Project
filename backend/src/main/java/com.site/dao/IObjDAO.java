@@ -9,4 +9,5 @@ public interface IObjDAO {
     JsonNode update(Pojo obj);
     JsonNode delete(long id);
     JsonNode getJson(long id);
+    JsonNode getByObjectType(String objectType);
 }

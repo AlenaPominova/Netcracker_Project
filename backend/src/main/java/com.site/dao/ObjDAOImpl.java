@@ -1,6 +1,9 @@
 package com.site.dao;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.site.json.JsonCreater;
 import com.site.mapper.ObjMapper;
 import com.site.objects.Pojo;
@@ -8,9 +11,8 @@ import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+
 import com.site.sql.SQLConstant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -105,5 +107,26 @@ public class ObjDAOImpl implements IObjDAO {
             return map;
         }, id, obj.getType_id());
         return JsonCreater.getJson(obj, attrName);
+    }
+
+    public JsonNode getByObjectType(String objectType){
+        List objectId = jdbcTemplate.query("SELECT *\n" +
+                "FROM \"OBJECTS\"\n" +
+                "WHERE object_type_id = ?;", (resultSet) -> {
+            List temp = new ArrayList();
+            while (resultSet.next()){
+                temp.add(resultSet.getLong("object_id"));
+            }
+            return temp;
+        }, 3);
+        JsonNodeFactory factory = new JsonNodeFactory(false);
+        JsonNode jsonNode = factory.objectNode();
+
+        ArrayNode values = factory.arrayNode();
+        for (int i = 0; i < objectId.size(); i++){
+            values.add(getJson((long)(objectId.get(i))));
+        }
+        ((ObjectNode) jsonNode).put("parkings", values);
+        return jsonNode;
     }
 }
