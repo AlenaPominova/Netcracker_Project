@@ -1,4 +1,5 @@
 <#ftl encoding="utf-8">
+<#assign security=JspTaglibs["http://www.springframework.org/security/tags"] />
 <!doctype html>
 <html>
 <head>
@@ -36,9 +37,11 @@
                 <li><a href="#">Тех.поддержка</a></li>
                 <li><a href="#">Связь с нами</a></li>
             </ul>
+
+            <@security.authorize access="isAuthenticated()">
             <ul class="nav navbar-nav navbar-right">
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Username <span class="caret"></span></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> <@security.authentication property="principal.username" /> <span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li>
                             <a href="http://www.fgruber.ch/" target="_blank">
@@ -51,6 +54,7 @@
                     </ul>
                 </li>
             </ul>
+            </@security.authorize>
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
 </nav>
@@ -79,7 +83,15 @@
                             return info[i].value;
                     }
                 }
-                
+
+                function getAddress(info) {
+                    for (var i = 0; i < info.length; i++){
+                        if (info[i].id == 303)
+                            return info[i].value;
+                    }
+                    return "no info";
+                }
+
                 var mapopts =  {
                     //      zoomSnap: 0.1
                 };
@@ -103,8 +115,12 @@
                             var temp = [getLatitude(data.parkings[i].values), getLongitude(data.parkings[i].values)];
                             var marker = L.marker(temp).addTo(map);
                             marker.bindPopup("<h4><b>Парковка №" + (data.parkings[i].id).toString() + "</b></h4><br>" +
-                                    "<b>Цена:</b>" + getPrice(data.parkings[i].values) + "руб/час<br>" +
-                                    "<b>Владелец:</b> <a href=''>Евгений Карпов</a>");
+                                    "<b>Адрес: </b>" + getAddress(data.parkings[i].values) + "<br>" +
+                                    "<b>Открыта с:</b> 00:00 <b>до:</b> 00:00<br>" +
+                                    "<b>Цена:</b>" + getPrice(data.parkings[i].values) + " руб/час<br>" +
+                                    "<b>Рейтинг:</b> ★★★★★ <br>" +
+                                    "<a href=''>Страница владельца</a><br><br>" +
+                                    "<button type=\"submit\" class=\"btn btn-default\">Взять в аренду</button>");
                         }
                     },
                     error: function() {

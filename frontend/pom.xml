@@ -10,6 +10,11 @@
     <packaging>war</packaging>
     <name>frontend Maven Webapp</name>
     <url>http://maven.apache.org</url>
+
+    <properties>
+        <spring.security.version>3.2.10.RELEASE</spring.security.version>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>junit</groupId>

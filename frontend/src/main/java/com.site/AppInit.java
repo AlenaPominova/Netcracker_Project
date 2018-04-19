@@ -1,5 +1,6 @@
 package com.site;
 
+import com.site.config.SecurityConfig;
 import com.site.config.WebConfig;
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.ContextLoaderListener;
@@ -16,6 +17,7 @@ public class AppInit implements WebApplicationInitializer {
     public void onStartup(ServletContext servletContext) throws ServletException {
         AnnotationConfigWebApplicationContext context = new AnnotationConfigWebApplicationContext();
         context.register(WebConfig.class);
+        context.register(SecurityConfig.class);
         servletContext.addListener(new ContextLoaderListener(context));
 
         DispatcherServlet ds = new DispatcherServlet(context);

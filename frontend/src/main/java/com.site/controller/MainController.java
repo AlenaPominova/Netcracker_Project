@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
 import java.io.IOException;
@@ -36,7 +37,12 @@ public class MainController {
         return "login";
     }
 
-    @GetMapping("/registration")
+    @RequestMapping(value = "/comon", method = RequestMethod.GET)
+    public String test(Model model){
+        return "reg";
+    }
+
+    @RequestMapping(value = "/registration", method = RequestMethod.GET)
     public String registration(Model model){
         return "reg";
     }

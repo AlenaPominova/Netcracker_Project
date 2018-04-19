@@ -1,4 +1,5 @@
 <#ftl encoding="utf-8">
+<#assign security=JspTaglibs["http://www.springframework.org/security/tags"] />
 <!doctype html>
 <html>
 <head>
@@ -12,6 +13,29 @@
     <#include "css/reg_styles.css">
 </head>
 <body>
+<@security.authorize access="isAuthenticated()">
+logged in as
+    <@security.authentication property="principal.username" />
+    <@security.authentication property="principal.password" />
+</@security.authorize>
+<@security.authorize access="hasRole('USER')">
+    This text is only visible to an USER
+    <br/>
+</@security.authorize>
+
+<@security.authorize access="hasRole('ANONYMOUS')">
+This text is only visible to an ANONYMOUS
+<br/>
+</@security.authorize>
+
+<@security.authorize access="hasRole('null')">
+This text is only visible to an null
+<br/>
+</@security.authorize>
+
+<@security.authorize access="! isAuthenticated()">
+Not logged in
+</@security.authorize>
 <div class="parent">
     <div class="tab" role="tabpanel">
         <!-- Nav tabs -->
@@ -23,14 +47,14 @@
         <div class="tab-content tabs">
             <!-- Selection 1 -->
             <div role="tabpanel" class="tab-pane fade in active" id="Section1">
-                <form class="form-horizontal">
+                <form class="form-horizontal" action="j_spring_security_check" method="post">
                     <div class="form-group">
                         <label for="exampleInputEmail1">Телефон</label>
-                        <input type="email" class="form-control" id="exampleInputEmail1">
+                        <input type="email" class="form-control" id="exampleInputEmail1" name="j_username">
                     </div>
                     <div class="form-group">
                         <label for="exampleInputPassword1">Пароль</label>
-                        <input type="password" class="form-control" id="exampleInputPassword1">
+                        <input type="password" class="form-control" id="exampleInputPassword1" name="j_password">
                     </div>
                     <div class="form-group">
                         <div class="main-checkbox">
@@ -51,27 +75,27 @@
             <div role="tabpanel" class="tab-pane fade" id="Section2">
                 <form class="form-horizontal">
                     <div class="form-group">
-                        <label for="exampleInputEmail1">Имя</label>
-                        <input type="text" class="form-control" id="exampleInputEmail1">
+                        <label for="inputName">Имя</label>
+                        <input type="text" class="form-control" id="inputName">
                     </div>
                     <div class="form-group">
-                        <label for="exampleInputEmail1">Фамилия</label>
-                        <input type="text" class="form-control" id="exampleInputEmail1">
+                        <label for="inputSurname">Фамилия</label>
+                        <input type="text" class="form-control" id="inputSurname">
                     </div>
                     <div class="form-group">
-                        <label for="exampleInputEmail1">Номер телефона</label>
-                        <input type="text" class="form-control bfh-phone" id="exampleInputEmail1" data-format="+7 (ddd) ddd-dddd">
+                        <label for="inputPhone">Номер телефона</label>
+                        <input type="text" class="form-control bfh-phone" id="inputPhone" data-format="+7 (ddd) ddd-dddd">
                     </div>
                     <div class="form-group">
-                        <label for="exampleInputEmail1">E-mail</label>
-                        <input type="email" class="form-control" id="exampleInputEmail1">
+                        <label for="inputEmail">E-mail</label>
+                        <input type="email" class="form-control" id="inputEmail">
                     </div>
                     <div class="form-group">
-                        <label for="exampleInputPassword1">Пароль</label>
-                        <input type="password" class="form-control" id="exampleInputPassword1">
+                        <label for="inputPassword">Пароль</label>
+                        <input type="password" class="form-control" id="inputPassword">
                     </div>
                     <div class="form-group">
-                        <button type="submit" class="btn btn-default">Зарегистрироваться</button>
+                        <button type="submit" class="btn btn-default" onclick="">Зарегистрироваться</button>
                     </div>
                 </form>
             </div>
