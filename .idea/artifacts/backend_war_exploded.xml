@@ -31,6 +31,9 @@
           <element id="library" level="project" name="Maven: org.springframework.security:spring-security-config:3.2.4.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework.security:spring-security-taglibs:4.0.0.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework.security:spring-security-acl:4.0.0.RELEASE" />
+          <element id="library" level="project" name="Maven: com.hazelcast:hazelcast:3.7.2" />
+          <element id="library" level="project" name="Maven: com.hazelcast:hazelcast-client:3.7.2" />
+          <element id="library" level="project" name="Maven: javax.cache:cache-api:1.0.0" />
         </element>
       </element>
       <element id="directory" name="META-INF">

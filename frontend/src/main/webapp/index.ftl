@@ -1,5 +1,6 @@
 <#ftl encoding="utf-8">
 <#assign security=JspTaglibs["http://www.springframework.org/security/tags"] />
+<META HTTP-EQUIV="Refresh" CONTENT="0; URL=/frontend/"/>
 <!doctype html>
 <html>
 <head>
@@ -12,8 +13,8 @@
     <script src="http://yastatic.net/bootstrap/3.3.4/js/bootstrap.min.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD2psivVcXwi1A-thFsDpKI6aXJEe6y7bs" async defer></script>
     <script src="https://unpkg.com/leaflet@1.0.1/dist/leaflet-src.js"></script>
-    <#include "css/inx_styles.css">
-    <#include "js/Leaflet.GoogleMutant.js">
+<#include "WEB-INF/css/inx_styles.css">
+<#include "WEB-INF/js/Leaflet.GoogleMutant.js">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
@@ -38,7 +39,7 @@
                 <li><a href="#">Связь с нами</a></li>
             </ul>
 
-            <@security.authorize access="isAuthenticated()">
+        <@security.authorize access="isAuthenticated()">
             <ul class="nav navbar-nav navbar-right">
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> <@security.authentication property="principal.username" /> <span class="caret"></span></a>
@@ -54,7 +55,7 @@
                     </ul>
                 </li>
             </ul>
-            </@security.authorize>
+        </@security.authorize>
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
 </nav>
@@ -114,6 +115,7 @@
                         for (var i = 0; i < data.parkings.length; i++){
                             var temp = [getLatitude(data.parkings[i].values), getLongitude(data.parkings[i].values)];
                             var marker = L.marker(temp).addTo(map);
+                            alert(data.parkings[i].id);
                             marker.bindPopup("<h4><b>Парковка №" + (data.parkings[i].id).toString() + "</b></h4><br>" +
                                     "<b>Адрес: </b>" + getAddress(data.parkings[i].values) + "<br>" +
                                     "<b>Открыта с:</b> 00:00 <b>до:</b> 00:00<br>" +
@@ -124,19 +126,19 @@
                         }
                     },
                     error: function() {
-                        alert('Неизвестная валютная пара');
+                        alert('Error');
                     }
                 });
 
-//                var vrn2 = [51.67, 39.2];
-//                var marker2 = L.marker(vrn2).addTo(map);
-//                marker2.bindPopup("" +
-//                        "<h4><b>Парковка №255</b></h4><br>" +
-//                        "<b>Открыта:</b> с 00:00 до 00:00<br>" +
-//                        "<b>Цена:</b> 100 руб/час<br>" +
-//                        "<b>Рейтинг:</b> 4,65<br>" +
-//                        "<br>" +
-//                        "<b>Владелец:</b> <a href=''>Евгений Карпов</a>");
+                //                var vrn2 = [51.67, 39.2];
+                //                var marker2 = L.marker(vrn2).addTo(map);
+                //                marker2.bindPopup("" +
+                //                        "<h4><b>Парковка №255</b></h4><br>" +
+                //                        "<b>Открыта:</b> с 00:00 до 00:00<br>" +
+                //                        "<b>Цена:</b> 100 руб/час<br>" +
+                //                        "<b>Рейтинг:</b> 4,65<br>" +
+                //                        "<br>" +
+                //                        "<b>Владелец:</b> <a href=''>Евгений Карпов</a>");
             </script>
         </div>
         <div class="col-md-3 filter" style="background-color: #0e182e;height: 91.5vh">
