@@ -2,19 +2,45 @@ package ru.vsu.netcracker.parking.frontend.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.web.client.RestTemplate;
+import org.yaml.snakeyaml.Yaml;
+import ru.vsu.netcracker.parking.frontend.objects.RestService;
 import ru.vsu.netcracker.parking.frontend.utils.CustomRestTemplate;
+
+import javax.annotation.PostConstruct;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Map;
 
 @Configuration
 public class RestServicesConfig {
 
+    private Map<String, RestService> restServices;
+
+    public void setServices(Map<String, RestService> restServices) {
+        this.restServices = restServices;
+    }
+
+    @PostConstruct
+    private void getServices() throws IOException {
+        Yaml yaml = new Yaml();
+        Resource resource = new ClassPathResource("rest-services.yml");
+        try (InputStream in = resource.getInputStream()) {
+            this.restServices = yaml.loadAs(in, RestServicesConfig.class).restServices;
+        }
+    }
+
     @Bean
     public RestTemplate parkingBackendRestTemplate() {
-        return new CustomRestTemplate("http://localhost:8080/", "rest@gmail.com", "cmVzdEBnbWFpbC5jb21tB9hVpucaKSiH/KIbrrqH7Ay0obL+KS42xpxd87TmFA==");
+        RestService service = restServices.get("parking-backend");
+        return new CustomRestTemplate(service.getUrl(), service.getUsername(), service.getPassword());
     }
 
     @Bean
     public CustomRestTemplate evacServiceRestTemplate() {
-        return new CustomRestTemplate("http://someUrl:8080/", "someUsername", "somePassword");
+        RestService service = restServices.get("evac");
+        return new CustomRestTemplate(service.getUrl(), service.getUsername(), service.getPassword());
     }
 }
