@@ -1,0 +1,214 @@
+
+body{
+    background-image: url("https://4.downloader.disk.yandex.ru/preview/482654477e1052cc177f261bb4b7fa2a9e6014f100df3e49a157c4708f5771d7/inf/eS5gAm22UDiYgvhUyY1trxDNTS22He6lzroiHW-eIdPewYdt4qufa1M-rL_iD7-2H4rkOM4M-Z-sIKy2B5S0OA%3D%3D?uid=195905471&filename=bg.jpg&disposition=inline&hash=&limit=0&content_type=image%2Fjpeg&tknv=v2&size=1280x732");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+}
+
+a:hover,a:focus{
+    outline: none;
+    text-decoration: none;
+}
+
+.parent{
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+    overflow: auto;
+}
+
+.tab{
+    background: #200122;
+    background: -webkit-linear-gradient(to bottom, rgba(230, 230, 230, 1), rgba(196, 196, 196, 1));
+    background: linear-gradient(to bottom, rgba(230, 230, 230, 1), rgba(196, 196, 196, 1));
+    padding: 40px 50px;
+    border-radius: 15px;
+    position: absolute;
+    border: solid 1px #0e182e;
+}
+
+.tab .nav-tabs{
+    border-bottom: none;
+    padding: 0 20px;
+    position: relative;
+}
+
+.tab .nav-tabs li{
+    margin: 0 50px 0 0;
+}
+
+.tab .nav-tabs li a{
+    font-size: 16px;
+    color: #0e182e;
+    border-radius: 0;
+    text-transform: uppercase;
+    background: transparent;
+    padding: 0;
+    margin-right: 0;
+    border: none;
+    border-bottom: 2px solid transparent;
+    opacity: 0.5;
+    position: relative;
+    transition: all 0.5s ease 0s;
+}
+
+.tab .nav-tabs li a:hover{
+    background: transparent;
+}
+
+.tab .nav-tabs li.active a,
+.tab .nav-tabs li.active a:focus,
+.tab .nav-tabs li.active a:hover{
+    border: none;
+    background: transparent;
+    opacity: 1;
+    border-bottom: 2px solid #0e182e;
+    color: #0e182e;
+}
+
+.tab .tab-content{
+    padding: 10px 0 0 0;
+    margin-top: 40px;
+    background: transparent;
+    z-index: 1;
+    position: relative;
+}
+
+.form-bg{
+    background: #ddd;
+}
+
+.form-horizontal .form-group{
+    margin: 0 0 15px 0;
+    position: relative;
+}
+
+.form-horizontal .form-control{
+    height: 40px;
+    background: rgba(255,255,255,0.2);
+    border: none;
+    border-radius: 20px;
+    box-shadow: none;
+    padding: 0 20px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #0e182e;
+    transition: all 0.3s ease 0s;
+}
+
+.form-horizontal .form-control:focus{
+    box-shadow: none;
+    outline: 0 none;
+}
+
+.form-horizontal .form-group label{
+    padding: 0 20px;
+    color: #0e182e;
+    text-transform: capitalize;
+    margin-bottom: 10px;
+}
+
+.form-horizontal .main-checkbox{
+    width: 20px;
+    height: 20px;
+    background: transparent;
+    float: left;
+    margin: 5px 0 0 20px;
+    border: 1px solid #0e182e;
+    position: relative;
+}
+
+.form-horizontal .main-checkbox label{
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    cursor: pointer;
+}
+
+.form-horizontal .main-checkbox label:after{
+    content: "";
+    width: 10px;
+    height: 5px;
+    position: absolute;
+    top: 5px;
+    left: 4px;
+    border: 3px solid #0e182e;
+    border-top: none;
+    border-right: none;
+    background: transparent;
+    opacity: 0;
+    -webkit-transform: rotate(-45deg);
+    transform: rotate(-45deg);
+}
+
+.form-horizontal .main-checkbox input[type=checkbox]{
+    visibility: hidden;
+}
+.form-horizontal .main-checkbox input[type=checkbox]:checked + label:after{
+    opacity: 1;
+}
+
+.form-horizontal .text{
+    float: left;
+    font-size: 12px;
+    font-weight: bold;
+    color: #0e182e;
+    margin-left: 15px;
+    line-height: 20px;
+    padding-top: 5px;
+    text-transform: capitalize;
+}
+
+.form-horizontal .btn{
+    width: 100%;
+    background: #0e182e;
+    padding: 10px 20px;
+    border: none;
+    font-size: 14px;
+    font-weight: bold;
+    color: #fff;
+    border-radius: 20px;
+    text-transform: uppercase;
+    margin: 20px 0 30px 0;
+}
+
+.form-horizontal .btn:focus{
+    background: rgb(220,220,220);
+    color: #0e182e;
+    outline: none;
+    box-shadow: none;
+    border: solid 1px #0e182e;
+}
+
+.form-horizontal .forgot-pass{
+    border-top: 1px solid #0e182e;
+    margin: 0;
+    text-align: center;
+}
+.form-horizontal .forgot-pass .btn{
+    width: auto;
+    background: transparent;
+    margin: 30px 0 0 0;
+    color: #0e182e;
+    text-transform: capitalize;
+    transition: all 0.3s ease 0s;
+}
+
+.form-horizontal .forgot-pass .btn:hover{
+    color: #eec111;
+}
+
+@media only screen and (max-width: 479px){
+    .tab{
+        padding: 40px 20px;
+    }
+}
