@@ -45,6 +45,8 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         Obj obj;
         try {
             obj = objectsDAO.getObjByUserName(username);
+            if (obj == null) throw new BadCredentialsException("Bad Credentials");
+
             String expectedPassword = obj.getValues().get(PASSWORD_ATTRIBUTE_ID);
 
             if (!passwordEncoder.matches(passwordEncoder.decode(actualPassword), passwordEncoder.decode(expectedPassword))) {

@@ -84,7 +84,7 @@ public class JsonConverter {
                 value.put("id", k);
                 value.put("name", attributes.get(k));
                 value.put("reference", v);
-                //value.put("referenceName",objService.get(v).getName());
+                value.put("referenceName",objService.get(v).getName());
                 references.add(value);
             });
             json.put("references", references);

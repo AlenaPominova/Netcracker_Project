@@ -33,6 +33,11 @@ public class CustomRestTemplate extends RestTemplate {
     }
 
     @Override
+    public <T> ResponseEntity<T> getForEntity(String url, Class<T> responseType, Object... uriVariables) throws RestClientException {
+        return super.getForEntity(BASE_URL + url, responseType, uriVariables);
+    }
+
+    @Override
     public <T> T postForObject(String url, Object request, Class<T> responseType, Object... uriVariables) throws RestClientException {
         return super.postForObject(BASE_URL + url, request, responseType, uriVariables);
     }

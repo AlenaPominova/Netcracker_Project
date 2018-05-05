@@ -16,9 +16,11 @@ public class Attributes {
 
     public void setAll(Map<Long, String> attributes) {
         this.attributes = attributes;
+        //this.attributes.putAll(attributes);
     }
 
     public String get(long id) {
+        String name = attributes.get(id);
         return attributes.get(id);
     }
 

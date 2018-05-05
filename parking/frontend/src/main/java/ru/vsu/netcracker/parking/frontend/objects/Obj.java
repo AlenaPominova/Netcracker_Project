@@ -4,6 +4,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
@@ -14,10 +15,10 @@ public class Obj implements Serializable {
     private long typeId;
     private String description;
 
-    private Map<Long, String> values;
-    private Map<Long, Timestamp> dateValues;
-    private Map<Long, String> listValues;
-    private Map<Long, Long> references;
+    private Map<Long, String> values = new HashMap<>();
+    private Map<Long, Timestamp> dateValues = new HashMap<>();
+    private Map<Long, String> listValues = new HashMap<>();
+    private Map<Long, Long> references = new HashMap<>();
 
     public Obj() {
     }

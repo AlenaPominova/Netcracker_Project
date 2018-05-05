@@ -10,7 +10,7 @@ public interface ObjectsDAO {
 
     public Obj getObj(long objectId);
 
-    public void saveObj(Obj obj);
+    public Obj saveObj(Obj obj);
 
     public void delete(long objectId);
 

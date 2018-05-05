@@ -81,7 +81,7 @@ public class PostgresObjectsDAO implements ObjectsDAO {
      * @param obj
      */
     @Override
-    public void saveObj(Obj obj) {
+    public Obj saveObj(Obj obj) {
         if (obj.getId() == 0) {
             obj.setId(getGUID());
         }
@@ -90,6 +90,7 @@ public class PostgresObjectsDAO implements ObjectsDAO {
         }
         this.jdbcTemplate.update(PostgresSQLQueries.SAVE_OBJECT_QUERY, new Object[]{obj.getId(), obj.getTypeId(), obj.getName(), obj.getDescription(), obj.getName()});
         insertOrUpdateValues(obj);
+        return obj;
     }
 
     /**

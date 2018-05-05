@@ -50,11 +50,19 @@ public class SpringHttpSecurityConfig {
         protected void configure(HttpSecurity http) throws Exception {
             http
                     .authorizeRequests()
+                    .antMatchers("/", "/login*", "/register*").permitAll()
                     .anyRequest().authenticated()
                     .and()
                     .formLogin()
-                    .defaultSuccessUrl("/", true)
-                    .failureUrl("/404")
+                    .loginPage("/login")
+                    .loginProcessingUrl("/j_spring_security_check")
+                    .usernameParameter("j_username")
+                    .passwordParameter("j_password")
+                    .defaultSuccessUrl("/")
+                    .failureUrl("/login?error=true")
+                    .and()
+                    .logout().logoutSuccessUrl("/login?logout")
+                    .invalidateHttpSession(true)
                     .and()
                     .csrf().disable();
         }

@@ -42,18 +42,15 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         String username = authentication.getName();
         String actualPassword = authentication.getCredentials().toString();
         String encodedActualPassword = passwordEncoder.encode(actualPassword, username.getBytes());
-        Obj obj;
-        try {
-            obj = objService.getObjByUsername(username);
-            String expectedPassword = obj.getValues().get(PASSWORD_ATTRIBUTE_ID);
 
-            if (!passwordEncoder.matches(passwordEncoder.decode(encodedActualPassword), passwordEncoder.decode(expectedPassword))) {
-                throw new BadCredentialsException("Bad Credentials");
-            }
-        } catch (EmptyResultDataAccessException e) {
+        Obj obj = objService.getObjByUsername(username);
+        if (obj == null) throw new BadCredentialsException("Bad Credentials");
+
+        String expectedPassword = obj.getValues().get(PASSWORD_ATTRIBUTE_ID);
+
+        if (!passwordEncoder.matches(passwordEncoder.decode(encodedActualPassword), passwordEncoder.decode(expectedPassword))) {
             throw new BadCredentialsException("Bad Credentials");
         }
-
         long roleId = obj.getReferences().get(ROLE_ATTRIBUTE_ID);
 
         return new UsernamePasswordAuthenticationToken(username, encodedActualPassword, getGrantedAuthorities(roleId));
