@@ -18,11 +18,11 @@ class EvacController {
         this.objService = objService;
     }
 
-    @PostMapping(value = "/send-request/{parkingId}")
-    @ResponseBody
-    public JsonNode sendEvacRequest(@PathVariable long parkingId) {
-        return objService.sendEvacRequest(parkingId);
-    }
+//    @PostMapping(value = "/send-request/{parkingId}")
+//    @ResponseBody
+//    public JsonNode sendEvacRequest(@PathVariable long parkingId) {
+//        return objService.sendEvacRequest(parkingId);
+//    }
 
     @PatchMapping(value = "/update-status", consumes = "application/json")
     public void updateStatus(@RequestBody String json) {

@@ -2,20 +2,20 @@
 <#assign security=JspTaglibs["http://www.springframework.org/security/tags"] />
 <head>
     <title>Parkings</title>
-<#setting locale="en">
-<#setting number_format="0.######">
-<#assign url = springMacroRequestContext.getPathToServlet() >
+    <#setting locale="en">
+    <#setting number_format="0.######">
+    <#assign url = springMacroRequestContext.getPathToServlet() >
     <meta charset="utf-8" />
     <!-- Stylesheet -->
     <link href="http://yastatic.net/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.1/dist/leaflet.css" />
-<#include "css/index_styles.css">
+    <#include "css/index_styles.css">
     <!-- JS -->
     <script src="http://yastatic.net/jquery/2.1.4/jquery.min.js"></script>
     <script src="http://yastatic.net/bootstrap/3.3.4/js/bootstrap.min.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD2psivVcXwi1A-thFsDpKI6aXJEe6y7bs" async defer></script>
     <script src="https://unpkg.com/leaflet@1.0.1/dist/leaflet-src.js"></script>
-<#include "js/Leaflet.GoogleMutant.js">
+    <#include "js/Leaflet.GoogleMutant.js">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
@@ -28,7 +28,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#"><img src="https://2.downloader.disk.yandex.ru/preview/63f5c51403302a9b55553a7b0fc16cfdb911b33f8c5af56505d47adef3bc57e1/inf/eS5gAm22UDiYgvhUyY1tr8IH7UqxXoP0fGKdHch3EC-Pa0AujPi0S_lHQR8TYJ8-VHwR3sYD2xCkU0ZxQ9xLaA%3D%3D?uid=195905471&filename=logo.png&disposition=inline&hash=&limit=0&content_type=image%2Fpng&tknv=v2&size=1280x732" alt="Воронежский паркинг"></a>
+            <a class="navbar-brand" href="#"><img src="https://i.imgur.com/oH893fM.png" alt="Воронежский паркинг"></a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
@@ -103,7 +103,17 @@
                 map.addLayer(markers);
                 function createMarker(parking) {
                     var marker = L.marker([parking.latitude, parking.longitude]);
-                    marker.bindPopup("<h4><b>" + parking.name + "</b></h4><br>" +
+                    <@security.authorize access="!isAuthenticated()">
+                        marker.bindPopup("<h4><b>" + parking.name + "</b></h4><br>" +
+                            "<b>Адрес: </b>" + parking.address + "<br>" +
+                            "<b>Открыта с: </b>" + parking.open_time + "<b> до:</b>" + parking.close_time + "<br>" +
+                            "<b>Цена: </b>" + parking.price + " руб/час<br>" +
+                            "<b>Рейтинг: </b>" + parking.rating + "<br>" +
+                            "<b>Свободных мест: </b>" + parking.free_spots_count + "<br>" +
+                            "<a href=\"/objects/' + parking.owner_id + '\">Страница владельца</a><br><br>");
+                    </@security.authorize>
+                    <@security.authorize access="isAuthenticated()">
+                        marker.bindPopup("<h4><b>" + parking.name + "</b></h4><br>" +
                             "<b>Адрес: </b>" + parking.address + "<br>" +
                             "<b>Открыта с: </b>" + parking.open_time + "<b> до:</b>" + parking.close_time + "<br>" +
                             "<b>Цена: </b>" + parking.price + " руб/час<br>" +
@@ -111,6 +121,7 @@
                             "<b>Свободных мест: </b>" + parking.free_spots_count + "<br>" +
                             "<a href=\"/objects/' + parking.owner_id + '\">Страница владельца</a><br><br>" +
                             "<button type=\"submit\" class=\"btn btn-default\">Взять в аренду</button>");
+                    </@security.authorize>
                     markers.addLayer(marker);
                 }
                 function createFilterMarker(parking) {
