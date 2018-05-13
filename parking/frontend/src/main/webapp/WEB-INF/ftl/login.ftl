@@ -8,7 +8,7 @@
     <link href="http://yastatic.net/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
     <script src="http://yastatic.net/jquery/2.1.4/jquery.min.js"></script>
     <script src="http://yastatic.net/bootstrap/3.3.4/js/bootstrap.min.js"></script>
-<#include "css/login_styles.css">
+    <#include "css/login_styles.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
@@ -24,13 +24,22 @@ Not logged in
     <div class="tab" role="tabpanel">
         <!-- Nav tabs -->
         <ul class="nav nav-tabs" role="tablist">
-            <li role="presentation" class="active"><a href="#Section1" aria-controls="home" role="tab" data-toggle="tab">Вход</a></li>
-            <li role="presentation"><a href="#Section2" aria-controls="profile" role="tab" data-toggle="tab">Регистрация</a></li>
+            <#if regerror??>
+                <li role="presentation"><a href="#Section1" aria-controls="home" role="tab" data-toggle="tab">Вход</a></li>
+                <li role="presentation" class="active"><a href="#Section2" aria-controls="profile" role="tab" data-toggle="tab">Регистрация</a></li>
+            <#else>
+                <li role="presentation" class="active"><a href="#Section1" aria-controls="home" role="tab" data-toggle="tab">Вход</a></li>
+                <li role="presentation"><a href="#Section2" aria-controls="profile" role="tab" data-toggle="tab">Регистрация</a></li>
+            </#if>
         </ul>
         <!-- Tab panes -->
         <div class="tab-content tabs">
             <!-- Selection 1 -->
-            <div role="tabpanel" class="tab-pane fade in active" id="Section1">
+            <#if regerror??>
+                <div role="tabpanel" class="tab-pane fade" id="Section1">
+            <#else>
+                <div role="tabpanel" class="tab-pane fade in active" id="Section1">
+            </#if>
                 <form class="form-horizontal" action="j_spring_security_check" method="post">
                     <div class="form-group">
                         <label for="exampleInputEmail1">Телефон</label>
@@ -59,7 +68,11 @@ Not logged in
                 </form>
             </div>
             <!-- Selection 2 -->
-            <div role="tabpanel" class="tab-pane fade" id="Section2">
+            <#if regerror??>
+                <div role="tabpanel" class="tab-pane fade in active" id="Section2">
+            <#else>
+                <div role="tabpanel" class="tab-pane fade" id="Section2">
+            </#if>
                 <form class="form-horizontal" action="/register" method="post" >
                     <div class="form-group">
                         <label for="inputName">Имя</label>
@@ -91,6 +104,7 @@ Not logged in
                     <div class="form-group">
                         <button type="submit" class="btn btn-default">Зарегистрироваться</button>
                     </div>
+                    <div class="login-form-error">${regerror!}</div>
                 </form>
             </div>
         </div>

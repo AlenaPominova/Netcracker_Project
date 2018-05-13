@@ -3,15 +3,10 @@ package ru.vsu.netcracker.parking.frontend.utils;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.client.BufferingClientHttpRequestFactory;
-import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
-import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.http.client.support.BasicAuthorizationInterceptor;
 import org.springframework.web.client.*;
-import ru.vsu.netcracker.parking.frontend.json.LoggingRequestInterceptor;
 
 import java.net.URI;
-import java.util.Map;
 
 public class CustomRestTemplate extends RestTemplate {
 

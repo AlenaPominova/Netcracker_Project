@@ -1,6 +1,7 @@
 package ru.vsu.netcracker.parking.frontend.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -26,6 +27,16 @@ public class ObjController {
         Map<Long, Obj> map = objService.getAll();
         model.addAttribute("parkingsList", map);
 
+        return "parkings";
+    }
+
+    @GetMapping(value = "/profile")
+    public String profile(Model model) {
+        Map<Long, Obj> map = objService.getAll();
+        model.addAttribute("parkingsList", map);
+        System.out.println(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
+        //model.addAttribute("user", objService.getObjByUsername())
+        return "profile";
         return "parkings";
     }
 
