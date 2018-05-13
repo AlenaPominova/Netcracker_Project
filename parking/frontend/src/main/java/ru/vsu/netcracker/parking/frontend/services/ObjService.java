@@ -120,4 +120,14 @@ public class ObjService {
         obj.setTypeId(USER_OBJECT_TYPE_ID);
         this.save(obj);
     }
+
+    private final long FREE_SPOTS_COUNT_ID = 307L;
+    private final long STATUS_ID = 308L;
+
+    public void takeParking(Obj parking) {
+        long freeSpotsCount = Long.valueOf(parking.getValues().get(FREE_SPOTS_COUNT_ID));
+        parking.getValues().put(FREE_SPOTS_COUNT_ID, String.valueOf(--freeSpotsCount));
+        parking.getValues().put(STATUS_ID, "Occupied");
+        save(parking);
+    }
 }

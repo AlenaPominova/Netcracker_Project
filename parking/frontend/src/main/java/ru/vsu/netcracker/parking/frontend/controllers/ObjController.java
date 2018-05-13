@@ -26,7 +26,7 @@ public class ObjController {
         Map<Long, Obj> map = objService.getAll();
         model.addAttribute("parkingsList", map);
 
-        return "parking/parkings";
+        return "parkings";
     }
 
     @PostMapping(value = "/register")
@@ -37,6 +37,13 @@ public class ObjController {
             return "redirect:/login?already-exists";
         }
         return "redirect:/login?reg";
+    }
+
+    @PutMapping(value = "/profiles/{objectId}")
+    public String updateUser(@PathVariable long objectId,
+                             @ModelAttribute("obj") Obj obj) {
+        objService.save(obj);
+        return "redirect:/profiles/" + objectId;
     }
 
     @GetMapping(value = "/login")
@@ -56,7 +63,7 @@ public class ObjController {
             modelAndView.addObject("message", "Registration complete. You can login now.");
         }
         if (alreadyExists != null) {
-            modelAndView.addObject("error", "User with such email or phone already exists.");
+            modelAndView.addObject("reg-error", "User with such email or phone already exists.");
         }
         modelAndView.setViewName("login");
 
