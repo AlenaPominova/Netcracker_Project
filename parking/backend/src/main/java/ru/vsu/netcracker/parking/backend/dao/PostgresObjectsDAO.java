@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
+import ru.vsu.netcracker.parking.backend.exceptions.UserAlreadyExistsException;
 import ru.vsu.netcracker.parking.backend.json.JsonConverter;
 import ru.vsu.netcracker.parking.backend.models.Obj;
 
@@ -79,9 +80,15 @@ public class PostgresObjectsDAO implements ObjectsDAO {
      * If there is no name assigned to the object of type "Parking" - sets unique id from sequence
      *
      * @param obj
+     * @return Obj that has been added
+     * @throws UserAlreadyExistsException when object with such email or phone already exists
      */
     @Override
-    public Obj saveObj(Obj obj) {
+    public Obj saveObj(Obj obj) throws UserAlreadyExistsException{
+        int count = this.jdbcTemplate.queryForObject(PostgresSQLQueries.COUNT_OBJECTS_WITH_PHONE_OR_EMAIL, new Object[]{201L, obj.getValues().get(201L), 202L, obj.getValues().get(202L)}, Integer.class);
+        if (count > 0) {
+            throw new UserAlreadyExistsException("User with such email or phone already exists");
+        }
         if (obj.getId() == 0) {
             obj.setId(getGUID());
         }

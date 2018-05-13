@@ -25,6 +25,10 @@ public class CustomRestTemplate extends RestTemplate {
         this.USERNAME = username;
         this.PASSWORD = password;
         this.getInterceptors().add(new BasicAuthorizationInterceptor(this.USERNAME, this.PASSWORD));
+        //this.setRequestFactory(new BufferingClientHttpRequestFactory(new SimpleClientHttpRequestFactory()));
+        //this.setRequestFactory(new SimpleClientHttpRequestFactory());
+        //this.getInterceptors().add(new LoggingRequestInterceptor());
+        this.setErrorHandler(new CustomResponseErrorHandler());
     }
 
     @Override
@@ -40,6 +44,11 @@ public class CustomRestTemplate extends RestTemplate {
     @Override
     public <T> T postForObject(String url, Object request, Class<T> responseType, Object... uriVariables) throws RestClientException {
         return super.postForObject(BASE_URL + url, request, responseType, uriVariables);
+    }
+
+    @Override
+    public <T> ResponseEntity<T> postForEntity(String url, Object request, Class<T> responseType, Object... uriVariables) throws RestClientException {
+        return super.postForEntity(BASE_URL + url, request, responseType, uriVariables);
     }
 
     @Override

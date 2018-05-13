@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import ru.vsu.netcracker.parking.frontend.exceptions.UserAlreadyExistsException;
 import ru.vsu.netcracker.parking.frontend.objects.Obj;
 import ru.vsu.netcracker.parking.frontend.services.ObjService;
 
@@ -30,14 +31,19 @@ public class ObjController {
 
     @PostMapping(value = "/register")
     public String register(@ModelAttribute("obj") Obj obj) {
-        objService.registerNewUser(obj);
+        try {
+            objService.registerNewUser(obj);
+        } catch (UserAlreadyExistsException e) {
+            return "redirect:/login?already-exists";
+        }
         return "redirect:/login?reg";
     }
 
     @GetMapping(value = "/login")
     public ModelAndView login(@RequestParam(value = "error", required = false) String error,
                               @RequestParam(value = "logout", required = false) String logout,
-                              @RequestParam(value = "reg", required = false) String reg) {
+                              @RequestParam(value = "reg", required = false) String reg,
+                              @RequestParam(value = "already-exists", required = false) String alreadyExists) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("obj", new Obj());
         if (error != null) {
@@ -48,6 +54,9 @@ public class ObjController {
         }
         if (reg != null) {
             modelAndView.addObject("message", "Registration complete. You can login now.");
+        }
+        if (alreadyExists != null) {
+            modelAndView.addObject("error", "User with such email or phone already exists.");
         }
         modelAndView.setViewName("login");
 

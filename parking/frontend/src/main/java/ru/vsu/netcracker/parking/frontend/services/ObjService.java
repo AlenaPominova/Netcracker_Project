@@ -10,7 +10,10 @@ import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
+import ru.vsu.netcracker.parking.frontend.exceptions.ResourceNotFoundException;
+import ru.vsu.netcracker.parking.frontend.exceptions.UserAlreadyExistsException;
 import ru.vsu.netcracker.parking.frontend.json.EvacServiceJsonConverter;
 import ru.vsu.netcracker.parking.frontend.json.JsonConverter;
 import ru.vsu.netcracker.parking.frontend.objects.*;
@@ -64,7 +67,7 @@ public class ObjService {
     }
 
     @Cacheable(value = "objects-cache", key = "#id", unless = "#result.typeId != 3")
-    public Obj get(long id) {
+    public Obj get(long id) throws ResourceNotFoundException {
         JsonNode jsonNode = parkingBackendRestTemplate.getForObject("restapi/objects/" + id, JsonNode.class);
         Obj obj = jsonConverter.jsonToObject(jsonNode);
         return obj;
@@ -75,8 +78,9 @@ public class ObjService {
     }
 
     @CachePut(value = "objects-cache", key = "#obj.id", unless = "#result.typeId != 3")
-    public Obj save(Obj obj) {
+    public Obj save(Obj obj) throws UserAlreadyExistsException {
         JsonNode jsonNode = jsonConverter.objToJson(obj);
+
         if (obj.getId() == 0) {
             JsonNode jsonResponse = parkingBackendRestTemplate.postForObject("restapi/objects", jsonNode, JsonNode.class);
             obj = jsonConverter.jsonToObject(jsonResponse);
@@ -91,13 +95,13 @@ public class ObjService {
         parkingBackendRestTemplate.delete("restapi/objects" + id);
     }
 
-    public Obj getObjByUsername(String username) {
+    public Obj getObjByUsername(String username) throws ResourceNotFoundException {
+        ResponseEntity<JsonNode> response;
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "application/json");
         HttpEntity<String> entity = new HttpEntity<>("\"" + username + "\"", headers);
-        ResponseEntity<JsonNode> response = parkingBackendRestTemplate.exchange("restapi/users/get-user", HttpMethod.POST, entity, JsonNode.class);
+        response = parkingBackendRestTemplate.exchange("restapi/users/get-user", HttpMethod.POST, entity, JsonNode.class);
         JsonNode jsonNode = response.getBody();
-        if (jsonNode == null) return null;
         Obj obj = jsonConverter.jsonToObject(jsonNode);
         return obj;
     }
@@ -108,7 +112,7 @@ public class ObjService {
     private final long ROLE_USER_ID = 3L;
     private final long USER_OBJECT_TYPE_ID = 2L;
 
-    public void registerNewUser(Obj obj) {
+    public void registerNewUser(Obj obj) throws UserAlreadyExistsException {
         obj.getReferences().put(ROLE_ATTRIBUTE_ID, ROLE_USER_ID);
         String rawPassword = obj.getValues().get(PASSWORD_ATTRIBUTE_ID);
         String encodedPassword = passwordEncoder.encode(rawPassword, obj.getValues().get(EMAIL_ATTRIBUTE_ID).getBytes());
@@ -116,25 +120,4 @@ public class ObjService {
         obj.setTypeId(USER_OBJECT_TYPE_ID);
         this.save(obj);
     }
-
-    // ToDo IMPLEMENT EVAC SERVICE INTEGRATION BELOW
-
-    public JsonNode sendEvacRequest(long parkingId) {
-        Obj parking = get(parkingId);
-        JsonNode jsonNode = evacServiceJsonConverter.createJsonRequest(parking);
-        return jsonNode;
-        //new RestTemplate().postForObject("http://localhost:8081/evac/display-request", jsonNode, JsonNode.class);
-        //JsonNode jsonResponse = evacServiceRestTemplate.postForObject("/orders", jsonNode, JsonNode.class);
-        //long id = evacServiceJsonConverter.parseJsonResponse(jsonResponse);
-        //long id = jsonConverter.extractEvacOrderIdFromJson
-        // obj. set evac_order_id
-        //update database and cache
-    }
-
-    public void updateEvacOrderStatus(Obj obj) {
-        //JsonNode jsonNode = jsonConverter.objToJson(obj);
-        //evacServiceRestTemplate.postForObject("", jsonNode, JsonNode.class);
-    }
-
-
 }

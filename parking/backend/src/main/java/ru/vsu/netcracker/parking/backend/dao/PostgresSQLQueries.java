@@ -103,4 +103,10 @@ public class PostgresSQLQueries {
             "SELECT p.object_id FROM \"PARAMS\" p\n" +
                     "WHERE (p.attr_id = ? AND p.value = ?) OR\n" +
                     "(p.attr_id = ? AND p.value = ?)";
+
+    public static final String COUNT_OBJECTS_WITH_PHONE_OR_EMAIL =
+            "SELECT count(*) \n" +
+                    "FROM \"PARAMS\" \n" +
+                    "WHERE (attr_id = ? AND value = ?) OR \n" +
+                    "(attr_id = ? AND value = ?)";
 }

@@ -1,3 +1,12 @@
+#services:
+#    parking-backend:
+#        url: http://backend.parkingo.svc.cluster.local:8080
+#        username: rest@gmail.com
+#        password: cmVzdEBnbWFpbC5jb21tB9hVpucaKSiH/KIbrrqH7Ay0obL+KS42xpxd87TmFA==
+#    evac:
+#        url: someUrl
+#        username: someUsername
+#        password: somePassword
 services:
     parking-backend:
         url: http://localhost:8080/
@@ -7,3 +16,15 @@ services:
         url: someUrl
         username: someUsername
         password: somePassword
+
+#services:
+#    parking-backend:
+#        url: http://backend-parkingo.192.168.0.18.nip.io/
+#        username: rest@gmail.com
+#        password: cmVzdEBnbWFpbC5jb21tB9hVpucaKSiH/KIbrrqH7Ay0obL+KS42xpxd87TmFA==
+#    evac:
+#        url: someUrl
+#        username: someUsername
+#        password: somePassword
+
+# app.parkingo.svc.cluster.local:8080

@@ -1,7 +1,6 @@
 package ru.vsu.netcracker.parking.frontend.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -10,6 +9,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.stereotype.Service;
+import ru.vsu.netcracker.parking.frontend.exceptions.ResourceNotFoundException;
 import ru.vsu.netcracker.parking.frontend.objects.Obj;
 import ru.vsu.netcracker.parking.frontend.services.ObjService;
 
@@ -23,7 +23,6 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
     private final long USER = 3L;
     private final long REST_API_USER = 4L;
 
-    private final long EMAIL_ATTRIBUTE_ID = 202L;
     private final long PASSWORD_ATTRIBUTE_ID = 203L;
     private final long ROLE_ATTRIBUTE_ID = 200L;
 
@@ -43,9 +42,12 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         String actualPassword = authentication.getCredentials().toString();
         String encodedActualPassword = passwordEncoder.encode(actualPassword, username.getBytes());
 
-        Obj obj = objService.getObjByUsername(username);
-        if (obj == null) throw new BadCredentialsException("Bad Credentials");
-
+        Obj obj;
+        try {
+            obj = objService.getObjByUsername(username);
+        } catch (ResourceNotFoundException e) {
+            throw new BadCredentialsException("Bad Credentials");
+        }
         String expectedPassword = obj.getValues().get(PASSWORD_ATTRIBUTE_ID);
 
         if (!passwordEncoder.matches(passwordEncoder.decode(encodedActualPassword), passwordEncoder.decode(expectedPassword))) {

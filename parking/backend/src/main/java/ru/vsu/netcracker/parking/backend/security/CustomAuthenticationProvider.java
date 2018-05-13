@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import ru.vsu.netcracker.parking.backend.dao.ObjectsDAO;
 import ru.vsu.netcracker.parking.backend.models.Obj;
 
-import java.util.Base64;
 import java.util.List;
 
 @Service
@@ -45,7 +44,6 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         Obj obj;
         try {
             obj = objectsDAO.getObjByUserName(username);
-            if (obj == null) throw new BadCredentialsException("Bad Credentials");
 
             String expectedPassword = obj.getValues().get(PASSWORD_ATTRIBUTE_ID);
 

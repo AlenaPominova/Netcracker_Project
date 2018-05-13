@@ -3,15 +3,9 @@ package ru.vsu.netcracker.parking.backend.controllers;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.vsu.netcracker.parking.backend.models.Attributes;
 import ru.vsu.netcracker.parking.backend.services.ObjService;
-
-import javax.xml.ws.Response;
-import java.util.Map;
 
 @RestController
 @RequestMapping(value = "/restapi")
@@ -63,6 +57,4 @@ class RestObjController {
     public void deleteObj(@PathVariable long objectId) {
         objService.deleteObj(objectId);
     }
-
-
 }

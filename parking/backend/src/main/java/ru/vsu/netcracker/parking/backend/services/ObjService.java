@@ -3,7 +3,6 @@ package ru.vsu.netcracker.parking.backend.services;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import ru.vsu.netcracker.parking.backend.dao.ObjectsDAO;
 import ru.vsu.netcracker.parking.backend.json.JsonConverter;
@@ -12,7 +11,6 @@ import ru.vsu.netcracker.parking.backend.models.Obj;
 import ru.vsu.netcracker.parking.backend.security.CustomAuthenticationProvider;
 
 import javax.annotation.PostConstruct;
-import java.util.Map;
 
 @Service
 public class ObjService {
@@ -67,11 +65,7 @@ public class ObjService {
     }
 
     public JsonNode getObjByUsernameAsJson(String username) {
-        try {
-            Obj obj = dao.getObjByUserName(username);
-            return dao.getObjAsJSON(obj.getId());
-        } catch (EmptyResultDataAccessException e) {
-            return null;
-        }
+        Obj obj = dao.getObjByUserName(username);
+        return dao.getObjAsJSON(obj.getId());
     }
 }
