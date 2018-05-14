@@ -5,6 +5,7 @@
     <#setting locale="en">
     <#setting number_format="0.######">
     <#assign url = springMacroRequestContext.getPathToServlet() >
+
     <meta charset="utf-8" />
     <!-- Stylesheet -->
     <link href="http://yastatic.net/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
@@ -43,10 +44,11 @@
         <@security.authorize access="isAuthenticated()">
             <ul class="nav navbar-nav navbar-right">
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> <@security.authentication property="principal" /> <span class="caret"></span></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> <@security.authentication property="principal" var="user" /> <span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li>
-                            <a href="http://www.fgruber.ch/" target="_blank">
+
+                            <a href="${url}/profiles/${currentUserId!}">
                                 <span class="glyphicon glyphicon-cog" aria-hidden="true"></span> Личный кабинет</a>
                         </li>
                         <li>
@@ -88,7 +90,7 @@
                 var url = '${url}'
                 var parking = [];
                 parking.name = '${parkin.name}';
-                parking.address = '${parkin.values?api.get(303?long)}'
+                parking.address = '${parkin.values?api.get(101?long)}'
                 parking.latitude = '${parkin.values?api.get(301?long)}'
                 parking.longitude = '${parkin.values?api.get(302?long)}'
                 parking.price = '${parkin.values?api.get(304?long)}'
@@ -119,7 +121,7 @@
                             "<b>Цена: </b>" + parking.price + " руб/час<br>" +
                             "<b>Рейтинг: </b>" + parking.rating + "<br>" +
                             "<b>Свободных мест: </b>" + parking.free_spots_count + "<br>" +
-                            "<a href=\"/objects/' + parking.owner_id + '\">Страница владельца</a><br><br>" +
+                            '<br><a href="/profiles/' + parking.owner_id + '"> Страница владельца: </a>' +
                             "<button type=\"submit\" class=\"btn btn-default\">Взять в аренду</button>");
                     </@security.authorize>
                     markers.addLayer(marker);
@@ -160,7 +162,7 @@
                     var url = '${url}'
                     var parking = [];
                     parking.name = '${parkin.name}';
-                    parking.address = '${parkin.values?api.get(303?long)}'
+                    parking.address = '${parkin.values?api.get(101?long)}'
                     parking.latitude = '${parkin.values?api.get(301?long)}'
                     parking.longitude = '${parkin.values?api.get(302?long)}'
                     parking.price = '${parkin.values?api.get(304?long)}'

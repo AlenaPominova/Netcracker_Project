@@ -1,11 +1,13 @@
 package ru.vsu.netcracker.parking.frontend.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import ru.vsu.netcracker.parking.frontend.exceptions.ResourceNotFoundException;
 import ru.vsu.netcracker.parking.frontend.exceptions.UserAlreadyExistsException;
 import ru.vsu.netcracker.parking.frontend.objects.Obj;
 import ru.vsu.netcracker.parking.frontend.services.ObjService;
@@ -26,19 +28,28 @@ public class ObjController {
     public String main(Model model) {
         Map<Long, Obj> map = objService.getAll();
         model.addAttribute("parkingsList", map);
-
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        try {
+            long currentUserId = objService.getObjByUsername(auth.getPrincipal().toString()).getId();
+            model.addAttribute("currentUserId", currentUserId);
+        } catch (ResourceNotFoundException e) {
+            e.printStackTrace();
+        }
         return "parkings";
     }
 
-    @GetMapping(value = "/profile")
-    public String profile(Model model) {
-        Map<Long, Obj> map = objService.getAll();
-        model.addAttribute("parkingsList", map);
-        System.out.println(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
-        //model.addAttribute("user", objService.getObjByUsername())
+    @GetMapping(value = "/profiles/{objectId}")
+    public String profile(@PathVariable long objectId, Model model) {
+        model.addAttribute("user", objService.get(objectId));
+        model.addAttribute("ownedParkings", objService.getAllParkingsOwnedByUser(objectId));
         return "profile";
-        return "parkings";
     }
+
+//    @GetMapping(value = "/profiles/{objectId}")
+//    @ResponseBody
+//    public Obj profile(@PathVariable long objectId, Model model) {
+//        return objService.get(objectId);
+//    }
 
     @PostMapping(value = "/register")
     public String register(@ModelAttribute("obj") Obj obj) {
