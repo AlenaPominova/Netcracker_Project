@@ -6,6 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.vsu.netcracker.parking.frontend.objects.Obj;
 import ru.vsu.netcracker.parking.frontend.services.ObjService;
+
 import java.util.Map;
 
 @Controller
@@ -33,6 +34,18 @@ public class ParkingsController {
         model.addAttribute("parkingsList", map);
 
         return "parking/parkings";
+    }
+
+    @PutMapping(value = "/{parkingId}")
+    public String takeParking(@PathVariable long parkingId,
+                              @ModelAttribute("obj") Obj parking,
+                              @RequestParam(value = "take", required = false) String take) {
+        if (take != null) {
+            objService.takeParking(parking);
+        } else {
+            objService.save(parking);
+        }
+        return "redirect:/login?reg";
     }
 
 
