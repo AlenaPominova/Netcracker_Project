@@ -42,6 +42,7 @@ INSERT INTO public."ATTRIBUTES"(
 	
 	(100, 1, 'rating', null),
 	(101, 2, 'address', null),
+	(102, 2, 'img_url', null),
 	
 	(300, 0, 'owner_id', null),
 	(301, 1, 'latitude', null),
@@ -74,6 +75,7 @@ INSERT INTO public."PARAMS"(
 		(205, 100, null, '1981-11-23', null),
 		(206, 100,'Netcracker', null, null),
 		(200, 100, '4.99', null, null),
+		(102, 100, 'http://www.our3dvr.com/data/wallpapers/148/WDF_1889937.png', null, null),		
 		
 		(201, 200,'+79501231212', null, null),
 		(202, 200,'owner@gmail.com', null, null),
@@ -104,9 +106,8 @@ INSERT INTO public."PARAMS"(
 		(306, 12, null , to_timestamp('20:00', 'hh24:mi'), null),				
 		(307, 12, '0', null, null),
 		(308, 12, null , null, 1),
-		(100, 12, '5.0',null, null)
-		
-		
+		(100, 12, '5.0',null, null)	,
+		(102, 12, 'http://domovoi-znak.ru/components/com_jshopping/files/img_products/full_no_parking_1.png',null, null)		
 ;
 
 INSERT INTO public."ATTR_OBJECT_TYPES"(
@@ -123,6 +124,8 @@ INSERT INTO public."ATTR_OBJECT_TYPES"(
 			(100, 3, 0),
 			(101, 2, 0),
 			(101, 3, 0),
+			(102, 2, 0),
+			(102, 3, 0),
 			
 			(300, 3, 0),
 			(301, 3, 0),
