@@ -29,11 +29,13 @@ public class ObjController {
         Map<Long, Obj> map = objService.getAll();
         model.addAttribute("parkingsList", map);
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        try {
-            long currentUserId = objService.getObjByUsername(auth.getPrincipal().toString()).getId();
-            model.addAttribute("currentUserId", currentUserId);
-        } catch (ResourceNotFoundException e) {
-            e.printStackTrace();
+        if (auth.isAuthenticated()) {
+            try {
+                long currentUserId = objService.getObjByUsername(auth.getPrincipal().toString()).getId();
+                model.addAttribute("currentUserId", currentUserId);
+            } catch (ResourceNotFoundException e) {
+                e.printStackTrace();
+            }
         }
         return "parkings";
     }

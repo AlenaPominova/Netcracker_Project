@@ -36,6 +36,12 @@ public class ParkingsController {
         return "parking/parkings";
     }
 
+    @PostMapping(value = "")
+    public String createParking(@ModelAttribute("obj") Obj parking) {
+        Obj obj = objService.save(parking);
+        return "redirect:/profiles/" + obj.getId();
+    }
+
     @PutMapping(value = "/{parkingId}")
     public String takeParking(@PathVariable long parkingId,
                               @ModelAttribute("obj") Obj parking,

@@ -5,10 +5,10 @@
          xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_3_1.xsd"
          version="2.4">
 
-    <error-page>
-        <error-code>404</error-code>
-        <location>/WEB-INF/ftl/404.ftl</location>
-    </error-page>
+    <!--<error-page>-->
+        <!--<error-code>404</error-code>-->
+        <!--<location>/WEB-INF/ftl/404.ftl</location>-->
+    <!--</error-page>-->
 
     <listener>
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
