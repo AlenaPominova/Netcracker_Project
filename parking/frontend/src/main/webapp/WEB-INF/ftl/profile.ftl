@@ -24,7 +24,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#"><img src="https://i.imgur.com/oH893fM.png" alt="Воронежский паркинг"></a>
+            <a class="navbar-brand" href="${url}"><img src="https://i.imgur.com/oH893fM.png" alt="Воронежский паркинг"></a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
@@ -42,12 +42,14 @@
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> <@security.authentication property="principal" /> <span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li>
-                            <a href="http://www.fgruber.ch/" target="_blank">
-                                <span class="glyphicon glyphicon-cog" aria-hidden="true"></span> Личный кабинет</a>
+                            <a href="${url}" target="_blank">
+                                <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>Личный кабинет
+                            </a>
                         </li>
                         <li>
-                            <form method="get" action="${url}/logout">
-                                <input type="submit" value="LOGOUT"/>
+                            <form class="logout-form" method="get" action="${url}/logout">
+                                <span class="glyphicon glyphicon-log-out" aria-hidden="true"></span>
+                                <input type="submit" value="Выйти"/>
                             </form>
                         </li>
                     </ul>
@@ -70,13 +72,13 @@
     <div class="row" style="padding-left: 15px; padding-right: 15px; padding-top: 50px;">
         <div class="col-lg-6" style="padding-left: 0px; padding-right: 0px; padding-top: 0px;">
             <div class="col-lg-4" style="padding-left: 0px;">
-                <img src="img/profile_photo.jpg" style="width: 200px; height: 200px; border-radius: 50px;">
+                <img src="http://www.koopia.ee/wp-content/uploads/2015/02/unknown-person.jpg" style="width: 200px; height: 200px; border-radius: 50px;">
             </div>
             <div class="col-lg-8 about-user" style="padding-top: 0px; margin-top: 0px;">
-                <h2>Карпов Евгений</h2><p>( Владелец )</p>
-                <h3 style="margin-top: 20px;"><b>Номер телефона:</b> +7 (999) 999 99 99</h3>
-                <h3><b>E-mail:</b> believedream95@gmail.com</h3>
-                <h3><b>Рейтинг:</b> 4,78</h3>
+                <h2>${user.name}</h2><p>( Владелец )</p>
+                <h3 style="margin-top: 20px;"><b>Номер телефона:</b> ${user.values?api.get(201?long)}</h3>
+                <h3><b>E-mail:</b> ${user.values?api.get(202?long)}</h3>
+                <h3><b>Рейтинг:</b> 5</h3>
                 <button class="btn-chg">РЕДАКТИРОВАТЬ</button>
             </div>
             <div class="col-lg-12 about-user" style="padding-left: 0px; margin-top: 30px;">
@@ -90,39 +92,25 @@
             <div class="col-lg-12 about-parking" style="padding-top: 0px; margin-top: 0px;">
                 <h2>Список парковок:</h2>
             </div>
-            <div class="col-lg-12">
-                <div class="col-lg-5 parking-img">
-                    <img src="" style="width: 200px; height: 150px; border-radius: 10px;">
+            <#list ownedParkings?keys as key>
+                <#assign parkin = ownedParkings?api.get(key)>
+                <div class="col-lg-12">
+                    <div class="col-lg-5 parking-img">
+                        <img src="https://renderman.pixar.com/assets/camaleon_cms/image-not-found-4a963b95bf081c3ea02923dceaeb3f8085e1a654fc54840aac61a57a60903fef.png" style="width: 200px; height: 150px; border-radius: 10px;">
+                    </div>
+                    <div class="col-lg-7 parking">
+                        <h2>${parkin.name}</h2>
+                        <h3 style="margin-top: 5px;"><b>Адрес:</b> ${parkin.values?api.get(101?long)}</h3>
+                        <h3 style="margin-top: 5px;"><b>Координаты:</b> ${parkin.values?api.get(301?long)} , ${parkin.values?api.get(302?long)}</h3>
+                        <h3 style="margin-top: 5px;"><b>Стоимость:</b> ${parkin.values?api.get(304?long)} рублей/час</h3>
+                        <h3><b>Свободные часы:</b> с ${(parkin.dateValues?api.get(305?long))?time} до ${parkin.dateValues?api.get(306?long)?time}</h3>
+                        <h3><b>Свободно мест:</b> ${parkin.values?api.get(307?long)}</h3>
+                        <h3><b>Рейтинг парковки:</b> ${parkin.values?api.get(100?long)?number}</h3>
+                        <h3><b>Статус:</b> ${parkin.listValues?api.get(308?long)}</h3>
+                        <button class="btn-chg">РЕДАКТИРОВАТЬ</button>
+                    </div>
                 </div>
-                <div class="col-lg-7 parking">
-                    <h2>Парковка №256</h2>
-                    <h3 style="margin-top: 5px;"><b>Стоимость:</b> 100 рублей/час</h3>
-                    <h3><b>Свободные часы:</b> с 8:00 до 16:00</h3>
-                    <button class="btn-chg">РЕДАКТИРОВАТЬ</button>
-                </div>
-            </div>
-            <div class="col-lg-12">
-                <div class="col-lg-5 parking-img">
-                    <img src="" style="width: 200px; height: 150px; border-radius: 10px;">
-                </div>
-                <div class="col-lg-7 parking">
-                    <h2>Парковка №256</h2>
-                    <h3 style="margin-top: 5px;"><b>Стоимость:</b> 100 рублей/час</h3>
-                    <h3><b>Свободные часы:</b> с 8:00 до 16:00</h3>
-                    <button class="btn-chg">РЕДАКТИРОВАТЬ</button>
-                </div>
-            </div>
-            <div class="col-lg-12">
-                <div class="col-lg-5 parking-img">
-                    <img src="" style="width: 200px; height: 150px; border-radius: 10px;">
-                </div>
-                <div class="col-lg-7 parking">
-                    <h2>Парковка №256</h2>
-                    <h3 style="margin-top: 5px;"><b>Стоимость:</b> 100 рублей/час</h3>
-                    <h3><b>Свободные часы:</b> с 8:00 до 16:00</h3>
-                    <button class="btn-chg">РЕДАКТИРОВАТЬ</button>
-                </div>
-            </div>
+            </#list>
         </div>
     </div>
 </div>

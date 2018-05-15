@@ -29,7 +29,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#"><img src="https://i.imgur.com/oH893fM.png" alt="Воронежский паркинг"></a>
+            <a class="navbar-brand" href="${url}"><img src="https://i.imgur.com/oH893fM.png" alt="Воронежский паркинг"></a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
@@ -44,7 +44,7 @@
         <@security.authorize access="isAuthenticated()">
             <ul class="nav navbar-nav navbar-right">
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> <@security.authentication property="principal" var="user" /> <span class="caret"></span></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> <@security.authentication property="principal" /> <span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li>
 
@@ -52,8 +52,9 @@
                                 <span class="glyphicon glyphicon-cog" aria-hidden="true"></span> Личный кабинет</a>
                         </li>
                         <li>
-                            <form method="get" action="${url}/logout">
-                                <input type="submit" value="LOGOUT"/>
+                            <form class="logout-form" method="get" action="${url}/logout">
+                                <span class="glyphicon glyphicon-log-out" aria-hidden="true"></span>
+                                <input type="submit" value="Выйти"/>
                             </form>
                         </li>
                     </ul>
