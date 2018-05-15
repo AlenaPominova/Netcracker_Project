@@ -106,6 +106,19 @@ public class ObjService {
         return obj;
     }
 
+    private final long OWNER_ID_ATTRIBUTE_ID = 300L;
+
+    public Map<Long, Obj> getAllParkingsOwnedByUser(long userId) {
+        Map<Long, Obj> parkings = getAll();
+        Map<Long, Obj> ownedParkings = getAll();
+        parkings.forEach((k,v) -> {
+            if(v.getReferences().get(OWNER_ID_ATTRIBUTE_ID) == userId) {
+                ownedParkings.put(k,v);
+            }
+        });
+        return ownedParkings;
+    }
+
     private final long EMAIL_ATTRIBUTE_ID = 202L;
     private final long PASSWORD_ATTRIBUTE_ID = 203L;
     private final long ROLE_ATTRIBUTE_ID = 200L;
