@@ -20,6 +20,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
+<div class="loading-window">
+    <div class="car">
+        <div class="strike"></div>
+        <div class="strike strike2"></div>
+        <div class="strike strike3"></div>
+        <div class="strike strike4"></div>
+        <div class="strike strike5"></div>
+        <div class="car-detail spoiler"></div>
+        <div class="car-detail back"></div>
+        <div class="car-detail center"></div>
+        <div class="car-detail center1"></div>
+        <div class="car-detail front"></div>
+        <div class="car-detail wheel"></div>
+        <div class="car-detail wheel wheel2"></div>
+    </div>
+    <script type="text/javascript">
+        $(function(){
+            var selectedEffect = "scale";
+            var options = { percent: 0 };
+            $('.loading-window').show(0).delay(500).animate({opacity:'0'},600, function() { $('.loading-window').hide() });
+        });
+    </script>
+    <div class="text">
+        <span>Loading</span><span class = "dots">...</span>
+    </div>
+</div>
 <nav class="navbar navbar-default">
     <div class="container">
         <!-- Brand and toggle get grouped for better mobile display -->
