@@ -112,8 +112,7 @@
                             "<b>Открыта с: </b>" + parking.open_time + "<b> до:</b>" + parking.close_time + "<br>" +
                             "<b>Цена: </b>" + parking.price + " руб/час<br>" +
                             "<b>Рейтинг: </b>" + parking.rating + "<br>" +
-                            "<b>Свободных мест: </b>" + parking.free_spots_count + "<br>" +
-                            "<a href=\"/objects/' + parking.owner_id + '\">Страница владельца</a><br><br>");
+                            "<b>Свободных мест: </b>" + parking.free_spots_count + "<br>");
                     </@security.authorize>
                     <@security.authorize access="isAuthenticated()">
                         marker.bindPopup("<h4><b>" + parking.name + "</b></h4><br>" +

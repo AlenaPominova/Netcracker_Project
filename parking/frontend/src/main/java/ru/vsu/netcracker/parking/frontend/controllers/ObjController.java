@@ -77,16 +77,16 @@ public class ObjController {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("obj", new Obj());
         if (error != null) {
-            modelAndView.addObject("error", "Wrong password. Try again or click Forgot password to reset it.");
+            modelAndView.addObject("error", "Неверный пароль. Повторите вход.");
         }
         if (logout != null) {
-            modelAndView.addObject("message", "You've been logged out successfully.");
+            modelAndView.addObject("message", "Выход произведен успешно.");
         }
         if (reg != null) {
-            modelAndView.addObject("message", "Registration complete. You can login now.");
+            modelAndView.addObject("message", "Регистрация прошла успешно. Теперь вы можете залогиниться.");
         }
         if (alreadyExists != null) {
-            modelAndView.addObject("reg-error", "User with such email or phone already exists.");
+            modelAndView.addObject("reg-error", "Пользователь с таким телефоном (почтой) уже зарегистрирован.");
         }
         modelAndView.setViewName("login");
 
