@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.NoHandlerFoundException;
 import ru.vsu.netcracker.parking.frontend.exceptions.ResourceNotFoundException;
 import ru.vsu.netcracker.parking.frontend.exceptions.UserAlreadyExistsException;
 import ru.vsu.netcracker.parking.frontend.objects.Obj;
@@ -92,5 +93,15 @@ public class ObjController {
         modelAndView.setViewName("login");
 
         return modelAndView;
+    }
+
+    @ExceptionHandler(NoHandlerFoundException.class)
+    public String handle(Exception ex) {
+        return "redirect:/404";
+    }
+
+    @RequestMapping(value = {"/404"}, method = RequestMethod.GET)
+    public String NotFoudPage() {
+        return "404";
     }
 }

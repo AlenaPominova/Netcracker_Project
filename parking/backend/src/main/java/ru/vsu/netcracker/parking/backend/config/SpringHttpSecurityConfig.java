@@ -12,7 +12,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import ru.vsu.netcracker.parking.backend.security.CustomAuthenticationProvider;
 import ru.vsu.netcracker.parking.backend.security.CustomSHA256PasswordEncoder;
 
-@EnableWebSecurity(debug = false)
+@EnableWebSecurity(debug = true)
 public class SpringHttpSecurityConfig {
 
     @Autowired
@@ -53,11 +53,15 @@ public class SpringHttpSecurityConfig {
         protected void configure(HttpSecurity http) throws Exception {
             http
                     .authorizeRequests()
+                    .antMatchers("/login*").anonymous()
                     .anyRequest().hasRole("ADMIN")
                     .and()
                     .formLogin()
-                    .defaultSuccessUrl("/", true)
-                    .failureUrl("/404")
+//                    .loginPage("/login")
+//                    .defaultSuccessUrl("/management")
+//                    .failureUrl("/login?error=true")
+//                    .and()
+//                    .logout().logoutSuccessUrl("/login")
                     .and()
                     .csrf().disable();
         }

@@ -18,6 +18,11 @@ public class ObjController {
         this.objService = objService;
     }
 
+    @GetMapping(value = "/login")
+    public String reg() {
+        return "login";
+    }
+
     @GetMapping("/{objectId}")
     public ModelAndView getObj(@PathVariable long objectId) {
         Obj obj = objService.getObj(objectId);
