@@ -99,7 +99,7 @@
 </nav>
 <div class="container-fluid" style="background-color: black; padding: 0; margin: 0;">
     <div class="row" style="margin: 0; padding: 0;">
-        <div class="col-md-9" style="padding: 0;">
+        <div class="col-lg-9" style="padding: 0;">
             <div id="map" class="map"></div>
             <script>
                 var mapopts =  {
@@ -204,49 +204,48 @@
                 }
             </script>
         </div>
-        <div class="col-md-3 filter" style="background-color: #0e182e;height: 91.5vh">
-            <h1>ФИЛЬТР ПАРКОВОК</h1>
-            <div class="filter-choose" style="margin-top: 40px; margin-left: 20px;">
+        <div class="col-lg-3 filter">
+            <div class="filter-choose">
+                <h1>ФИЛЬТР ПАРКОВОК</h1>
+                <p class="filter-label"><span class="glyphicon glyphicon-time" style="padding-right: 10px;"></span> Свободное время </p>
                 <div class="form-group">
-                    <label class="col-md-3 control-label" style="padding-left: 0px; margin-left: 0px;">Время от</label>
-                    <div class="col-md-4">
-                        <input class="form-control" type="time" value="13:45:00" id="example-time-input">
-                    </div>
-                    <label class="col-md-1 control-label">до</label>
-                    <div class="col-md-4">
-                        <input class="form-control" type="time" value="13:45:00" id="example-time-input">
-                    </div>
+                    <p class="label"> От</p>
+                    <input class="input-type-time" type="time" value="13:45:00" id="example-time-input">
+                    <p class="label" style="margin-left: 10px;"> До </p>
+                    <input class="input-type-time" type="time" value="13:45:00" id="example-time-input">
                 </div>
+
+                <p class="filter-label"><span class="glyphicon glyphicon-usd" style="padding-right: 10px;"></span> Стоимость парковки </p>
                 <div class="form-group">
-                    <label class="col-md-3 control-label" style="padding-left: 0px; margin-left: 0px;">Цена от</label>
-                    <div class="col-md-4">
-                        <input class="form-control" type="number" value="0" id="fromPriceInput">
-                    </div>
-                    <label class="col-md-1 control-label">до</label>
-                    <div class="col-md-4">
-                        <input class="form-control" type="number" value="100" id="toPriceInput">
-                    </div>
+                    <p class="label"> От</p>
+                    <input class="input-type-price" type="number" min="1" max="9999" step="1" value="1000" id="fromPriceInput">
+                    <p class="label" style="margin-left: 10px;"> До </p>
+                    <input class="input-type-price" type="number" min="1" max="9999" step="1" value="1" id="toPriceInput">
                 </div>
+
+                <p class="filter-label"><span class="glyphicon glyphicon-star" style="padding-right: 10px;"></span> Рейтинг парковки </p>
                 <div class="form-group">
-                    <label class="col-md-3 control-label" style="padding-left: 0px; margin-left: 0px;">Рейтинг от</label>
-                    <div class="col-md-4">
-                        <input class="form-control" type="number" value="0" id="fromRatingInput">
-                    </div>
-                    <label class="col-md-1 control-label">до</label>
-                    <div class="col-md-4">
-                        <input class="form-control" type="number" value="5" id="toRatingInput">
-                    </div>
+                    <p class="label"> От</p>
+                    <input class="input-type-price" type="number" min="1" max="5" step="1" value="1" id="fromRatingInput">
+                    <p class="label" style="margin-left: 10px;"> До </p>
+                    <input class="input-type-price" type="number" min="1" max="5" step="1" value="5" id="toRatingInput">
                 </div>
-                <div class="form-group">
-                    <div class="main-checkbox">
-                        <input value="None" id="checkbox1" name="check" type="checkbox">
-                        <label for="checkbox1"></label>
-                    </div>
-                    <span class="text">Показывать только доступные</span>
-                </div>
+
                 <div class="form-group">
                     <button class="btn btn-default" onclick="removeAllMarkers()">Применить фильтр</button>
                 </div>
+            </div>
+
+            <div class="warning" style="height: 300px; margin-top: 20px; ">
+                <img src="http://icons.iconarchive.com/icons/custom-icon-design/pretty-office-6/256/warning-icon.png">
+                <h1> ВНИМАНИЕ </h1>
+                <p class="warning-text">В нашей системе действует служба телепортации. В связи с этим рекомендуем вам вовремя забирать свое транспортное
+                    средства с места парковки. Уведовляем наших пользователей, что в случае несоблюдения правил сервиса владелец парковки
+                    в праве вызвать телепартационную службу, либо списать с вашего счета <b>х10</b> стоимости часа.
+                    <br>
+                    <br>
+                </p>
+                <p style="font-style: italic;">С уважение, Администрация ParkinGo</p>
             </div>
         </div>
     </div>
