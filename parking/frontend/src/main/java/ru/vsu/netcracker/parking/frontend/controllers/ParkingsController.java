@@ -53,7 +53,7 @@ public class ParkingsController {
                     objService.takeParking(obj);
                     model.addAttribute("success", "Аренда прошла успешно");
                 } catch (IllegalArgumentException e) {
-                    model.addAttribute("error", "");
+                    model.addAttribute("error", "Ошибка");
                 }
             }
         }
