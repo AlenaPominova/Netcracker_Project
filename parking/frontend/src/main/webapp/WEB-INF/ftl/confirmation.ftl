@@ -73,21 +73,30 @@
                 <div class="col-lg-5 parking-img">
                     <img src="${parking.values?api.get(102?long)!"https://renderman.pixar.com/assets/camaleon_cms/image-not-found-4a963b95bf081c3ea02923dceaeb3f8085e1a654fc54840aac61a57a60903fef.png"}" style="width: 200px; height: 150px; border-radius: 10px;">
                 </div>
-                <div class="col-lg-7 parking">
+                <div class="col-lg-7 col-md-7 parking">
                     <h2>${parking.name}</h2>
-                    <h3 style="margin-top: 5px;"><b>Адрес:</b> ${parking.values?api.get(101?long)}</h3>
-                    <h3 style="margin-top: 5px;"><b>Координаты:</b> ${parking.values?api.get(301?long)} , ${parking.values?api.get(302?long)}</h3>
-                    <h3 style="margin-top: 5px;"><b>Стоимость:</b> ${parking.values?api.get(304?long)} рублей/час</h3>
+                    <h3><b>Адрес:</b> ${parking.values?api.get(101?long)}</h3>
+                    <h3><b>Координаты:</b> ${parking.values?api.get(301?long)} , ${parking.values?api.get(302?long)}</h3>
+                    <h3><b>Стоимость:</b> ${parking.values?api.get(304?long)} рублей/час</h3>
                     <h3><b>Свободные часы:</b> с ${(parking.dateValues?api.get(305?long))?time} до ${parking.dateValues?api.get(306?long)?time}</h3>
                     <h3><b>Свободно мест:</b> ${parking.values?api.get(307?long)}</h3>
                     <h3><b>Рейтинг парковки:</b> ${parking.values?api.get(100?long)?number}</h3>
+                    <h3><b>Владелец:</b> ${parking.references?api.get(300?long)}</h3>
                     <h3><b>Статус:</b> ${parking.listValues?api.get(308?long)}</h3>
-                    <button class="btn-chg">РЕДАКТИРОВАТЬ</button>
+                </div>
 
-                    <form method="post" action="' + url + '/parkings/' + parking.id + '?take">' +
-                        <input type="hidden" name="_method" value="put"/>' +
-                        <input type="submit" value="Взять в аренду" />' +
-                    </form>
+                ТУТ ДОЛЖНО БЫТЬ СОГЛАШЕНИЕ <br>
+
+                <a href="${url}/parkings/${parking.id}/rent?status=confirmed"> Я прочитал соглашение и согласен со всеми условиями </a>
+
+                <form action="${url}/parkings/${parking.id}?rent=confirmed">
+                    <button type="submit">Я прочитал соглашение и согласен со всеми условиями</button>
+                </form>
+
+                    <#--<form method="post" action="' + url + '/parkings/' + parking.id + '?take">' +-->
+                        <#--<input type="hidden" name="_method" value="put"/>' +-->
+                        <#--<input type="submit" value="Взять в аренду" />' +-->
+                    <#--</form>-->
                 </div>
             </div>
         </div>

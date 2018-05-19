@@ -27,19 +27,37 @@ public class ParkingsController {
         Obj obj = objService.get(parkingId);
         model.addAttribute("parking", obj);
         if (rent != null) {
-            if(rent.equals("confirmation")){
+            if (rent.equals("confirmation")) {
                 return "confirmation";
             }
-            if(rent.equals("confirmed")){
+            if (rent.equals("confirmed")) {
                 objService.takeParking(obj);
                 return "redirect:/parkings/" + obj.getId() + "?rent=success";
             }
-            if(rent.equals("success")){
+            if (rent.equals("success")) {
                 model.addAttribute("rentSuccess", "Вы успешно взяли в аренду парковку #" + String.valueOf(parkingId));
                 return "redirect:/parkings/" + obj.getId() + "?rent=success";
             }
         }
         return "parking";
+    }
+
+    @GetMapping(value = "/{parkingId}/rent")
+    public String rentParking(@PathVariable long parkingId, Model model,
+                              @RequestParam(value = "status", required = false) String status) {
+        Obj obj = objService.get(parkingId);
+        model.addAttribute("parking", obj);
+        if (status != null) {
+            if (status.equals("confirmed")) {
+                try {
+                    objService.takeParking(obj);
+                    model.addAttribute("success", "Аренда прошла успешно");
+                } catch (IllegalArgumentException e) {
+                    model.addAttribute("error", "");
+                }
+            }
+        }
+        return "confirmation";
     }
 
     @GetMapping(value = "")

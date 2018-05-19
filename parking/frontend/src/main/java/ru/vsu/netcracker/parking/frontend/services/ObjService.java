@@ -92,7 +92,7 @@ public class ObjService {
         parkingBackendRestTemplate.delete("restapi/objects" + id);
     }
 
-    public Obj getObjByUsername(String username) throws ResourceNotFoundException {
+    public Obj getObjByUsername(String username) throws IllegalArgumentException, ResourceNotFoundException {
         ResponseEntity<JsonNode> response;
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type", "application/json");
@@ -135,10 +135,10 @@ public class ObjService {
     private final long FREE_SPOTS_COUNT_ID = 307L;
     private final long STATUS_ID = 308L;
 
-    public void takeParking(Obj parking) {
+    public void takeParking(Obj parking) throws IllegalArgumentException{
         long freeSpotsCount = Long.valueOf(parking.getValues().get(FREE_SPOTS_COUNT_ID));
         parking.getValues().put(FREE_SPOTS_COUNT_ID, String.valueOf(--freeSpotsCount));
-        parking.getValues().put(STATUS_ID, "Occupied");
+        parking.getListValues().put(STATUS_ID, "Occupied");
         save(parking);
     }
 }
