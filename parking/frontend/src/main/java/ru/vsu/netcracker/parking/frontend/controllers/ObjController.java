@@ -1,6 +1,7 @@
 package ru.vsu.netcracker.parking.frontend.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -30,7 +31,7 @@ public class ObjController {
         Map<Long, Obj> map = objService.getAll();
         model.addAttribute("parkingsList", map);
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth.isAuthenticated()) {
+        if (auth.isAuthenticated() && !(auth instanceof AnonymousAuthenticationToken)) {
             try {
                 long currentUserId = objService.getObjByUsername(auth.getPrincipal().toString()).getId();
                 model.addAttribute("currentUserId", currentUserId);
@@ -47,12 +48,6 @@ public class ObjController {
         model.addAttribute("ownedParkings", objService.getAllParkingsOwnedByUser(objectId));
         return "profile";
     }
-
-//    @GetMapping(value = "/profiles/{objectId}")
-//    @ResponseBody
-//    public Obj profile(@PathVariable long objectId, Model model) {
-//        return objService.get(objectId);
-//    }
 
     @PostMapping(value = "/register")
     public String register(@ModelAttribute("obj") Obj obj) {
@@ -88,20 +83,10 @@ public class ObjController {
             modelAndView.addObject("message", "Регистрация прошла успешно. Теперь вы можете залогиниться.");
         }
         if (alreadyExists != null) {
-            modelAndView.addObject("reg-error", "Пользователь с таким телефоном (почтой) уже зарегистрирован.");
+            modelAndView.addObject("regError", "Пользователь с таким телефоном (почтой) уже зарегистрирован.");
         }
         modelAndView.setViewName("login");
 
         return modelAndView;
-    }
-
-    @ExceptionHandler(NoHandlerFoundException.class)
-    public String handle(Exception ex) {
-        return "redirect:/404";
-    }
-
-    @RequestMapping(value = {"/404"}, method = RequestMethod.GET)
-    public String NotFoudPage() {
-        return "404";
     }
 }

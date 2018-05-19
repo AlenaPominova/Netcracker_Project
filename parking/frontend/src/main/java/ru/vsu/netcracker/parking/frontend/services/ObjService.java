@@ -10,7 +10,6 @@ import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import ru.vsu.netcracker.parking.frontend.exceptions.ResourceNotFoundException;
 import ru.vsu.netcracker.parking.frontend.exceptions.UserAlreadyExistsException;
@@ -21,9 +20,7 @@ import ru.vsu.netcracker.parking.frontend.security.CustomSHA256PasswordEncoder;
 import ru.vsu.netcracker.parking.frontend.utils.CustomRestTemplate;
 
 import javax.annotation.PostConstruct;
-import java.sql.Timestamp;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.Map;
 
 @Service
@@ -85,7 +82,7 @@ public class ObjService {
             JsonNode jsonResponse = parkingBackendRestTemplate.postForObject("restapi/objects", jsonNode, JsonNode.class);
             obj = jsonConverter.jsonToObject(jsonResponse);
         } else {
-            parkingBackendRestTemplate.put("restapi/" + obj.getId(), jsonNode, JsonNode.class);
+            parkingBackendRestTemplate.put("restapi/objects/" + obj.getId(), jsonNode, JsonNode.class);
         }
         return obj;
     }
@@ -110,10 +107,11 @@ public class ObjService {
 
     public Map<Long, Obj> getAllParkingsOwnedByUser(long userId) {
         Map<Long, Obj> parkings = getAll();
-        Map<Long, Obj> ownedParkings = getAll();
-        parkings.forEach((k,v) -> {
-            if(v.getReferences().get(OWNER_ID_ATTRIBUTE_ID) == userId) {
-                ownedParkings.put(k,v);
+        Map<Long, Obj> ownedParkings = new HashMap<>();
+
+        parkings.forEach((k, v) -> {
+            if (v.getReferences().get(OWNER_ID_ATTRIBUTE_ID) == userId) {
+                ownedParkings.put(k, v);
             }
         });
         return ownedParkings;

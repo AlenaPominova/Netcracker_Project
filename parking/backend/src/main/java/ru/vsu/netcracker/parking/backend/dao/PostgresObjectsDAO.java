@@ -89,6 +89,9 @@ public class PostgresObjectsDAO implements ObjectsDAO {
         if (count > 0) {
             throw new UserAlreadyExistsException("User with such email or phone already exists");
         }
+        if(Integer.valueOf(obj.getValues().get(307L)) < 0){
+            throw new IllegalArgumentException("Free spots count can not be less than 0");
+        }
         if (obj.getId() == 0) {
             obj.setId(getGUID());
         }
