@@ -37,7 +37,6 @@
                 <li><a href="#">Тех.поддержка</a></li>
                 <li><a href="#">Связь с нами</a></li>
             </ul>
-
         <@security.authorize access="isAuthenticated()">
             <ul class="nav navbar-nav navbar-right">
                 <li class="dropdown">

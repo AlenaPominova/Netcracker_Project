@@ -32,13 +32,20 @@ public class CustomResponseErrorHandler implements ResponseErrorHandler {
     public void handleError(ClientHttpResponse response) throws IOException {
         // ToDo Log
         HttpStatus statusCode = response.getStatusCode();
-        String responseBody = IOUtils.toString(response.getBody());
+        String errorMessage = IOUtils.toString(response.getBody());
 
         switch (statusCode) {
             case CONFLICT:
-                throw new UserAlreadyExistsException(responseBody);
+                switch (errorMessage) {
+                    case "User with such email or phone already exists":
+                        throw new UserAlreadyExistsException(errorMessage);
+                    case "Free spots count can not be less than 0":
+                        throw new IllegalArgumentException(errorMessage);
+                    default:
+                        throw new IllegalArgumentException(errorMessage);
+                }
             case NOT_FOUND:
-                throw new ResourceNotFoundException(responseBody);
+                throw new ResourceNotFoundException(errorMessage);
             default:
                 switch (statusCode.series()) {
                     case CLIENT_ERROR:

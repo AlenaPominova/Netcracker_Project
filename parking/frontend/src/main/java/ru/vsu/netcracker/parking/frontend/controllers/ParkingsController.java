@@ -21,11 +21,43 @@ public class ParkingsController {
     }
 
     @GetMapping(value = "/{parkingId}")
-    public String getParking(@PathVariable long parkingId, Model model) {
+    public String getParking(@PathVariable long parkingId, Model model,
+                             @RequestParam(value = "rent", required = false) String rent) {
+
         Obj obj = objService.get(parkingId);
         model.addAttribute("parking", obj);
+        if (rent != null) {
+            if (rent.equals("confirmation")) {
+                return "confirmation";
+            }
+            if (rent.equals("confirmed")) {
+                objService.takeParking(obj);
+                return "redirect:/parkings/" + obj.getId() + "?rent=success";
+            }
+            if (rent.equals("success")) {
+                model.addAttribute("rentSuccess", "Вы успешно взяли в аренду парковку #" + String.valueOf(parkingId));
+                return "redirect:/parkings/" + obj.getId() + "?rent=success";
+            }
+        }
+        return "parking";
+    }
 
-        return "parking/parking";
+    @GetMapping(value = "/{parkingId}/rent")
+    public String rentParking(@PathVariable long parkingId, Model model,
+                              @RequestParam(value = "status", required = false) String status) {
+        Obj obj = objService.get(parkingId);
+        model.addAttribute("parking", obj);
+        if (status != null) {
+            if (status.equals("confirmed")) {
+                try {
+                    objService.takeParking(obj);
+                    model.addAttribute("success", "Аренда прошла успешно");
+                } catch (IllegalArgumentException e) {
+                    model.addAttribute("error", "");
+                }
+            }
+        }
+        return "confirmation";
     }
 
     @GetMapping(value = "")
@@ -33,20 +65,24 @@ public class ParkingsController {
         Map<Long, Obj> map = objService.getAll();
         model.addAttribute("parkingsList", map);
 
-        return "parking/parkings";
+        return "parkings";
     }
 
-    @PutMapping(value = "/{parkingId}")
-    public String takeParking(@PathVariable long parkingId,
-                              @ModelAttribute("obj") Obj parking,
-                              @RequestParam(value = "take", required = false) String take) {
-        if (take != null) {
-            objService.takeParking(parking);
-        } else {
-            objService.save(parking);
-        }
-        return "redirect:/login?reg";
+    @PostMapping(value = "")
+    public String createParking(@ModelAttribute("obj") Obj parking) {
+        Obj obj = objService.save(parking);
+        return "redirect:/profiles/" + obj.getId();
     }
 
-
+//    @PutMapping(value = "/{parkingId}")
+//    public String takeParking(@PathVariable long parkingId,
+//                              @ModelAttribute("obj") Obj parking,
+//                              @RequestParam(value = "take", required = false) String take) {
+//        if (take != null) {
+//            objService.takeParking(parking);
+//        } else {
+//            objService.save(parking);
+//        }
+//        return "parkings";
+//    }
 }

@@ -116,6 +116,7 @@
                     <#assign parkin = parkingsList?api.get(key)>
                 var url = '${url}'
                 var parking = [];
+                parking.id = '${parkin.id}';
                 parking.name = '${parkin.name}';
                 parking.address = '${parkin.values?api.get(101?long)}'
                 parking.latitude = '${parkin.values?api.get(301?long)}'
@@ -138,7 +139,8 @@
                             "<b>Открыта с: </b>" + parking.open_time + "<b> до:</b>" + parking.close_time + "<br>" +
                             "<b>Цена: </b>" + parking.price + " руб/час<br>" +
                             "<b>Рейтинг: </b>" + parking.rating + "<br>" +
-                            "<b>Свободных мест: </b>" + parking.free_spots_count + "<br>");
+                            "<b>Свободных мест: </b>" + parking.free_spots_count + "<br>" +
+                            '<br><a href="/profiles/' + parking.owner_id + '"> Страница владельца: </a><br>');
                     </@security.authorize>
                     <@security.authorize access="isAuthenticated()">
                         marker.bindPopup("<h4><b>" + parking.name + "</b></h4><br>" +
@@ -147,7 +149,12 @@
                             "<b>Цена: </b>" + parking.price + " руб/час<br>" +
                             "<b>Рейтинг: </b>" + parking.rating + "<br>" +
                             "<b>Свободных мест: </b>" + parking.free_spots_count + "<br>" +
-                            '<br><a href="/profiles/' + parking.owner_id + '"> Страница владельца: </a>' +
+                                '<br><a href="${url}/profiles/' + parking.owner_id + '"> Страница владельца: </a>' +
+                                '<br><a href="${url}/parkings/' + parking.id + '?take"> Взять в аренду: </a>' +
+                                // '<form method="post" action="' + url + '/parkings/' + parking.id + '?take">' +
+                                // '<input type="hidden" name="_method" value="put"/>' +
+                                // '<input type="submit" value="Взять в аренду" />' +
+                                // '</form>' +
                             "<button type=\"submit\" class=\"btn btn-default\">Взять в аренду</button>");
                     </@security.authorize>
                     markers.addLayer(marker);

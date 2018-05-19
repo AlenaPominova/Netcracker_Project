@@ -1,9 +1,7 @@
-<#ftl encoding="utf-8">
-<#assign security=JspTaglibs["http://www.springframework.org/security/tags"] />
+<!doctype html>
 <html>
 <head>
-    <title>Тестовая страница</title>
-    <meta charset="utf-8" />
+    <title>404 stranitsa</title>
     <link href="http://yastatic.net/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
     <script src="http://yastatic.net/jquery/2.1.4/jquery.min.js"></script>
     <script src="http://yastatic.net/bootstrap/3.3.4/js/bootstrap.min.js"></script>
@@ -29,7 +27,7 @@
         </ul>
     </div>
     <div class="col-lg-6 col-md-12 image">
-        <img src="" />
+        <img src="https://1.downloader.disk.yandex.ru/preview/b0f7aaa88a1e20083f5561d4e498082b1907ff0f00440629a750b5d50cd03ea2/inf/eS5gAm22UDiYgvhUyY1tr_43M4tWrSGt8VeD4oBCLcBBGs52mTo7cBdq8RUYx3YxUOjwrRCXjKQ71b8lD-i8Gw%3D%3D?uid=195905471&filename=car.jpg&disposition=inline&hash=&limit=0&content_type=image%2Fjpeg&tknv=v2&size=1280x732" />
     </div>
 </div>
 </body>
