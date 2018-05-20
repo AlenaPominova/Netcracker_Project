@@ -16,6 +16,7 @@
     <script src="http://yastatic.net/bootstrap/3.3.4/js/bootstrap.min.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD2psivVcXwi1A-thFsDpKI6aXJEe6y7bs" async defer></script>
     <script src="https://unpkg.com/leaflet@1.0.1/dist/leaflet-src.js"></script>
+
     <#include "js/Leaflet.GoogleMutant.js">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
@@ -73,7 +74,6 @@
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> <@security.authentication property="principal" /> <span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li>
-
                             <a href="${url}/profiles/${currentUserId!}">
                                 <span class="glyphicon glyphicon-cog" aria-hidden="true"></span> Личный кабинет</a>
                         </li>
@@ -130,9 +130,27 @@
                 parking.owner_id = '${parkin.references?api.get(300?long)}'
                 createMarker(parking);
                 </#list>
+
                 map.addLayer(markers);
+
                 function createMarker(parking) {
-                    var marker = L.marker([parking.latitude, parking.longitude]);
+                    var redIcon = L.icon({
+                        iconUrl: 'https://cdn3.iconfinder.com/data/icons/flat-icons-web/40/Location-512.png',
+                        iconSize: [60,50]
+                    });
+                    var blueIcon = L.icon({
+                        iconUrl: 'https://cdn2.iconfinder.com/data/icons/webstore/512/map_marker-512.png',
+                        iconSize: [60,50]
+                    });
+                    var marker;
+                    if (parking.status == "Free") {
+                        marker = L.marker([parking.latitude, parking.longitude], {icon: blueIcon})
+                    } else {
+                        marker = L.marker([parking.latitude, parking.longitude], {icon: redIcon})
+                    }
+                    // var marker = L.marker([parking.latitude, parking.longitude], {icon: redIcon})
+                    // var blueMarker = L.marker([parking.latitude, parking.longitude], {icon: blueIcon})
+
                     <@security.authorize access="!isAuthenticated()">
                         marker.bindPopup("<h4><b>" + parking.name + "</b></h4><br>" +
                             "<b>Адрес: </b>" + parking.address + "<br>" +
@@ -150,13 +168,14 @@
                             "<b>Рейтинг: </b>" + parking.rating + "<br>" +
                             "<b>Свободных мест: </b>" + parking.free_spots_count + "<br>" +
                                 '<br><a href="${url}/profiles/' + parking.owner_id + '"> Страница владельца: </a>' +
-                                '<br><a href="${url}/parkings/' + parking.id + '?take"> Взять в аренду: </a>' +
-                                // '<form method="post" action="' + url + '/parkings/' + parking.id + '?take">' +
-                                // '<input type="hidden" name="_method" value="put"/>' +
-                                // '<input type="submit" value="Взять в аренду" />' +
-                                // '</form>' +
+                                '<br><a href="${url}/parkings/' + parking.id + '/rent"> Взять в аренду: </a>' +
+                                '<form method="post" action="' + url + '/parkings/' + parking.id + '/rent">' +
+                                '<input type="hidden" name="_method" value="put"/>' +
+                                '<input type="submit" value="Взять в аренду" />' +
+                                '</form>' +
                             "<button type=\"submit\" class=\"btn btn-default\">Взять в аренду</button>");
                     </@security.authorize>
+
                     markers.addLayer(marker);
                 }
                 function createFilterMarker(parking) {

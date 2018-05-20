@@ -5,6 +5,8 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.hazelcast.core.Hazelcast;
 import com.hazelcast.core.IMap;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.CacheManager;
+import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
@@ -74,17 +76,22 @@ public class ObjService {
         return Hazelcast.getHazelcastInstanceByName("hazelcast-instance").getMap("objects-cache");
     }
 
-    @CachePut(value = "objects-cache", key = "#obj.id", unless = "#result.typeId != 3")
+    @CachePut(value = "objects-cache", key = "#result.id", unless = "#result.typeId != 3")
     public Obj save(Obj obj) throws UserAlreadyExistsException {
         JsonNode jsonNode = jsonConverter.objToJson(obj);
-
         if (obj.getId() == 0) {
             JsonNode jsonResponse = parkingBackendRestTemplate.postForObject("restapi/objects", jsonNode, JsonNode.class);
             obj = jsonConverter.jsonToObject(jsonResponse);
         } else {
             parkingBackendRestTemplate.put("restapi/objects/" + obj.getId(), jsonNode, JsonNode.class);
         }
+        cachePut(obj);
         return obj;
+    }
+
+    private void cachePut(Obj obj) {
+        Map<Long, Obj> cache = getAll();
+        cache.put(obj.getId(), obj);
     }
 
     @CacheEvict(value = "objects-cache", key = "#id")
