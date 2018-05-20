@@ -135,11 +135,11 @@
 
                 function createMarker(parking) {
                     var redIcon = L.icon({
-                        iconUrl: 'https://cdn3.iconfinder.com/data/icons/flat-icons-web/40/Location-512.png',
+                        iconUrl: 'https://i.imgur.com/p7are56.png',
                         iconSize: [60,50]
                     });
                     var blueIcon = L.icon({
-                        iconUrl: 'https://cdn2.iconfinder.com/data/icons/webstore/512/map_marker-512.png',
+                        iconUrl: 'https://i.imgur.com/dLfdUC1.png',
                         iconSize: [60,50]
                     });
                     var marker;
