@@ -121,7 +121,7 @@
                     </div>
                     <span class="text">С правилами об аренде парковочного места ознакомлен и принимаю их.</span>
                 </div>
-                <form method="LINK" action="${url}/parkings/${parking.id}?rent=confirmed">
+                <form method="LINK" action="${url}/parkings/${parking.id}/rent?status=confirmed">
                     <button type="submit" class="btn-chg">АРЕНДОВАТЬ</button>
                 </form>
             </div>

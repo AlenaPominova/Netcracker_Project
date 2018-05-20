@@ -30,15 +30,6 @@ public class ObjController {
     public String main(Model model) {
         Map<Long, Obj> map = objService.getAll();
         model.addAttribute("parkingsList", map);
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth.isAuthenticated() && !(auth instanceof AnonymousAuthenticationToken)) {
-            try {
-                long currentUserId = objService.getObjByUsername(auth.getPrincipal().toString()).getId();
-                model.addAttribute("currentUserId", currentUserId);
-            } catch (ResourceNotFoundException e) {
-                e.printStackTrace();
-            }
-        }
         return "parkings";
     }
 
