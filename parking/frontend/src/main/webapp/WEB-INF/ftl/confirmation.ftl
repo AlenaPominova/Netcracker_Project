@@ -24,7 +24,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="${url}"><img src="https://i.imgur.com/oH893fM.png" alt="Воронежский паркинг"></a>
+            <a class="navbar-brand" href="${main_url}"><img src="https://i.imgur.com/oH893fM.png" alt="Воронежский паркинг"></a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
@@ -41,7 +41,7 @@
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> <@security.authentication property="principal" /> <span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li>
-                            <a href="${url}" target="_blank">
+                            <a href="${main_url}/profiles/${currentUserId!}" target="_blank">
                                 <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>Личный кабинет
                             </a>
                         </li>
@@ -121,7 +121,8 @@
                     </div>
                     <span class="text">С правилами об аренде парковочного места ознакомлен и принимаю их.</span>
                 </div>
-                <form method="LINK" action="${url}/parkings/${parking.id}?rent=confirmed">
+                <a href="${url}/parkings/${parking.id}/rent?status=confirmed">сними меня</a>
+                <form method="LINK" action="${url}/parkings/${parking.id}/rent?status=confirmed">
                     <button type="submit" class="btn-chg">АРЕНДОВАТЬ</button>
                 </form>
             </div>

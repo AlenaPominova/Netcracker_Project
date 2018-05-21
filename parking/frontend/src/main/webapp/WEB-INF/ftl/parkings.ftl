@@ -179,7 +179,20 @@
                     markers.addLayer(marker);
                 }
                 function createFilterMarker(parking) {
-                    var marker = L.marker([parking.latitude, parking.longitude]);
+                    var redIcon = L.icon({
+                        iconUrl: 'https://i.imgur.com/p7are56.png',
+                        iconSize: [60,50]
+                    });
+                    var blueIcon = L.icon({
+                        iconUrl: 'https://i.imgur.com/dLfdUC1.png',
+                        iconSize: [60,50]
+                    });
+                    var marker;
+                    if (parking.status == "Free") {
+                        marker = L.marker([parking.latitude, parking.longitude], {icon: blueIcon})
+                    } else {
+                        marker = L.marker([parking.latitude, parking.longitude], {icon: redIcon})
+                    }
                     marker.bindPopup("<h4><b>" + parking.name + "</b></h4><br>" +
                             "<b>Адрес: </b>" + parking.address + "<br>" +
                             "<b>Открыта с: </b>" + parking.open_time + "<b> до:</b>" + parking.close_time + "<br>" +

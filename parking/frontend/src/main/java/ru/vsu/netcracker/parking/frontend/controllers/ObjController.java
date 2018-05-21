@@ -19,6 +19,7 @@ import java.util.Map;
 @Controller
 public class ObjController {
 
+    private static final String MAINPAGE = "http://localhost:8082";
     ObjService objService;
 
     @Autowired
@@ -30,6 +31,7 @@ public class ObjController {
     public String main(Model model) {
         Map<Long, Obj> map = objService.getAll();
         model.addAttribute("parkingsList", map);
+        model.addAttribute("main_url", MAINPAGE);
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth.isAuthenticated() && !(auth instanceof AnonymousAuthenticationToken)) {
             try {
@@ -45,7 +47,9 @@ public class ObjController {
     @GetMapping(value = "/profiles/{objectId}")
     public String profile(@PathVariable long objectId, Model model) {
         model.addAttribute("user", objService.get(objectId));
+        model.addAttribute("main_url", MAINPAGE);
         model.addAttribute("ownedParkings", objService.getAllParkingsOwnedByUser(objectId));
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         return "profile";
     }
 

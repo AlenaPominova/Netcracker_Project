@@ -1,9 +1,13 @@
 package ru.vsu.netcracker.parking.frontend.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import ru.vsu.netcracker.parking.frontend.exceptions.ResourceNotFoundException;
 import ru.vsu.netcracker.parking.frontend.objects.Obj;
 import ru.vsu.netcracker.parking.frontend.services.ObjService;
 
@@ -13,6 +17,7 @@ import java.util.Map;
 @RequestMapping(value = "/parkings")
 public class ParkingsController {
 
+    private static final String MAINPAGE = "http://localhost:8082";
     private ObjService objService;
 
     @Autowired
@@ -47,6 +52,7 @@ public class ParkingsController {
                               @RequestParam(value = "status", required = false) String status) {
         Obj obj = objService.get(parkingId);
         model.addAttribute("parking", obj);
+        model.addAttribute("main_url", MAINPAGE);
         if (status != null) {
             if (status.equals("confirmed")) {
                 try {
@@ -55,6 +61,15 @@ public class ParkingsController {
                 } catch (IllegalArgumentException e) {
                     model.addAttribute("error", "Ошибка");
                 }
+            }
+        }
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth.isAuthenticated() && !(auth instanceof AnonymousAuthenticationToken)) {
+            try {
+                long currentUserId = objService.getObjByUsername(auth.getPrincipal().toString()).getId();
+                model.addAttribute("currentUserId", currentUserId);
+            } catch (ResourceNotFoundException e) {
+                e.printStackTrace();
             }
         }
         return "confirmation";
