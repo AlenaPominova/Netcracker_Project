@@ -1,5 +1,7 @@
 package ru.vsu.netcracker.parking.frontend.controllers;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -75,9 +77,25 @@ public class ParkingsController {
         return editParkingPage;
     }
 
-    @PutMapping(value = "/{parkingId}/edit")
-    public String updateParking(@ModelAttribute("obj") Obj parking, @ModelAttribute("currentUserId") long currentUserId) {
-        Obj obj = objService.save(parking);
+    @PostMapping(value = "/{parkingId}/edit")
+    public String updateParking(@ModelAttribute("obj") Obj parking, @PathVariable long parkingId, @ModelAttribute("currentUserId") long currentUserId) {
+        //Obj obj = objService.save(parking);
+        Obj park = objService.get(parkingId);
+        Map<Long, String> values = park.getValues();
+        Map<Long, Timestamp> dateValues = park.getDateValues();
+        parking.getDateValues().forEach((k, v) -> {
+            dateValues.put(k, v);
+        });
+        parking.getValues().forEach((k, v) -> {
+            values.put(k, v);
+        });
+        objService.save(park);
         return "redirect:/profiles/" + currentUserId;
     }
+
+//    @RequestMapping(value = "/{parkingId}/edit", method = RequestMethod.POST, headers = {"Content-type=application/json"})
+//    @ResponseBody
+//    public void updateParking(@RequestBody JsonNode node, @PathVariable long parkingId){
+//        JsonNode a = node;
+//    }
 }

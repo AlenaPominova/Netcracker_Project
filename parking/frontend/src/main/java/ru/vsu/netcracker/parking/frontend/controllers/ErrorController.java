@@ -9,14 +9,11 @@ import javax.servlet.http.HttpServletRequest;
 @Controller
 public class ErrorController {
 
-    private static final String MAINPAGE = "http://localhost:8082";
-
     @GetMapping(value = "errors")
     public ModelAndView handleError(HttpServletRequest httpRequest) {
         ModelAndView errorPage = new ModelAndView();
         errorPage.setViewName("404");
         String errorMsg = "";
-        errorPage.addObject("main_url", MAINPAGE);
         int httpErrorCode = getErrorCode(httpRequest);
 
         switch (httpErrorCode) {

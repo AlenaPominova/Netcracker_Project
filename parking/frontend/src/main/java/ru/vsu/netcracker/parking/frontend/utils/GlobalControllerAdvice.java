@@ -36,6 +36,7 @@ public class GlobalControllerAdvice {
             try {
                 long currentUserId = objService.getObjByUsername(auth.getPrincipal().toString()).getId();
                 model.addAttribute("currentUserId", currentUserId);
+                model.addAttribute("mainPageUrl", "http://localhost:8082");
             } catch (ResourceNotFoundException e) {
                 e.printStackTrace();
             }

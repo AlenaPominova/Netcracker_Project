@@ -20,8 +20,8 @@
         </h2>
         <h2><b>Некоторые ссылки, которые возможно помогут вам:</b></h2>
         <ul>
-            <li><a href="${main_url}">Главная</a></li>
-            <li><a href="">Техническая поддержка</a></li>
+            <li><a href="${mainPageUrl}">Главная</a></li>
+            <li><a href="${mainPageUrl}/profiles/${currentUserId!}">Личный кабинет</a></li>
             <li><a href="">О нас</a></li>
             <li><a href="">Контакты</a></li>
         </ul>

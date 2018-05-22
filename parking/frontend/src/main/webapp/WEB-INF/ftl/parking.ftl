@@ -24,7 +24,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="${main_url}"><img src="https://i.imgur.com/oH893fM.png" alt="Воронежский паркинг"></a>
+            <a class="navbar-brand" href="${mainPageUrl}"><img src="https://i.imgur.com/oH893fM.png" alt="Воронежский паркинг"></a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
@@ -41,7 +41,7 @@
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> <@security.authentication property="principal" /> <span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li>
-                            <a href="" target="_blank">
+                            <a href="${mainPageUrl}/profiles/${currentUserId!}">
                                 <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>Личный кабинет
                             </a>
                         </li>
@@ -82,6 +82,7 @@
                 <h3><b>Свободно мест:</b> ${parking.values?api.get(307?long)}</h3>
                 <h3><b>Рейтинг парковки:</b> ${parking.values?api.get(100?long)?number}</h3>
                 <h3><b>Статус:</b> ${parking.listValues?api.get(308?long)}</h3>
+                <a href="${mainPageUrl}/profiles/${parking.references?api.get(300?long)}">Страница владельца</a>
             </div>
         </div>
         <div class="col-lg-7 col-md-7" style="padding-left: 0px; padding-right: 0px; padding-top: 0px;">
@@ -120,13 +121,8 @@
                     <span class="text">С правилами об аренде парковочного места ознакомлен и принимаю их.</span>
                 </div>
                 <button class="btn-chg">АРЕНДОВАТЬ</button>
-                <form action="${url} + '/parkings/' + parking.id + '?take">
+                <form action="${url} + '/parkings/' + ${parking.id} + '?take">
                     <button type="submit">Я прочитал соглашение и согласен со всеми условиями</button>
-                </form>
-
-                <form method="post" action="${url} + '/parkings/' + ${parking.id} + '?take'">' +
-                    <input type="hidden" name="_method" value="put"/>' +
-                    <input type="submit" value="Взять в аренду" />' +
                 </form>
             </div>
         </div>
