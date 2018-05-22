@@ -14,6 +14,27 @@
     <script src="http://yastatic.net/jquery/2.1.4/jquery.min.js"></script>
     <script src="http://yastatic.net/bootstrap/3.3.4/js/bootstrap.min.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type="text/javascript">
+        function submitform(){
+            <#--var values = [];-->
+            <#--values[0] = 201 : '';-->
+            <#--var obj = {-->
+                <#--'id' : ${parking.id},-->
+                <#--'type_id' : ${parking.typeId},-->
+                <#--'name' : '${parking.name}',-->
+                <#--'description' : ''};-->
+
+            <#--alert(JSON.stringify(obj));-->
+            <#--$.ajax({-->
+                <#--type: 'POST',-->
+                <#--url: '${mainPageUrl}/parkings/${parking.id}/edit',-->
+                <#--data: JSON.stringify(obj),-->
+                <#--success: function(){ alert("+"); },-->
+                <#--dataType: 'json',-->
+                <#--contentType : 'application/json'-->
+            <#--});-->
+        }
+    </script>
 </head>
 <body>
 <nav class="navbar navbar-default">
@@ -25,7 +46,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="${url}"><img src="https://i.imgur.com/oH893fM.png" alt="Воронежский паркинг"></a>
+            <a class="navbar-brand" href="${mainPageUrl}"><img src="https://i.imgur.com/oH893fM.png" alt="Воронежский паркинг"></a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
@@ -42,7 +63,7 @@
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> <@security.authentication property="principal" /> <span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li>
-                            <a href="${url}" target="_blank">
+                            <a href="${mainPageUrl}/profiles/${currentUserId!}">
                                 <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>Личный кабинет
                             </a>
                         </li>
@@ -77,30 +98,26 @@
         </div>
         <div class="col-lg-7 col-md-7" style="padding-left: 0px; padding-right: 0px; padding-top: 0px;">
             <div class="col-lg-12 col-md-12">
-                <div class="col-lg-12 col-md-12 about-user" style="padding-left: 0px; margin-top: 0px;">
-                    <h2 style="padding-bottom: 20px;">${parking.name}</h2>
-                    <h3><b>Адрес:</b> ${parking.values?api.get(101?long)}</h3>
-                    <h3><b>Координаты:</b>${parking.values?api.get(301?long)} , ${parking.values?api.get(302?long)}</h3>
-                    <h3><b>Стоимость:</b> </h3>
-                    <div class="form-group">
-                        <form method="post" action="/parkings/${parking.id}/edit">
-                            <input type="hidden" name="_method" value="put"/>
-                            <@spring.formInput "parking.values['${304?long}']", "class='form-control' min='1' max='9999' step='1'", "number"/>
-                            <p class="label"> рублей/час </p>
-                            <h3><b>Свободные часы:</b> </h3>
-                            <p class="label">От </p>
-                            <@spring.formInput "parking.dateValues['${305?long}']", "class='form-control'", "time"/>
-                            <p class="label">До </p>
-                            <@spring.formInput "parking.dateValues['${306?long}']", "class='form-control'", "time"/>
-
-                            <h3><b>Свободно мест:</b> ${parking.values?api.get(307?long)}</h3>
-                            <h3><b>Рейтинг парковки:</b> ${parking.values?api.get(100?long)?number}</h3>
-                            <h3><b>Статус:</b> ${parking.listValues?api.get(308?long)}</h3>
-
-                            <button class="btn-chg" type="submit">Сохранить</button>
-                        </form>
+            <#--${mainPageUrl}/profiles/${currentUserId}-->
+                <form action='/parkings/${parking.id}/edit' method="post">
+                    <div class="col-lg-12 col-md-12 about-user" style="padding-left: 0px; margin-top: 0px;">
+                        <h2 style="padding-bottom: 20px;">${parking.name}</h2>
+                        <h3><b>Адрес:</b> ${parking.values?api.get(101?long)}</h3>
+                        <h3><b>Координаты:</b> ${parking.values?api.get(301?long)} , ${parking.values?api.get(302?long)}</h3>
+                        <h3><b>Стоимость:</b> </h3>
+                        <@spring.formInput "parking.values['${304?long}']", "class='input-type-price' min='1' max='9999' step='1'", "number"/>
+                        <p class="label"> рублей/час </p>
+                        <h3><b>Свободные часы:</b> </h3>
+                        <p class="label">От </p>
+                        <@spring.formInput "parking.dateValues['${305?long}']", "class='input-type-time'", "time"/>
+                        <p class="label">До </p>
+                        <@spring.formInput "parking.dateValues['${306?long}']", "class='input-type-time'", "time"/>
+                        <h3><b>Свободно мест:</b> ${parking.values?api.get(307?long)}</h3>
+                        <h3><b>Рейтинг парковки:</b> ${parking.values?api.get(100?long)?number}</h3>
+                        <h3><b>Статус:</b> ${parking.listValues?api.get(308?long)}</h3>
+                        <button class="btn-chg" type="submit">Сохранить</button>
                     </div>
-                </div>
+                </form>
             </div>
         </div>
     </div>

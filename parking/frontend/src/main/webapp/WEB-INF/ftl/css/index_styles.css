@@ -476,4 +476,25 @@ input[type=submit] {
     left: 82px;
 }
 
+
+.btn-rent{
+    margin-top: 10px;
+    width: 200px;
+    height: 30px;
+    border: solid 1px black;
+    border-radius: 5px;
+    background-color: transparent;
+}
+
+.btn-rent:hover{
+    margin-top: 10px;
+    width: 200px;
+    height: 30px;
+    border: solid 1px black;
+    border-radius: 5px;
+    opacity: 1;
+    -webkit-animation: flash 1.5s;
+    animation: flash 1.5s;
+}
+
 </style>

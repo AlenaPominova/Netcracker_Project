@@ -146,7 +146,8 @@ public class ObjService {
 
     public void takeParking(Obj parking) throws IllegalArgumentException {
         long freeSpotsCount = Long.valueOf(parking.getValues().get(FREE_SPOTS_COUNT_ID));
-        parking.getValues().put(FREE_SPOTS_COUNT_ID, String.valueOf(--freeSpotsCount));
+        if (freeSpotsCount > 0)
+            parking.getValues().put(FREE_SPOTS_COUNT_ID, String.valueOf(--freeSpotsCount));
         if (freeSpotsCount == 0)
             parking.getListValues().put(STATUS_ID, "Occupied");
         save(parking);

@@ -43,20 +43,9 @@
                         <input type="password" class="form-control" id="exampleInputPassword1" name="j_password">
                     </div>
                     <div class="form-group">
-                        <div class="main-checkbox">
-                            <input value="None" id="checkbox1" name="check" type="checkbox">
-                            <label for="checkbox1"></label>
-                        </div>
-                        <span class="text">Запомнить меня</span>
-                    </div>
-                    <div class="form-group">
                         <button type="submit" class="btn btn-default">Войти</button>
                         <div class="login-form-error">${error!}</div>
                         <div class="login-form-message">${message!}</div>
-                    </div>
-
-                    <div class="form-group forgot-pass">
-                        <button type="submit" class="btn btn-default">Забыли пароль</button>
                     </div>
                 </form>
             </div>

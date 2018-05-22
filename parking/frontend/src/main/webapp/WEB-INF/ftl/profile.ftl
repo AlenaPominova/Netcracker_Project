@@ -27,8 +27,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href=""><img src="https://i.imgur.com/oH893fM.png" alt="Воронежский паркинг"></a>
-            <a class="navbar-brand" href="${main_url}"><img src="https://i.imgur.com/oH893fM.png" alt="Воронежский паркинг"></a>
+            <a class="navbar-brand" href="${mainPageUrl}"><img src="https://i.imgur.com/oH893fM.png" alt="Воронежский паркинг"></a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
@@ -46,7 +45,7 @@
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> ${.globals.name}<span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li>
-                            <a href="${url}" target="_blank">
+                            <a href="${mainPageUrl}/profiles/${currentUserId!}">
                                 <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>Личный кабинет
                             </a>
                         </li>
@@ -88,9 +87,9 @@
                 <h3 style="margin-top: 20px;"><b>Номер телефона:</b> ${user.values?api.get(201?long)}</h3>
                 <h3><b>E-mail:</b> ${user.values?api.get(202?long)}</h3>
                 <h3><b>Рейтинг:</b> 5</h3>
-                <#if user.values?api.get(202?long) == .globals.name>
-                    <button class="btn-chg">РЕДАКТИРОВАТЬ</button>
-                </#if>
+                <#--<#if user.values?api.get(202?long) == .globals.name>-->
+                    <#--<button class="btn-chg">РЕДАКТИРОВАТЬ</button>-->
+                <#--</#if>-->
             </div>
             <div class="col-lg-12 col-md-12 about-user" style="padding-left: 0px; margin-top: 30px;">
                 <h2>О себе:</h2>
@@ -119,6 +118,10 @@
                             <form method="LINK" action="${url}/parkings/${parking.id}/edit">
                                 <button type="submit" class="btn-chg">РЕДАКТИРОВАТЬ</button>
                             </form>
+                            <#else>
+                            <form method="get" action="${mainPageUrl}/parkings/${parking.id}/rent">
+                                <button type="submit" class="btn-chg">АРЕНДОВАТЬ</button>
+                            </form>
                         </#if>
                     </div>
                     <div class="col-lg-7 col-md-7 parking">
@@ -129,7 +132,6 @@
                         <h3><b>Свободные часы:</b> с ${(parking.dateValues?api.get(305?long))?time} до ${parking.dateValues?api.get(306?long)?time}</h3>
                         <h3><b>Свободно мест:</b> ${parking.values?api.get(307?long)}</h3>
                         <h3><b>Рейтинг парковки:</b> ${parking.values?api.get(100?long)?number}</h3>
-                        <h3><b>Владелец:</b> ${parking.references?api.get(300?long)}</h3>
                         <h3><b>Статус:</b> ${parking.listValues?api.get(308?long)}</h3>
                     </div>
                 </div>

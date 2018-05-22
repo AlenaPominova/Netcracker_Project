@@ -157,8 +157,7 @@
                             "<b>Открыта с: </b>" + parking.open_time + "<b> до:</b>" + parking.close_time + "<br>" +
                             "<b>Цена: </b>" + parking.price + " руб/час<br>" +
                             "<b>Рейтинг: </b>" + parking.rating + "<br>" +
-                            "<b>Свободных мест: </b>" + parking.free_spots_count + "<br>" +
-                            '<br><a href="/profiles/' + parking.owner_id + '"> Страница владельца: </a><br>');
+                            "<b>Свободных мест: </b>" + parking.free_spots_count);
                     </@security.authorize>
                     <@security.authorize access="isAuthenticated()">
                         marker.bindPopup("<h4><b>" + parking.name + "</b></h4><br>" +
@@ -167,13 +166,11 @@
                             "<b>Цена: </b>" + parking.price + " руб/час<br>" +
                             "<b>Рейтинг: </b>" + parking.rating + "<br>" +
                             "<b>Свободных мест: </b>" + parking.free_spots_count + "<br>" +
-                                '<br><a href="${url}/profiles/' + parking.owner_id + '"> Страница владельца: </a>' +
-                                '<br><a href="${url}/parkings/' + parking.id + '/rent"> Взять в аренду: </a>' +
-                                '<form method="post" action="' + url + '/parkings/' + parking.id + '/rent">' +
-                                '<input type="hidden" name="_method" value="put"/>' +
-                                '<input type="submit" value="Взять в аренду" />' +
-                                '</form>' +
-                            "<button type=\"submit\" class=\"btn btn-default\">Взять в аренду</button>");
+                            '<br><a href="${url}/profiles/' + parking.owner_id + '"> Страница владельца: </a>' +
+                            '<form method="get" action="' + url + '/parkings/' + parking.id + '/rent">' +
+                            '<button type="submit" class="btn btn-rent">АРЕНДОВАТЬ</button>'+
+                            '</form>'
+                        );
                     </@security.authorize>
 
                     markers.addLayer(marker);
@@ -200,7 +197,7 @@
                             "<b>Рейтинг: </b>" + parking.rating + "<br>" +
                             "<b>Свободных мест: </b>" + parking.free_spots_count + "<br>" +
                             "<a href=\"/objects/' + parking.owner_id + '\">Страница владельца</a><br><br>" +
-                            "<button type=\"submit\" class=\"btn btn-default\">Взять в аренду</button>");
+                            "<button type=\"submit\" class=\"btn btn-rent\">Взять в аренду</button>");
                     /* Check valid for parking spot */
                     if (
                             checkOnValid('#fromPriceInput', '#toPriceInput', parking.price) &&
