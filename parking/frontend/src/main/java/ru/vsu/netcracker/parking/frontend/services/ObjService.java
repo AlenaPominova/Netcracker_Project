@@ -85,7 +85,9 @@ public class ObjService {
         } else {
             parkingBackendRestTemplate.put("restapi/objects/" + obj.getId(), jsonNode, JsonNode.class);
         }
-        cachePut(obj);
+        if (obj.getTypeId() == 3L) {
+            cachePut(obj);
+        }
         return obj;
     }
 
@@ -142,7 +144,7 @@ public class ObjService {
     private final long FREE_SPOTS_COUNT_ID = 307L;
     private final long STATUS_ID = 308L;
 
-    public void takeParking(Obj parking) throws IllegalArgumentException{
+    public void takeParking(Obj parking) throws IllegalArgumentException {
         long freeSpotsCount = Long.valueOf(parking.getValues().get(FREE_SPOTS_COUNT_ID));
         parking.getValues().put(FREE_SPOTS_COUNT_ID, String.valueOf(--freeSpotsCount));
         if (freeSpotsCount == 0)

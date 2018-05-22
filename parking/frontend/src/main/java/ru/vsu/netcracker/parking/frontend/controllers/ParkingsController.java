@@ -1,23 +1,25 @@
 package ru.vsu.netcracker.parking.frontend.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
-import ru.vsu.netcracker.parking.frontend.exceptions.ResourceNotFoundException;
+import org.springframework.web.servlet.ModelAndView;
 import ru.vsu.netcracker.parking.frontend.objects.Obj;
 import ru.vsu.netcracker.parking.frontend.services.ObjService;
+import ru.vsu.netcracker.parking.frontend.utils.CustomTimestampConverter;
 
+import javax.jws.WebParam;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.Map;
 
 @Controller
 @RequestMapping(value = "/parkings")
 public class ParkingsController {
 
-    private static final String MAINPAGE = "http://localhost:8082";
     private ObjService objService;
 
     @Autowired
@@ -26,33 +28,19 @@ public class ParkingsController {
     }
 
     @GetMapping(value = "/{parkingId}")
-    public String getParking(@PathVariable long parkingId, Model model,
-                             @RequestParam(value = "rent", required = false) String rent) {
+    public String getParking(@PathVariable long parkingId, Model model) {
 
         Obj obj = objService.get(parkingId);
         model.addAttribute("parking", obj);
-        if (rent != null) {
-            if (rent.equals("confirmation")) {
-                return "confirmation";
-            }
-            if (rent.equals("confirmed")) {
-                objService.takeParking(obj);
-                return "redirect:/parkings/" + obj.getId() + "?rent=success";
-            }
-            if (rent.equals("success")) {
-                model.addAttribute("rentSuccess", "Вы успешно взяли в аренду парковку #" + String.valueOf(parkingId));
-                return "redirect:/parkings/" + obj.getId() + "?rent=success";
-            }
-        }
         return "parking";
     }
 
     @GetMapping(value = "/{parkingId}/rent")
-    public String rentParking(@PathVariable long parkingId, Model model,
+    public String rentParking(@PathVariable long parkingId,
+                              Model model,
                               @RequestParam(value = "status", required = false) String status) {
         Obj obj = objService.get(parkingId);
         model.addAttribute("parking", obj);
-        model.addAttribute("main_url", MAINPAGE);
         if (status != null) {
             if (status.equals("confirmed")) {
                 try {
@@ -63,15 +51,6 @@ public class ParkingsController {
                 }
             }
         }
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth.isAuthenticated() && !(auth instanceof AnonymousAuthenticationToken)) {
-            try {
-                long currentUserId = objService.getObjByUsername(auth.getPrincipal().toString()).getId();
-                model.addAttribute("currentUserId", currentUserId);
-            } catch (ResourceNotFoundException e) {
-                e.printStackTrace();
-            }
-        }
         return "confirmation";
     }
 
@@ -79,7 +58,6 @@ public class ParkingsController {
     public String getAllParkings(Model model) {
         Map<Long, Obj> map = objService.getAll();
         model.addAttribute("parkingsList", map);
-
         return "parkings";
     }
 
@@ -89,15 +67,17 @@ public class ParkingsController {
         return "redirect:/profiles/" + obj.getId();
     }
 
-//    @PutMapping(value = "/{parkingId}")
-//    public String takeParking(@PathVariable long parkingId,
-//                              @ModelAttribute("obj") Obj parking,
-//                              @RequestParam(value = "take", required = false) String take) {
-//        if (take != null) {
-//            objService.takeParking(parking);
-//        } else {
-//            objService.save(parking);
-//        }
-//        return "parkings";
-//    }
+    @GetMapping(value = "/{parkingId}/edit")
+    public ModelAndView getUpdateParking(@PathVariable long parkingId, ModelMap model) {
+        ModelAndView editParkingPage = new ModelAndView();
+        editParkingPage.addObject("parking", objService.get(parkingId));
+        editParkingPage.setViewName("update-parking");
+        return editParkingPage;
+    }
+
+    @PutMapping(value = "/{parkingId}/edit")
+    public String updateParking(@ModelAttribute("obj") Obj parking, @ModelAttribute("currentUserId") long currentUserId) {
+        Obj obj = objService.save(parking);
+        return "redirect:/profiles/" + currentUserId;
+    }
 }

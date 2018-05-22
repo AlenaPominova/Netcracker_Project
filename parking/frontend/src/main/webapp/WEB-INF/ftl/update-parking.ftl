@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <#assign security=JspTaglibs["http://www.springframework.org/security/tags"] />
+<#import "/spring.ftl" as spring/>
 <html>
 <head>
 <#setting locale="en">
@@ -82,23 +83,24 @@
                     <h3><b>Координаты:</b>${parking.values?api.get(301?long)} , ${parking.values?api.get(302?long)}</h3>
                     <h3><b>Стоимость:</b> </h3>
                     <div class="form-group">
-                        <input class="input-type-price" type="number" min="1" max="9999" step="1" value="${parking.values?api.get(304?long)}" id="toPriceInput">
-                        <p class="label"> рублей/час </p>
+                        <form method="post" action="/parkings/${parking.id}/edit">
+                            <input type="hidden" name="_method" value="put"/>
+                            <@spring.formInput "parking.values['${304?long}']", "class='form-control' min='1' max='9999' step='1'", "number"/>
+                            <p class="label"> рублей/час </p>
+                            <h3><b>Свободные часы:</b> </h3>
+                            <p class="label">От </p>
+                            <@spring.formInput "parking.dateValues['${305?long}']", "class='form-control'", "time"/>
+                            <p class="label">До </p>
+                            <@spring.formInput "parking.dateValues['${306?long}']", "class='form-control'", "time"/>
+
+                            <h3><b>Свободно мест:</b> ${parking.values?api.get(307?long)}</h3>
+                            <h3><b>Рейтинг парковки:</b> ${parking.values?api.get(100?long)?number}</h3>
+                            <h3><b>Статус:</b> ${parking.listValues?api.get(308?long)}</h3>
+
+                            <button class="btn-chg" type="submit">Сохранить</button>
+                        </form>
                     </div>
-                    <h3><b>Свободные часы:</b> </h3>
-                    <div class="form-group">
-                        <p class="label">От </p>
-                        <input class="input-type-price" type="number" min="1" max="9999" step="1" value="${(parking.dateValues?api.get(305?long))?time}" id="fromPriceInput">
-                        <p class="label">До </p>
-                        <input class="input-type-price" type="number" min="1" max="9999" step="1" value="${parking.dateValues?api.get(306?long)?time}" id="toPriceInput">
-                    </div>
-                    <h3><b>Свободно мест:</b> ${parking.values?api.get(307?long)}</h3>
-                    <h3><b>Рейтинг парковки:</b> ${parking.values?api.get(100?long)?number}</h3>
-                    <h3><b>Статус:</b> ${parking.listValues?api.get(308?long)}</h3>
                 </div>
-                <form action="${url} + '/parkings/' + parking.id + '?take">
-                    <button class="btn-chg" type="submit">Я прочитал соглашение и согласен со всеми условиями</button>
-                </form>
             </div>
         </div>
     </div>
