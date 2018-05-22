@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <#assign security=JspTaglibs["http://www.springframework.org/security/tags"] />
-<#import "/spring.ftl" as spring/>
 <html>
 <head>
 <#setting locale="en">
@@ -29,6 +28,7 @@
                 <span class="icon-bar"></span>
             </button>
             <a class="navbar-brand" href=""><img src="https://i.imgur.com/oH893fM.png" alt="Воронежский паркинг"></a>
+            <a class="navbar-brand" href="${main_url}"><img src="https://i.imgur.com/oH893fM.png" alt="Воронежский паркинг"></a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
