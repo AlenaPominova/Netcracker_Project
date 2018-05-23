@@ -3,6 +3,8 @@ package ru.vsu.netcracker.parking.backend.controllers;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.vsu.netcracker.parking.backend.models.Attributes;
 import ru.vsu.netcracker.parking.backend.services.ObjService;
@@ -56,5 +58,19 @@ class RestObjController {
     @DeleteMapping(value = "/objects/{objectId}")
     public void deleteObj(@PathVariable long objectId) {
         objService.deleteObj(objectId);
+    }
+
+    /* Evacuation service */
+
+    @GetMapping(value = "/parkings/{parkingId}/evac", produces = "application/json")
+    public JsonNode sendEvacRequest(@PathVariable long parkingId) {
+        JsonNode jsonNode = objService.sendEvacRequest(parkingId);  // -> sends request to evac-service via RestTemplate
+        return jsonNode;    //returns response to frontend
+    }
+
+    @PostMapping(value = "/parkings/update-evac-status", consumes = "application/json", produces = "application/json")
+    public ResponseEntity<JsonNode> updateEvacStatus(@RequestBody JsonNode jsonNode) {
+        objService.updateEvacStatus(jsonNode); //-> update obj. revome order_id, setStatus 'Free', free_spots+1
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

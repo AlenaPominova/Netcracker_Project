@@ -16,6 +16,8 @@ import ru.vsu.netcracker.parking.frontend.utils.CustomTimestampConverter;
 import javax.jws.WebParam;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 
 @Controller
@@ -35,25 +37,6 @@ public class ParkingsController {
         Obj obj = objService.get(parkingId);
         model.addAttribute("parking", obj);
         return "parking";
-    }
-
-    @GetMapping(value = "/{parkingId}/rent")
-    public String rentParking(@PathVariable long parkingId,
-                              Model model,
-                              @RequestParam(value = "status", required = false) String status) {
-        Obj obj = objService.get(parkingId);
-        model.addAttribute("parking", obj);
-        if (status != null) {
-            if (status.equals("confirmed")) {
-                try {
-                    objService.takeParking(obj);
-                    model.addAttribute("success", "Аренда прошла успешно");
-                } catch (IllegalArgumentException e) {
-                    model.addAttribute("error", "Ошибка");
-                }
-            }
-        }
-        return "confirmation";
     }
 
     @GetMapping(value = "")
@@ -79,7 +62,6 @@ public class ParkingsController {
 
     @PostMapping(value = "/{parkingId}/edit")
     public String updateParking(@ModelAttribute("obj") Obj parking, @PathVariable long parkingId, @ModelAttribute("currentUserId") long currentUserId) {
-        //Obj obj = objService.save(parking);
         Obj park = objService.get(parkingId);
         Map<Long, String> values = park.getValues();
         Map<Long, Timestamp> dateValues = park.getDateValues();
@@ -92,6 +74,41 @@ public class ParkingsController {
         objService.save(park);
         return "redirect:/profiles/" + currentUserId;
     }
+
+    @GetMapping(value = "/{parkingId}/rent")
+    public String rentParking(@PathVariable long parkingId,
+                              Model model,
+                              @RequestParam(value = "status", required = false) String status) {
+        Obj obj = objService.get(parkingId);
+        model.addAttribute("parking", obj);
+        if (status != null) {
+            if (status.equals("confirmed")) {
+                try {
+                    objService.takeParking(obj);
+                    model.addAttribute("success", "Аренда прошла успешно");
+                } catch (IllegalArgumentException e) {
+                    model.addAttribute("error", "Ошибка");
+                }
+            }
+        }
+        return "confirmation";
+    }
+
+    /* evacuation service */
+
+    @GetMapping(value = "/parkings/{parkingId}/evac")
+    public String evacParking(@PathVariable long parkingId,
+                              @ModelAttribute("currentUserId") long currentUserId) {
+        Obj obj = objService.evacParking(parkingId);
+        return "redirect:/profiles/" + currentUserId;
+    }
+
+    @GetMapping(value = "/test")
+    public String test(@ModelAttribute("currentUserId") long currentUserId) {
+        Obj obj = objService.evacParking(11L);
+        return "redirect:/profiles/" + currentUserId;
+    }
+
 
 //    @RequestMapping(value = "/{parkingId}/edit", method = RequestMethod.POST, headers = {"Content-type=application/json"})
 //    @ResponseBody

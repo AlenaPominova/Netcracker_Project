@@ -12,6 +12,7 @@ import ru.vsu.netcracker.parking.backend.models.Obj;
 
 import javax.sql.DataSource;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -216,10 +217,27 @@ public class PostgresObjectsDAO implements ObjectsDAO {
     }
 
     /**
-     * Returns Json Array of objects of a certain type
+     * Returns Array of objects of a certain type
      *
      * @param objectType
      * @return Array of objects of a certain type
+     */
+    @Override
+    public List<Obj> getAllObj(String objectType) {
+        List<Obj> objList = new ArrayList<>();
+        List<Long> objectsList = this.jdbcTemplate.queryForList(PostgresSQLQueries.GET_LIST_OF_OBJECTS_BY_OBJECT_TYPE, new Object[]{objectType}, Long.class);
+        for (Long objectId : objectsList) {
+            Obj obj = getObj(objectId);
+            objList.add(obj);
+        }
+        return objList;
+    }
+
+    /**
+     * Returns Json Array of objects of a certain type
+     *
+     * @param objectType
+     * @return ArrayNode of objects of a certain type
      */
     @Override
     public ArrayNode getAllObjAsJSON(String objectType) {

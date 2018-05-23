@@ -40,4 +40,9 @@ public class ObjController {
         }
         return "error";
     }
+
+//    @GetMapping(value = "/test")    //for testing imitate response from evac service with updated status "Completed"
+//    public void test() {
+//        objService.updateEvacStatus(11L);
+//    }
 }

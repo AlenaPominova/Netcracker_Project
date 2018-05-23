@@ -33,10 +33,11 @@ public class CustomResponseErrorHandler implements ResponseErrorHandler {
         // ToDo Log
         HttpStatus statusCode = response.getStatusCode();
         String errorMessage = IOUtils.toString(response.getBody());
+        String errorMessage2 = errorMessage.substring(1, errorMessage.length()-1);
 
         switch (statusCode) {
             case CONFLICT:
-                switch (errorMessage) {
+                switch (errorMessage2) {
                     case "User with such email or phone already exists":
                         throw new UserAlreadyExistsException(errorMessage);
                     case "Free spots count can not be less than 0":
