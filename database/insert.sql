@@ -58,7 +58,8 @@ INSERT INTO public."ATTRIBUTES"(
 		(308, 10, 'status', null),	
 		(309, 10, 'overtime_type', null),
 		(310, 1, 'overtime_coeff', null),
-		(330, 1, 'evac_order_id', null)
+		(330, 1, 'evac_order_id', null),
+		(331, 2, 'evac_order_status', null)
 ;
 	 
 INSERT INTO public."REFERENCES"(
@@ -176,7 +177,8 @@ INSERT INTO public."ATTR_OBJECT_TYPES"(
 			(308, 3, 0),
 			(309, 3, 0),
 			(310, 3, 0),
-			(330, 3, 0)
+			(330, 3, 0),
+			(331, 3, 0)
 ;
 
 INSERT INTO public."LIST_VALUES"(
