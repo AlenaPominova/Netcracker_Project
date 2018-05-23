@@ -10,17 +10,17 @@
 
 services:
     parking-backend:
-        url: http://localhost:8089/
+        url: http://localhost:8080/
         username: rest@gmail.com
         password: cmVzdEBnbWFpbC5jb21tB9hVpucaKSiH/KIbrrqH7Ay0obL+KS42xpxd87TmFA==
     evac:
-        url: someUrl
+        url: http://185.246.65.240:8080/app/
         username: ParkingCustomer
         password: q42ds52kjh
 
 #services:
 #    parking-backend:
-#        url: http://backend-myproject.37.46.133.173.nip.io/
+#        url: http://backend2-parkingo.37.46.133.173.nip.io/
 #        username: rest@gmail.com
 #        password: cmVzdEBnbWFpbC5jb21tB9hVpucaKSiH/KIbrrqH7Ay0obL+KS42xpxd87TmFA==
 #    evac:

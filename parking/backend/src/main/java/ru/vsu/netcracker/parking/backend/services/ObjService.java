@@ -80,18 +80,19 @@ public class ObjService {
     }
 
     /* Evacuation service */
+
     private final long EVAC_ORDER_ID_ATTR_ID = 330L;
     private final long EVAC_ORDER_STATUS_ATTR_ID = 331L;
+    private final long OWNER_ID_ATTR_ID = 300L;
 
     public JsonNode sendEvacRequest(long parkingId) {
         Obj parking = getObj(parkingId);
-        JsonNode jsonNode = evacServiceJsonConverter.createJsonRequest(parking);
-        JsonNode jsonResponse = customRestTemplate.postForObject("vendor/orders", jsonNode, JsonNode.class);
-        long id = jsonResponse.path("id").asLong();   //get evacOrderId from jsonResponse
-//        long id = 125L; //for testing
-        String statusOrder = "In progress";
-//        String statusOrder = jsonResponse.path("statusOrder").asText();   //  Может не надо
-        parking.getValues().put(EVAC_ORDER_ID_ATTR_ID, String.valueOf(id));
+        Obj user = getObj(parking.getReferences().get(OWNER_ID_ATTR_ID));
+        JsonNode jsonNode = evacServiceJsonConverter.createJsonRequest(user, parking);
+        JsonNode jsonResponse = customRestTemplate.postForObject("customer/orders", jsonNode, JsonNode.class);
+        long evacOrderId = jsonResponse.path("id").asLong();
+        String statusOrder = jsonResponse.path("statusOrder").asText();
+        parking.getValues().put(EVAC_ORDER_ID_ATTR_ID, String.valueOf(evacOrderId));
         parking.getValues().put(EVAC_ORDER_STATUS_ATTR_ID, statusOrder);
         saveObj(parking);
         return dao.getObjAsJSON(parking.getId());
@@ -101,15 +102,17 @@ public class ObjService {
     private final long STATUS_ID = 308L;
 
     public void updateEvacStatus(JsonNode jsonNode) {
-        //long evacOrderId = evacServiceJsonConverter.parseJsonResponse(jsonNode);
-        long evacOrderId = jsonNode.path("id").asLong();    //does same as row above
+        long evacOrderId = jsonNode.path("id").asLong();
+        String statusOrder = jsonNode.path("statusOrder").asText();
         List<Obj> list = dao.getAllObj("Parking");
         Obj parking = list.stream()
                 .filter(obj -> obj.getValues().get(EVAC_ORDER_ID_ATTR_ID) != null)
                 .filter(obj -> Long.valueOf(obj.getValues().get(EVAC_ORDER_ID_ATTR_ID)) == evacOrderId)
                 .findFirst().get();
+        parking.getValues().put(FREE_SPOTS_COUNT_ID, String.valueOf(1));
+        parking.getListValues().put(STATUS_ID, "Free");
         parking.getValues().put(EVAC_ORDER_ID_ATTR_ID, String.valueOf(evacOrderId));
-        parking.getValues().put(EVAC_ORDER_STATUS_ATTR_ID, "Completed");
+        parking.getValues().put(EVAC_ORDER_STATUS_ATTR_ID, statusOrder);
         saveObj(parking);
 
         // это, куда мы эвакуируем
@@ -124,18 +127,4 @@ public class ObjService {
         }
         saveObj(evacToParking);
     }
-
-//    public void updateEvacStatus(long id) { //for testing
-//        long evacOrderId = 125L;
-//        List<Obj> list = dao.getAllObj("Parking");
-//        Obj parking = list.stream()
-//                .filter(obj -> obj.getValues().get(EVAC_ORDER_ID_ATTR_ID) != null)
-//                .filter(obj -> Long.valueOf(obj.getValues().get(EVAC_ORDER_ID_ATTR_ID)) == evacOrderId)
-//                .findFirst().get();
-//        parking.getValues().put(EVAC_ORDER_ID_ATTR_ID, String.valueOf(evacOrderId));
-//        parking.getValues().put(EVAC_ORDER_STATUS_ATTR_ID, "Completed");
-//        saveObj(parking);
-//    }
-
-
 }

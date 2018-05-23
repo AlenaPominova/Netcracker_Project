@@ -64,13 +64,15 @@ class RestObjController {
 
     @GetMapping(value = "/parkings/{parkingId}/evac", produces = "application/json")
     public JsonNode sendEvacRequest(@PathVariable long parkingId) {
-        JsonNode jsonNode = objService.sendEvacRequest(parkingId);  // -> sends request to evac-service via RestTemplate
+        System.out.println("RestObjController: Recieved evacuation request");
+        JsonNode jsonNode = objService.sendEvacRequest(parkingId);
         return jsonNode;    //returns response to frontend
     }
 
     @PostMapping(value = "/parkings/update-evac-status", consumes = "application/json", produces = "application/json")
     public ResponseEntity<JsonNode> updateEvacStatus(@RequestBody JsonNode jsonNode) {
-        objService.updateEvacStatus(jsonNode); //-> update obj. revome order_id, setStatus 'Free', free_spots+1
+        System.out.println("RestObjController: Recieved update-status request");
+        objService.updateEvacStatus(jsonNode);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

@@ -96,16 +96,10 @@ public class ParkingsController {
 
     /* evacuation service */
 
-    @GetMapping(value = "/parkings/{parkingId}/evac")
+    @GetMapping(value = "/{parkingId}/evac")
     public String evacParking(@PathVariable long parkingId,
                               @ModelAttribute("currentUserId") long currentUserId) {
         Obj obj = objService.evacParking(parkingId);
-        return "redirect:/profiles/" + currentUserId;
-    }
-
-    @GetMapping(value = "/test")
-    public String test(@ModelAttribute("currentUserId") long currentUserId) {
-        Obj obj = objService.evacParking(11L);
         return "redirect:/profiles/" + currentUserId;
     }
 

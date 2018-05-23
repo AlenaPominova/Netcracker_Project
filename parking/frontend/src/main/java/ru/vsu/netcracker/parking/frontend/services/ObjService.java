@@ -156,22 +156,25 @@ public class ObjService {
 
     private final long EVAC_ORDER_ID_ATTR_ID = 330L;
     private final long EVAC_ORDER_STATUS_ATTR_ID = 331L;
-    public static final long EVAC_TO_PARKING_ID = 10L;
+    public static final long EVAC_TO_PARKING_ID = 12L;
 
     public Obj evacParking(long parkingId) {
         JsonNode response = parkingBackendRestTemplate.getForObject("restapi/parkings/" + parkingId + "/evac", JsonNode.class);
         Obj obj = jsonConverter.jsonToObject(response);
         cachePut(obj);
+        // checks if evacuation order status updated    (every 15 secs)
         new Thread(() -> {
             while (true) {
                 JsonNode jsonNode = parkingBackendRestTemplate.getForObject("restapi/objects/" + obj.getId(), JsonNode.class);
                 Obj obj2 = jsonConverter.jsonToObject(jsonNode);
-                if(obj2.getValues().get(EVAC_ORDER_STATUS_ATTR_ID).equals("Completed")){
+                if (obj2.getValues().get(EVAC_ORDER_STATUS_ATTR_ID).equals("In progress")) {
+                    cachePut(obj2);
+                } else if (obj2.getValues().get(EVAC_ORDER_STATUS_ATTR_ID).equals("Completed")) {
                     cachePut(obj2);
                     // это, обновляем инфу о парковке, куда мы эвакуируем
                     JsonNode jsonNode2 = parkingBackendRestTemplate.getForObject("restapi/objects/" + EVAC_TO_PARKING_ID, JsonNode.class);
                     Obj evacToParking = jsonConverter.jsonToObject(jsonNode2);
-                    cachePut(obj2);
+                    cachePut(evacToParking);
                     break;
                 }
                 try {
@@ -183,38 +186,4 @@ public class ObjService {
         }).start();
         return obj;
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//    public Obj checkEvacStatus(Obj parking) {
-//        JsonNode response = parkingBackendRestTemplate.getForObject("/parkings/{parkingId}/evac", JsonNode.class);
-//        Obj obj = jsonConverter.jsonToObject(response);
-//        cachePut(obj);
-//        return obj;
-//    }
-//
-//    @Async
-//    public Future<JsonNode> checkEvacStatus(Obj parking) throws InterruptedException {
-//        System.out.println("Looking up " + page);
-//        JsonNode response = parkingBackendRestTemplate.getForObject("/parkings/{parkingId}/evac", JsonNode.class);
-//        Thread.sleep(1000L);
-//        return new AsyncResult<JsonNode>(results);
-//    }
 }

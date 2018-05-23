@@ -3,6 +3,8 @@ package ru.vsu.netcracker.parking.backend.services;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.BufferingClientHttpRequestFactory;
+import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.http.client.support.BasicAuthorizationInterceptor;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
@@ -24,7 +26,7 @@ public class CustomRestTemplate extends RestTemplate {
         //this.setRequestFactory(new BufferingClientHttpRequestFactory(new SimpleClientHttpRequestFactory()));
         //this.setRequestFactory(new SimpleClientHttpRequestFactory());
         //this.getInterceptors().add(new LoggingRequestInterceptor());
-//        this.setErrorHandler(new CustomResponseErrorHandler());
+        //this.setErrorHandler(new CustomResponseErrorHandler());
     }
 
     @Override
