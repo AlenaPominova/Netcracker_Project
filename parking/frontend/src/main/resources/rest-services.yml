@@ -10,7 +10,7 @@
 
 services:
     parking-backend:
-        url: http://localhost:8080/
+        url: http://localhost:8089
         username: rest@gmail.com
         password: cmVzdEBnbWFpbC5jb21tB9hVpucaKSiH/KIbrrqH7Ay0obL+KS42xpxd87TmFA==
 

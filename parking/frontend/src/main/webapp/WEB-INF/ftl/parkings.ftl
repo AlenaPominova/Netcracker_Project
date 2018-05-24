@@ -111,6 +111,20 @@
                     type:'roadmap'
                 }).addTo(map);
                 trafficMutant.addGoogleLayer('TrafficLayer');
+
+                var greenIcon = L.icon({
+                    iconUrl: 'https://i.imgur.com/HlgBDB6.png',
+                    iconSize: [60,50]
+                });
+                var blueIcon = L.icon({
+                    iconUrl: 'https://i.imgur.com/KU4ct7n.png',
+                    iconSize: [60,50]
+                });
+                var redIcon = L.icon({
+                    iconUrl: 'https://i.imgur.com/yU4qi9n.png',
+                    iconSize: [60,50]
+                });
+
                 var markers = new L.FeatureGroup();
                 <#list parkingsList?keys as key>
                     <#assign parkin = parkingsList?api.get(key)>
@@ -134,22 +148,55 @@
                 map.addLayer(markers);
 
                 function createMarker(parking) {
-                    var redIcon = L.icon({
-                        iconUrl: 'https://i.imgur.com/p7are56.png',
-                        iconSize: [60,50]
-                    });
-                    var blueIcon = L.icon({
-                        iconUrl: 'https://i.imgur.com/dLfdUC1.png',
-                        iconSize: [60,50]
-                    });
                     var marker;
                     if (parking.status == "Free") {
-                        marker = L.marker([parking.latitude, parking.longitude], {icon: blueIcon})
+                        if (parking.free_spots_count > 1) {
+                            marker = L.marker([parking.latitude, parking.longitude], {icon: blueIcon});
+                            <@security.authorize access="isAuthenticated()">
+                                marker.bindPopup("<h4><b>" + parking.name + "</b></h4><br>" +
+                                        "<b>Адрес: </b>" + parking.address + "<br>" +
+                                        "<b>Открыта с: </b>" + parking.open_time + "<b> до:</b>" + parking.close_time + "<br>" +
+                                        "<b>Цена: </b>" + parking.price + " руб/час<br>" +
+                                        "<b>Рейтинг: </b>" + parking.rating + "<br>" +
+                                        "<b>Свободных мест: </b>" + parking.free_spots_count + "<br>" +
+                                        '<br><a href="${url}/profiles/' + parking.owner_id + '"> Страница владельца: </a>' +
+                                        '<form method="get" action="' + url + '/parkings/' + parking.id + '/rent">' +
+                                        '<button type="submit" style="background-color: #d8d8d8; border: 1px solid #d8d8d8; color: d8d8d8;" class="btn btn-rent" disabled>АРЕНДОВАТЬ</button>' +
+                                        '</form>'
+                                );
+                            </@security.authorize>
+                        } else {
+                            marker = L.marker([parking.latitude, parking.longitude], {icon: greenIcon});
+                            <@security.authorize access="isAuthenticated()">
+                                marker.bindPopup("<h4><b>" + parking.name + "</b></h4><br>" +
+                                        "<b>Адрес: </b>" + parking.address + "<br>" +
+                                        "<b>Открыта с: </b>" + parking.open_time + "<b> до:</b>" + parking.close_time + "<br>" +
+                                        "<b>Цена: </b>" + parking.price + " руб/час<br>" +
+                                        "<b>Рейтинг: </b>" + parking.rating + "<br>" +
+                                        "<b>Свободных мест: </b>" + parking.free_spots_count + "<br>" +
+                                        '<br><a href="${url}/profiles/' + parking.owner_id + '"> Страница владельца: </a>' +
+                                        '<form method="get" action="' + url + '/parkings/' + parking.id + '/rent">' +
+                                        '<button type="submit" class="btn btn-rent">АРЕНДОВАТЬ</button>'+
+                                        '</form>'
+                                );
+                            </@security.authorize>
+                        }
                     } else {
-                        marker = L.marker([parking.latitude, parking.longitude], {icon: redIcon})
+                        marker = L.marker([parking.latitude, parking.longitude], {icon: redIcon});
+                        <@security.authorize access="isAuthenticated()">
+                            marker.bindPopup("<h4><b>" + parking.name + "</b></h4><br>" +
+                                    "<b>Адрес: </b>" + parking.address + "<br>" +
+                                    "<b>Открыта с: </b>" + parking.open_time + "<b> до:</b>" + parking.close_time + "<br>" +
+                                    "<b>Цена: </b>" + parking.price + " руб/час<br>" +
+                                    "<b>Рейтинг: </b>" + parking.rating + "<br>" +
+                                    "<b>Свободных мест: </b>" + parking.free_spots_count + "<br>" +
+                                    '<br><a href="${url}/profiles/' + parking.owner_id + '"> Страница владельца: </a>' +
+                                    '<form method="get" action="' + url + '/parkings/' + parking.id + '/rent">' +
+                                    '<button type="submit" style="background-color: #d8d8d8; border: 1px solid #d8d8d8; color: d8d8d8;" class="btn btn-rent" disabled>АРЕНДОВАТЬ</button>'+
+                                    '</form>'
+                            );
+                        </@security.authorize>
                     }
-                    // var marker = L.marker([parking.latitude, parking.longitude], {icon: redIcon})
-                    // var blueMarker = L.marker([parking.latitude, parking.longitude], {icon: blueIcon})
 
                     <@security.authorize access="!isAuthenticated()">
                         marker.bindPopup("<h4><b>" + parking.name + "</b></h4><br>" +
@@ -159,45 +206,44 @@
                             "<b>Рейтинг: </b>" + parking.rating + "<br>" +
                             "<b>Свободных мест: </b>" + parking.free_spots_count);
                     </@security.authorize>
-                    <@security.authorize access="isAuthenticated()">
-                        marker.bindPopup("<h4><b>" + parking.name + "</b></h4><br>" +
-                            "<b>Адрес: </b>" + parking.address + "<br>" +
-                            "<b>Открыта с: </b>" + parking.open_time + "<b> до:</b>" + parking.close_time + "<br>" +
-                            "<b>Цена: </b>" + parking.price + " руб/час<br>" +
-                            "<b>Рейтинг: </b>" + parking.rating + "<br>" +
-                            "<b>Свободных мест: </b>" + parking.free_spots_count + "<br>" +
-                            '<br><a href="${url}/profiles/' + parking.owner_id + '"> Страница владельца: </a>' +
-                            '<form method="get" action="' + url + '/parkings/' + parking.id + '/rent">' +
-                            '<button type="submit" class="btn btn-rent">АРЕНДОВАТЬ</button>'+
-                            '</form>'
-                        );
-                    </@security.authorize>
-
                     markers.addLayer(marker);
                 }
                 function createFilterMarker(parking) {
-                    var redIcon = L.icon({
-                        iconUrl: 'https://i.imgur.com/p7are56.png',
-                        iconSize: [60,50]
-                    });
-                    var blueIcon = L.icon({
-                        iconUrl: 'https://i.imgur.com/dLfdUC1.png',
-                        iconSize: [60,50]
-                    });
                     var marker;
                     if (parking.status == "Free") {
-                        marker = L.marker([parking.latitude, parking.longitude], {icon: blueIcon})
+                        if (parking.free_spots_count > 1) {
+                            marker = L.marker([parking.latitude, parking.longitude], {icon: blueIcon});
+                            marker.bindPopup("<h4><b>" + parking.name + "</b></h4><br>" +
+                                    "<b>Адрес: </b>" + parking.address + "<br>" +
+                                    "<b>Открыта с: </b>" + parking.open_time + "<b> до:</b>" + parking.close_time + "<br>" +
+                                    "<b>Цена: </b>" + parking.price + " руб/час<br>" +
+                                    "<b>Рейтинг: </b>" + parking.rating + "<br>" +
+                                    "<b>Свободных мест: </b>" + parking.free_spots_count + "<br>" +
+                                    "<a href=\"/objects/' + parking.owner_id + '\">Страница владельца</a><br><br>" +
+                                    "<button type=\"submit\" style=\"background-color: #d8d8d8; border: 1px solid #d8d8d8; color: d8d8d8;\" class=\"btn btn-rent\" disabled>Взять в аренду</button>");
+                        }else{
+                            marker = L.marker([parking.latitude, parking.longitude], {icon: greenIcon});
+                            marker.bindPopup("<h4><b>" + parking.name + "</b></h4><br>" +
+                                    "<b>Адрес: </b>" + parking.address + "<br>" +
+                                    "<b>Открыта с: </b>" + parking.open_time + "<b> до:</b>" + parking.close_time + "<br>" +
+                                    "<b>Цена: </b>" + parking.price + " руб/час<br>" +
+                                    "<b>Рейтинг: </b>" + parking.rating + "<br>" +
+                                    "<b>Свободных мест: </b>" + parking.free_spots_count + "<br>" +
+                                    "<a href=\"/objects/' + parking.owner_id + '\">Страница владельца</a><br><br>" +
+                                    "<button type=\"submit\" class=\"btn btn-rent\">Взять в аренду</button>");
+                        }
+
                     } else {
-                        marker = L.marker([parking.latitude, parking.longitude], {icon: redIcon})
+                        marker = L.marker([parking.latitude, parking.longitude], {icon: redIcon});
+                        marker.bindPopup("<h4><b>" + parking.name + "</b></h4><br>" +
+                                "<b>Адрес: </b>" + parking.address + "<br>" +
+                                "<b>Открыта с: </b>" + parking.open_time + "<b> до:</b>" + parking.close_time + "<br>" +
+                                "<b>Цена: </b>" + parking.price + " руб/час<br>" +
+                                "<b>Рейтинг: </b>" + parking.rating + "<br>" +
+                                "<b>Свободных мест: </b>" + parking.free_spots_count + "<br>" +
+                                "<a href=\"/objects/' + parking.owner_id + '\">Страница владельца</a><br><br>" +
+                                "<button type=\"submit\" style=\"background-color: #d8d8d8; border: 1px solid #d8d8d8; color: d8d8d8;\" class=\"btn btn-rent\" disabled>Взять в аренду</button>");
                     }
-                    marker.bindPopup("<h4><b>" + parking.name + "</b></h4><br>" +
-                            "<b>Адрес: </b>" + parking.address + "<br>" +
-                            "<b>Открыта с: </b>" + parking.open_time + "<b> до:</b>" + parking.close_time + "<br>" +
-                            "<b>Цена: </b>" + parking.price + " руб/час<br>" +
-                            "<b>Рейтинг: </b>" + parking.rating + "<br>" +
-                            "<b>Свободных мест: </b>" + parking.free_spots_count + "<br>" +
-                            "<a href=\"/objects/' + parking.owner_id + '\">Страница владельца</a><br><br>" +
-                            "<button type=\"submit\" class=\"btn btn-rent\">Взять в аренду</button>");
                     /* Check valid for parking spot */
                     if (
                             checkOnValid('#fromPriceInput', '#toPriceInput', parking.price) &&
@@ -254,9 +300,9 @@
                 <p class="filter-label"><span class="glyphicon glyphicon-usd" style="padding-right: 10px;"></span> Стоимость парковки </p>
                 <div class="form-group">
                     <p class="label"> От</p>
-                    <input class="input-type-price" type="number" min="1" max="9999" step="1" value="1000" id="fromPriceInput">
+                    <input class="input-type-price" type="number" min="1" max="9999" step="1" value="1" id="fromPriceInput">
                     <p class="label" style="margin-left: 10px;"> До </p>
-                    <input class="input-type-price" type="number" min="1" max="9999" step="1" value="1" id="toPriceInput">
+                    <input class="input-type-price" type="number" min="1" max="9999" step="1" value="1000" id="toPriceInput">
                 </div>
 
                 <p class="filter-label"><span class="glyphicon glyphicon-star" style="padding-right: 10px;"></span> Рейтинг парковки </p>

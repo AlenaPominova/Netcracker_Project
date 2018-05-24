@@ -88,12 +88,13 @@
     </div><!-- /.container-fluid -->
 </nav>
 <div class="container">
+    <div class="bg"></div>
     <h1 class="title">Изменение данных о парковке</h1>
     <div class="line"></div>
     <div class="row" style="padding-left: 15px; padding-right: 15px; padding-top: 50px;">
         <div class="col-lg-5 col-md-5" style="padding-left: 0px; padding-right: 0px; padding-top: 0px;">
             <div class="col-lg-12 col-md-4" style="padding-left: 0px;">
-                <img src="http://lutsk.rayon.in.ua/upload/news/1/2018-03/152163432386/t_1_parkovka.jpg" style="width: 400px; height: 300px; border-radius: 50px;">
+                <img src="${parking.values?api.get(102?long)!"https://renderman.pixar.com/assets/camaleon_cms/image-not-found-4a963b95bf081c3ea02923dceaeb3f8085e1a654fc54840aac61a57a60903fef.png"}" style="width: 400px; height: 300px; border-radius: 50px;">
             </div>
         </div>
         <div class="col-lg-7 col-md-7" style="padding-left: 0px; padding-right: 0px; padding-top: 0px;">
@@ -114,6 +115,10 @@
                         <@spring.formInput "parking.dateValues['${306?long}']", "class='input-type-time'", "time"/>
                         <h3><b>Свободно мест:</b> ${parking.values?api.get(307?long)}</h3>
                         <h3><b>Рейтинг парковки:</b> ${parking.values?api.get(100?long)?number}</h3>
+                        <#--<h3><b>Овертайм:</b> ${parking.values?api.get(309?long)}</h3>-->
+                        <#--<#if parking.values?api.get(309?long) == "Повышенние стоимости аренды">-->
+                            <#--<h3><b>Коэффициент:</b> х${parking.values?api.get(310?long)}</h3>-->
+                        <#--</#if>-->
                         <h3><b>Статус:</b> ${parking.listValues?api.get(308?long)}</h3>
                         <button class="btn-chg" type="submit">Сохранить</button>
                     </div>
