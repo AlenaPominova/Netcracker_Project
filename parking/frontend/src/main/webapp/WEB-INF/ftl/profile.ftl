@@ -113,16 +113,34 @@
                         <img class="parking-photo" src="${parking.values?api.get(102?long)!"https://renderman.pixar.com/assets/camaleon_cms/image-not-found-4a963b95bf081c3ea02923dceaeb3f8085e1a654fc54840aac61a57a60903fef.png"}">
                         <#if user.values?api.get(202?long) == .globals.name>
                             <#if parking.listValues?api.get(308?long) == "Occupied">
-                                <form method="get" action="${mainPageUrl}/parkings/${parking.id}/evac">
-                                    <button type="submit" class="btn-chg">ЭВАКУИРОВАТЬ</button>
-                                </form>
+                                <#if parking.listValues?api.get(331?long) == "Completed">
+                                    <form method="get" action="${mainPageUrl}/parkings/${parking.id}/evac">
+                                        <button type="submit" class="btn-chg">ЭВАКУИРОВАТЬ</button>
+                                    </form>
+                                </#if>
+                                <#if parking.listValues?api.get(331?long) == "Created">
+                                    <div class="parking">
+                                        <h3>Запрос на эвакуацию...</h3>
+                                    </div>
+                                </#if>
+                                <#if parking.listValues?api.get(331?long) == "In progress">
+                                    <div class="parking">
+                                        <h3>Эвакуация в процессе...</h3>
+                                    </div>
+                                </#if>
                             </#if>
                             <form method="LINK" action="${url}/parkings/${parking.id}/edit">
                                 <button type="submit" class="btn-chg">РЕДАКТИРОВАТЬ</button>
                             </form>
-                            <#else>
+                        <#else>
                             <form method="get" action="${mainPageUrl}/parkings/${parking.id}/rent">
-                                <button type="submit" class="btn-chg">АРЕНДОВАТЬ</button>
+                                <#if (parking.values?api.get(307?long) == "0")>
+                                    <button type="submit" class="btn-chg" style="background-color: #d8d8d8; border: 1px solid #d8d8d8; color: d8d8d8;" disabled>АРЕНДОВАТЬ</button>
+                                <#else>
+                                    <#if (parking.values?api.get(307?long) == "1")>
+                                        <button type="submit" class="btn-chg">АРЕНДОВАТЬ</button>
+                                    </#if>
+                                </#if>
                             </form>
                         </#if>
                     </div>
@@ -134,10 +152,15 @@
                         <h3><b>Свободные часы:</b> с ${(parking.dateValues?api.get(305?long))?time} до ${parking.dateValues?api.get(306?long)?time}</h3>
                         <h3><b>Свободно мест:</b> ${parking.values?api.get(307?long)}</h3>
                         <h3><b>Рейтинг парковки:</b> ${parking.values?api.get(100?long)?number}</h3>
-                        <h3><b>Статус:</b> ${parking.listValues?api.get(308?long)}</h3>
-
-                        <h3><b>evac_order_id:</b> ${parking.values?api.get(330?long)!}</h3>
-                        <h3><b>evac_order_status:</b> ${parking.values?api.get(331?long)!}</h3>
+                        <#--<h3><b>Овертайм:</b> ${parking.values?api.get(309?long)}</h3>-->
+                        <#--<#if parking.values?api.get(309?long) == "Повышенние стоимости аренды">-->
+                            <#--<h3><b>Коэффициент:</b> х${parking.values?api.get(310?long)}</h3>-->
+                        <#--</#if>-->
+                        <#if parking.listValues?api.get(308?long) == "Occupied">
+                            <h3><b>Статус:</b> Занято </h3>
+                        <#else>
+                            <h3><b>Статус:</b> Свободно </h3>
+                        </#if>
                     </div>
                 </div>
         </#list>

@@ -82,50 +82,64 @@
                 <h3><b>Свободные часы:</b> с ${(parking.dateValues?api.get(305?long))?time} до ${parking.dateValues?api.get(306?long)?time}</h3>
                 <h3><b>Свободно мест:</b> ${parking.values?api.get(307?long)}</h3>
                 <h3><b>Рейтинг парковки:</b> ${parking.values?api.get(100?long)?number}</h3>
+                <#--<h3><b>Овертайм:</b> ${parking.values?api.get(309?long)}</h3>-->
+                <#--<#if parking.values?api.get(309?long) == "Повышенние стоимости аренды">-->
+                    <#--<h3><b>Коэффициент:</b> х${parking.values?api.get(310?long)}</h3>-->
+                <#--</#if>-->
+                <#if parking.listValues?api.get(308?long) == "Occupied">
+                    <h3><b>Статус:</b> Занято </h3>
+                <#else >
+                    <h3><b>Статус:</b> Свободно </h3>
+                </#if>
                 <a href="${mainPageUrl}/profiles/${parking.references?api.get(300?long)}">Страница владельца</a>
-                <h3><b>Статус:</b> ${parking.listValues?api.get(308?long)}</h3>
             </div>
         </div>
-        <div class="col-lg-7 col-md-7" style="padding-left: 0px; padding-right: 0px; padding-top: 0px;">
-            <div class="col-lg-12 col-md-12">
-                <div class="span4">
-                    <div class="panel panel-danger">
-                        <div class="panel-heading">Соглашение об аренде парковочного места</div>
-                        <div class="panel-body panel-height">
-                            <div class="rules">
-                                <ol>
-                                    <li>Уважайте других коммиттеров.</li>
-                                    <li>Уважайте других участников проекта.</li>
-                                    <li>Обсудите любые значимые изменения до коммита.</li>
-                                    <li>Уважайте существующих мейнтейнеров (указанных в поле MAINTAINER файлов Makefile или в файле MAINTAINER в корневом каталоге репозитория).</li>
-                                    <li>Уважайте существующих мейнтейнеров (указанных в поле MAINTAINER файлов Makefile или в файле MAINTAINER в корневом каталоге репозитория).</li>
-                                    <li>Любое спорное изменение необходимо откатить (back out) в ожидании решения, если того требует мейнтейнер. Вопросы безопасности могут перекрывать мнение мейнтейнера, если так решит Security Officer.</li>
-                                    <li>Изменения вносятся в ветвь FreeBSD-CURRENT до FreeBSD-STABLE, за исключением случаев, прямо разрешенных выпускающими инженерами или неприменимости изменения к FreeBSD-CURRENT. Любое нетривиальное и не срочное изменение должно быть выдержано в FreeBSD-CURRENT в течение по крайней мере 3 дней перед переносом, чтобы его могли адекватно протестировать. Выпускающие инженеры обладают той же властью в ветви FreeBSD-STABLE, что и мейнтейнеры (см. правило 5).</li>
-                                    <li>Не пререкайтесь с другими коммиттерами публично: это дурно выглядит. Если вам необходимо с чем-либо <<категорически не согласиться>>, делайте это личной почтой.</li>
-                                    <li>Соблюдайте все периоды заморозки кода (core freeze), а также своевременно читайте списки рассылки committers и developers, чтобы быть в курсе расписания таких периодов.</li>
-                                    <li>Если вы сомневаетесь в какой-либо процедуре, сначала спросите!</li>
-                                    <li>Тестируйте свои изменения перед коммитом.</li>
-                                    <li>Не производите коммит в деревья src/contrib, src/crypto и src/sys/contrib без прямого разрешения (approval) соответствующего мейнтейнера(ов).</li>
-                                </ol>
+        <#if !(success?? || (parking.values?api.get(307?long) == "0") || (parking.values?api.get(307?long) != "1")) >
+            <div class="col-lg-7 col-md-7" style="padding-left: 0px; padding-right: 0px; padding-top: 0px;">
+                <div class="col-lg-12 col-md-12">
+                    <div class="span4">
+                        <div class="panel panel-danger">
+                            <div class="panel-heading">Соглашение об аренде парковочного места</div>
+                            <div class="panel-body panel-height">
+                                <div class="rules">
+                                    <ol>
+                                        <li>Уважайте других коммиттеров.</li>
+                                        <li>Уважайте других участников проекта.</li>
+                                        <li>Обсудите любые значимые изменения до коммита.</li>
+                                        <li>Уважайте существующих мейнтейнеров (указанных в поле MAINTAINER файлов Makefile или в файле MAINTAINER в корневом каталоге репозитория).</li>
+                                        <li>Уважайте существующих мейнтейнеров (указанных в поле MAINTAINER файлов Makefile или в файле MAINTAINER в корневом каталоге репозитория).</li>
+                                        <li>Любое спорное изменение необходимо откатить (back out) в ожидании решения, если того требует мейнтейнер. Вопросы безопасности могут перекрывать мнение мейнтейнера, если так решит Security Officer.</li>
+                                        <li>Изменения вносятся в ветвь FreeBSD-CURRENT до FreeBSD-STABLE, за исключением случаев, прямо разрешенных выпускающими инженерами или неприменимости изменения к FreeBSD-CURRENT. Любое нетривиальное и не срочное изменение должно быть выдержано в FreeBSD-CURRENT в течение по крайней мере 3 дней перед переносом, чтобы его могли адекватно протестировать. Выпускающие инженеры обладают той же властью в ветви FreeBSD-STABLE, что и мейнтейнеры (см. правило 5).</li>
+                                        <li>Не пререкайтесь с другими коммиттерами публично: это дурно выглядит. Если вам необходимо с чем-либо <<категорически не согласиться>>, делайте это личной почтой.</li>
+                                        <li>Соблюдайте все периоды заморозки кода (core freeze), а также своевременно читайте списки рассылки committers и developers, чтобы быть в курсе расписания таких периодов.</li>
+                                        <li>Если вы сомневаетесь в какой-либо процедуре, сначала спросите!</li>
+                                        <li>Тестируйте свои изменения перед коммитом.</li>
+                                        <li>Не производите коммит в деревья src/contrib, src/crypto и src/sys/contrib без прямого разрешения (approval) соответствующего мейнтейнера(ов).</li>
+                                    </ol>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-
-            <div class="col-lg-12 col-md-12">
-                <form method="get" action="/parkings/${parking.id}/rent">
-                    <div class="form-group">
-                        <div class="main-checkbox">
-                            <input value="confirmed" id="checkbox1" name="status" type="checkbox">
-                            <label for="checkbox1"></label>
+                <div class="col-lg-12 col-md-12">
+                    <form method="get" action="/parkings/${parking.id}/rent">
+                        <div class="form-group">
+                            <div class="main-checkbox">
+                                <input value="confirmed" id="checkbox1" name="status" type="checkbox">
+                                <label for="checkbox1"></label>
+                            </div>
+                            <span class="text">С правилами об аренде парковочного места ознакомлен и принимаю их.</span>
                         </div>
-                        <span class="text">С правилами об аренде парковочного места ознакомлен и принимаю их.</span>
-                    </div>
-                    <button type="submit" class="btn-chg">АРЕНДОВАТЬ</button>
-                </form>
+                        <button type="submit" class="btn-chg">АРЕНДОВАТЬ</button>
+                    </form>
+                </div>
             </div>
-        </div>
+        <#else>
+            <form method="get" action="${mainPageUrl}">
+                <h4>К сожалению аренда данной парковки невозможна.</h4>
+                <button type="submit" class="btn-chg">ВЕРНУТЬСЯ НА ГЛАВНУЮ</button>
+            </form>
+        </#if>
     </div>
 </div>
 </body>
