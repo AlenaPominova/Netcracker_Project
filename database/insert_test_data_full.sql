@@ -22,7 +22,6 @@ INSERT INTO public."OBJECTS"(
 			(16, 3, 'Parking 16', NULL),
 			(17, 3, 'Parking 17', NULL),
 		
-		---------------------------------------
 			(18, 3, 'Parking 18', NULL),	 
 			(19, 3, 'Parking 19', NULL), 
 			(20, 3, 'Parking 20', NULL), 
@@ -76,7 +75,6 @@ INSERT INTO public."REFERENCES"(
 		(300, 206, 16),
 		(300, 206, 17),
 		
-		----------
 		(200, 2, 207),
 		(200, 2, 208),
 		(200, 2, 209),
@@ -145,7 +143,7 @@ INSERT INTO public."PARAMS"(
 		(101, 206,'Earth', null, null),
 		(205, 206, null,'1966-04-13', null),
 		(100, 206, '5', null, null),
-	-----------------------------------------------	
+
 		(201, 207,'+79374224563', null, null),
 		(202, 207,'petrovasya@mail.ru', null, null),
 		(203, 207,'qasdzx3Z', null, null),
@@ -209,7 +207,6 @@ INSERT INTO public."PARAMS"(
 		(205, 408, null,'1980-11-10', null),
 		(100, 408, '5', null, null),
 		
-	------------------------------------------------	
 		(201, 305,'+79501231233', null, null),
 		(202, 305,'pop@yandex.ru', null, null),
 		(203, 305,'qEsdqq123sda', null, null),
@@ -258,7 +255,6 @@ INSERT INTO public."PARAMS"(
 		(100, 17, '5.0',null, null),
 		(102, 17, 'http://domovoi-znak.ru/components/com_jshopping/files/img_products/full_no_parking_1.png',null, null),
 		
-		---------------------------------
 		(301, 18, '51.647197',null, null),
 		(302, 18, '39.148679',null, null),
 		(101, 18, 'ул. Юлюса-Янониса, 16',null, null),

@@ -22,7 +22,7 @@ INSERT INTO public."OBJECTS"(
 			
 			(10, 3, 'ParkingGallery 547821457', NULL),
 			(11, 3, 'Parking 2141764', NULL),
-			(12, 3, 'ParkonGo\'s Parking 00000', NULL)
+			(12, 3, 'ParkinGo_s Parking 00000', NULL)
 			
 ;
 	
@@ -124,7 +124,7 @@ INSERT INTO public."PARAMS"(
 		
 		(201, 401,'+79102234512', null, null),
 		(202, 401,'evac-service@mail.ru', null, null),
-		(203, 401,'CHANGE PASSWORD', null, null),
+		(203, 401,'ZXZhYy1zZXJ2aWNlQG1haWwuY29tDxzSbIu3Wir+XjvrtL1ItCWA3YXLrjchcY/z9XWG1JU=', null, null),
 		(101, 401,'Воронеж', null, null),
 		(205, 401, null, '2000-12-20', null),
 		(206, 401,'ВГУ', null, null),
