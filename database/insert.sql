@@ -13,7 +13,7 @@ INSERT INTO public."OBJECTS"(
 			(2, 1, 'Owner', NULL),
 			(3, 1, 'User', NULL),
 			(4, 1, 'RestAPI User', NULL),			
-			(100, 2, 'Administrator', NULL),		
+			(100, 2, 'ParkinGo Administrator', NULL),		
 			(200, 2, 'Owner', NULL),	
 			(201, 2, 'Чижов Сергей Викторович', NULL),					
 			(300, 2, 'User', NULL),				
@@ -21,7 +21,9 @@ INSERT INTO public."OBJECTS"(
 			(401, 2, 'EvacService RestAPI user', NULL),
 			
 			(10, 3, 'ParkingGallery 547821457', NULL),
-			(11, 3, 'Parking 2141764', NULL)
+			(11, 3, 'Parking 2141764', NULL),
+			(12, 3, 'ParkonGo\'s Parking 00000', NULL)
+			
 ;
 	
 INSERT INTO public."ATTR_TYPES"(
@@ -58,7 +60,8 @@ INSERT INTO public."ATTRIBUTES"(
 		(308, 10, 'status', null),	
 		(309, 10, 'overtime_type', null),
 		(310, 1, 'overtime_coeff', null),
-		(330, 1, 'evac_order_id', null)
+		(330, 1, 'evac_order_id', null),
+		(331, 2, 'evac_order_status', null)
 ;
 	 
 INSERT INTO public."REFERENCES"(
@@ -71,7 +74,8 @@ INSERT INTO public."REFERENCES"(
 		(200, 4, 400),
 		(200, 4, 401),
 		(300, 201, 10),
-		(300, 200, 11)
+		(300, 200, 11),
+		(300, 100, 12)
 ;
 		
 INSERT INTO public."PARAMS"(
@@ -145,8 +149,19 @@ INSERT INTO public."PARAMS"(
 		(307, 11, '1', null, null),
 		(308, 11, null , null, 2),
 		(100, 11, '2.0',null, null),
-		(102, 11, 'https://moe-online.ru/media/4/2/4/8/1/3/3e6125609b27559ae2bde9311bb565dd/thumb_1920.jpg',null, null),
-		(309, 11, null, null, 3)
+		(102, 11, 'https://s00.yaplakal.com/pics/pics_original/0/2/1/6836120.jpg',null, null),
+		(309, 11, null, null, 3),
+		
+		(301, 12, '51.700701',null, null),
+		(302, 12, '39.130788',null, null),
+		(101, 12, 'ул. Антонова-Овсеенко, 16',null, null),
+		(304, 12, '0.00',null, null),
+		(305, 12, null , to_timestamp('0:00', 'hh24:mi'), null),
+		(306, 12, null , to_timestamp('0:00', 'hh24:mi'), null),			
+		(307, 12, '10', null, null),
+		(308, 12, null , null, 2),
+		(100, 12, '0.0',null, null),
+		(102, 12, 'http://www.avtoindent.ru/_bl/1/27049288.jpeg',null, null)
 ;
 
 INSERT INTO public."ATTR_OBJECT_TYPES"(
@@ -176,7 +191,8 @@ INSERT INTO public."ATTR_OBJECT_TYPES"(
 			(308, 3, 0),
 			(309, 3, 0),
 			(310, 3, 0),
-			(330, 3, 0)
+			(330, 3, 0),
+			(331, 3, 0)
 ;
 
 INSERT INTO public."LIST_VALUES"(

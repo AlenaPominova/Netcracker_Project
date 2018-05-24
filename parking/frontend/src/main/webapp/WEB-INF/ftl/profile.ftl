@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <#assign security=JspTaglibs["http://www.springframework.org/security/tags"] />
-<#import "/spring.ftl" as spring/>
 <html>
 <head>
 <#setting locale="en">
@@ -83,7 +82,7 @@
                 <#if user.typeId == 2>
                     <h2>${user.name}</h2><p>( Владелец )</p>
                 <#else>
-                    <h2>${user.name}</h2><p>( Администратор )</p>
+                    <h2>${user.name}</h2><p>( Пользователь )</p>
                 </#if>
                 <h3 style="margin-top: 20px;"><b>Номер телефона:</b> ${user.values?api.get(201?long)}</h3>
                 <h3><b>E-mail:</b> ${user.values?api.get(202?long)}</h3>
@@ -114,7 +113,9 @@
                         <img class="parking-photo" src="${parking.values?api.get(102?long)!"https://renderman.pixar.com/assets/camaleon_cms/image-not-found-4a963b95bf081c3ea02923dceaeb3f8085e1a654fc54840aac61a57a60903fef.png"}">
                         <#if user.values?api.get(202?long) == .globals.name>
                             <#if parking.listValues?api.get(308?long) == "Occupied">
-                                <button class="btn-chg">ЭВАКУИРОВАТЬ</button>
+                                <form method="get" action="${mainPageUrl}/parkings/${parking.id}/evac">
+                                    <button type="submit" class="btn-chg">ЭВАКУИРОВАТЬ</button>
+                                </form>
                             </#if>
                             <form method="LINK" action="${url}/parkings/${parking.id}/edit">
                                 <button type="submit" class="btn-chg">РЕДАКТИРОВАТЬ</button>
@@ -134,6 +135,9 @@
                         <h3><b>Свободно мест:</b> ${parking.values?api.get(307?long)}</h3>
                         <h3><b>Рейтинг парковки:</b> ${parking.values?api.get(100?long)?number}</h3>
                         <h3><b>Статус:</b> ${parking.listValues?api.get(308?long)}</h3>
+
+                        <h3><b>evac_order_id:</b> ${parking.values?api.get(330?long)!}</h3>
+                        <h3><b>evac_order_status:</b> ${parking.values?api.get(331?long)!}</h3>
                     </div>
                 </div>
         </#list>

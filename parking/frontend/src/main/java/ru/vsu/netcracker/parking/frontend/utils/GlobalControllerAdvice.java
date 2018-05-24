@@ -17,7 +17,8 @@ import java.sql.Timestamp;
 @ControllerAdvice
 public class GlobalControllerAdvice {
 
-    ObjService objService;
+    private ObjService objService;
+    private static final String MAINPAGE = "http://backend-parkingo.37.46.133.173.nip.io";
 
     @Autowired
     public GlobalControllerAdvice(ObjService objService) {
@@ -31,6 +32,7 @@ public class GlobalControllerAdvice {
 
     @ModelAttribute
     public void addGlobalAttributes(Model model) {
+        model.addAttribute("main_url", MAINPAGE);
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth.isAuthenticated() && !(auth instanceof AnonymousAuthenticationToken)) {
             try {
