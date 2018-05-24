@@ -30,15 +30,13 @@ import java.util.concurrent.Future;
 public class ObjService {
 
     private RestTemplate parkingBackendRestTemplate;
-    private CustomRestTemplate evacServiceRestTemplate;
     private Attributes attributes;
     private JsonConverter jsonConverter;
     private CustomSHA256PasswordEncoder passwordEncoder;
 
     @Autowired
-    public ObjService(RestTemplate parkingBackendRestTemplate, CustomRestTemplate evacServiceRestTemplate, Attributes attributes, JsonConverter jsonConverter, CustomSHA256PasswordEncoder passwordEncoder) {
+    public ObjService(RestTemplate parkingBackendRestTemplate, Attributes attributes, JsonConverter jsonConverter, CustomSHA256PasswordEncoder passwordEncoder) {
         this.parkingBackendRestTemplate = parkingBackendRestTemplate;
-        this.evacServiceRestTemplate = evacServiceRestTemplate;
         this.attributes = attributes;
         this.jsonConverter = jsonConverter;
         this.passwordEncoder = passwordEncoder;

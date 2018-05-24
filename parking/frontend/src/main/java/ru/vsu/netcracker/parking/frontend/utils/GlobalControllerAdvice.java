@@ -18,7 +18,8 @@ import java.sql.Timestamp;
 public class GlobalControllerAdvice {
 
     private ObjService objService;
-    private static final String MAINPAGE = "http://backend-parkingo.37.46.133.173.nip.io";
+//    private static final String MAINPAGE = "http://frontend-parkingo.37.46.133.173.nip.io";
+    private static final String MAINPAGE = "http://localhost:8082";
 
     @Autowired
     public GlobalControllerAdvice(ObjService objService) {
@@ -32,13 +33,12 @@ public class GlobalControllerAdvice {
 
     @ModelAttribute
     public void addGlobalAttributes(Model model) {
-        model.addAttribute("main_url", MAINPAGE);
+        model.addAttribute("mainPageUrl", MAINPAGE);
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth.isAuthenticated() && !(auth instanceof AnonymousAuthenticationToken)) {
             try {
                 long currentUserId = objService.getObjByUsername(auth.getPrincipal().toString()).getId();
                 model.addAttribute("currentUserId", currentUserId);
-                model.addAttribute("mainPageUrl", "http://localhost:8082");
             } catch (ResourceNotFoundException e) {
                 e.printStackTrace();
             }

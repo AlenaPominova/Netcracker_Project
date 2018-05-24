@@ -37,10 +37,4 @@ public class RestServicesConfig {
         RestService service = restServices.get("parking-backend");
         return new CustomRestTemplate(service.getUrl(), service.getUsername(), service.getPassword());
     }
-
-    @Bean
-    public CustomRestTemplate evacServiceRestTemplate() {
-        RestService service = restServices.get("evac");
-        return new CustomRestTemplate(service.getUrl(), service.getUsername(), service.getPassword());
-    }
 }

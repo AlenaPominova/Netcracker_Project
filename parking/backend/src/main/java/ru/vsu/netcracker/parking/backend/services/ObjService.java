@@ -109,22 +109,32 @@ public class ObjService {
                 .filter(obj -> obj.getValues().get(EVAC_ORDER_ID_ATTR_ID) != null)
                 .filter(obj -> Long.valueOf(obj.getValues().get(EVAC_ORDER_ID_ATTR_ID)) == evacOrderId)
                 .findFirst().get();
-        parking.getValues().put(FREE_SPOTS_COUNT_ID, String.valueOf(1));
-        parking.getListValues().put(STATUS_ID, "Free");
-        parking.getValues().put(EVAC_ORDER_ID_ATTR_ID, String.valueOf(evacOrderId));
-        parking.getValues().put(EVAC_ORDER_STATUS_ATTR_ID, statusOrder);
-        saveObj(parking);
-
-        // это, куда мы эвакуируем
-        Obj evacToParking = getObj(EvacServiceJsonConverter.EVAC_TO_PARKING_ID);
-        long freeSpotsCount = Long.valueOf(parking.getValues().get(FREE_SPOTS_COUNT_ID));
-        if (freeSpotsCount > 0) {
-            evacToParking.getValues().put(FREE_SPOTS_COUNT_ID, String.valueOf(--freeSpotsCount));
-            evacToParking.getListValues().put(STATUS_ID, "Occupied");
+        String currentStatus = parking.getListValues().get(STATUS_ID);
+        if (currentStatus.equals("Completed")) {
+            System.out.println("Order has already been completed. Doing nothing");
         } else {
-            evacToParking.getValues().put(FREE_SPOTS_COUNT_ID, String.valueOf(10));
-            evacToParking.getListValues().put(STATUS_ID, "Free");
+
+            if (statusOrder.equals("Completed")) {
+                parking.getValues().put(FREE_SPOTS_COUNT_ID, String.valueOf(1));
+                parking.getListValues().put(STATUS_ID, "Free");
+
+                // это, куда мы эвакуируем
+                Obj evacToParking = getObj(EvacServiceJsonConverter.EVAC_TO_PARKING_ID);
+                long freeSpotsCount = Long.valueOf(evacToParking.getValues().get(FREE_SPOTS_COUNT_ID));
+                if (freeSpotsCount > 0) {
+                    freeSpotsCount = freeSpotsCount - 1;
+                    evacToParking.getValues().put(FREE_SPOTS_COUNT_ID, String.valueOf(freeSpotsCount));
+                    if (freeSpotsCount == 0) {
+                        evacToParking.getListValues().put(STATUS_ID, "Occupied");
+                    }
+                } else {
+                    evacToParking.getValues().put(FREE_SPOTS_COUNT_ID, String.valueOf(10));
+                    evacToParking.getListValues().put(STATUS_ID, "Free");
+                }
+                saveObj(evacToParking);
+            }
+            parking.getValues().put(EVAC_ORDER_STATUS_ATTR_ID, statusOrder);
+            saveObj(parking);
         }
-        saveObj(evacToParking);
     }
 }
