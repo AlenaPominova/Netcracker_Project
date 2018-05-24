@@ -10,6 +10,7 @@ import org.springframework.web.servlet.config.annotation.*;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver;
 
+import java.util.Base64;
 import java.util.List;
 
 @Configuration
