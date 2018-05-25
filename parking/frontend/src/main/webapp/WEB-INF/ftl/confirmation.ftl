@@ -136,7 +136,7 @@
             </div>
         <#else>
             <form method="get" action="${mainPageUrl}">
-                <h4>К сожалению аренда данной парковки невозможна.</h4>
+                <#--<h4>К сожалению аренда данной парковки невозможна.</h4>-->
                 <button type="submit" class="btn-chg">ВЕРНУТЬСЯ НА ГЛАВНУЮ</button>
             </form>
         </#if>

@@ -113,20 +113,26 @@
                         <img class="parking-photo" src="${parking.values?api.get(102?long)!"https://renderman.pixar.com/assets/camaleon_cms/image-not-found-4a963b95bf081c3ea02923dceaeb3f8085e1a654fc54840aac61a57a60903fef.png"}">
                         <#if user.values?api.get(202?long) == .globals.name>
                             <#if parking.listValues?api.get(308?long) == "Occupied">
-                                <#if parking.listValues?api.get(331?long) == "Completed">
+                                <#if parking.values?api.get(331?long)??>
+                                    <#if parking.values?api.get(331?long) == "Completed" >
+                                        <form method="get" action="${mainPageUrl}/parkings/${parking.id}/evac">
+                                            <button type="submit" class="btn-chg">ЭВАКУИРОВАТЬ</button>
+                                        </form>
+                                    </#if>
+                                    <#if parking.values?api.get(331?long) == "Created">
+                                        <div class="parking">
+                                            <h3>Заявка зарегистрирована... Номер заявки № ${parking.values?api.get(330?long)!}
+                                        </div>
+                                    </#if>
+                                    <#if parking.values?api.get(331?long) == "In progress">
+                                        <div class="parking">
+                                            <h3>Эвакуация в процессе... Номер заявки № ${parking.values?api.get(330?long)!}</h3>
+                                        </div>
+                                    </#if>
+                                <#else>
                                     <form method="get" action="${mainPageUrl}/parkings/${parking.id}/evac">
                                         <button type="submit" class="btn-chg">ЭВАКУИРОВАТЬ</button>
                                     </form>
-                                </#if>
-                                <#if parking.listValues?api.get(331?long) == "Created">
-                                    <div class="parking">
-                                        <h3>Запрос на эвакуацию...</h3>
-                                    </div>
-                                </#if>
-                                <#if parking.listValues?api.get(331?long) == "In progress">
-                                    <div class="parking">
-                                        <h3>Эвакуация в процессе...</h3>
-                                    </div>
                                 </#if>
                             </#if>
                             <form method="LINK" action="${url}/parkings/${parking.id}/edit">
