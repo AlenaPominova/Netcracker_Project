@@ -20,6 +20,9 @@ import java.nio.charset.Charset;
 import static org.springframework.http.HttpStatus.Series.CLIENT_ERROR;
 import static org.springframework.http.HttpStatus.Series.SERVER_ERROR;
 
+/**
+ * Error handler for RestTemplate
+ */
 public class CustomResponseErrorHandler implements ResponseErrorHandler {
 
     @Override

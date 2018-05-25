@@ -9,17 +9,19 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import ru.vsu.netcracker.parking.frontend.controllers.ObjController;
+import ru.vsu.netcracker.parking.frontend.controllers.ParkingsController;
 import ru.vsu.netcracker.parking.frontend.exceptions.ResourceNotFoundException;
 import ru.vsu.netcracker.parking.frontend.services.ObjService;
 
 import java.sql.Timestamp;
 
-@ControllerAdvice
+@ControllerAdvice(assignableTypes = {ObjController.class, ParkingsController.class})
 public class GlobalControllerAdvice {
 
     private ObjService objService;
-//    private static final String MAINPAGE = "http://frontend-parkingo.37.46.133.173.nip.io";
-    private static final String MAINPAGE = "http://localhost:8082";
+    public static final String MAINPAGE = "http://frontend-parkingo.37.46.133.173.nip.io";
+//    private static final String MAINPAGE = "http://localhost:8082";
 
     @Autowired
     public GlobalControllerAdvice(ObjService objService) {

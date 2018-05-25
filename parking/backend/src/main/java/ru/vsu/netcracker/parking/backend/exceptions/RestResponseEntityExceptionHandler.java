@@ -18,10 +18,10 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
         return handleExceptionInternal(ex, ex.getMessage(), new HttpHeaders(), HttpStatus.CONFLICT, request);
     }
 
-    @ExceptionHandler({EmptyResultDataAccessException.class})
+    @ExceptionHandler({EmptyResultDataAccessException.class, ResourceNotFoundException.class})
     public ResponseEntity<Object> handleNotFound(RuntimeException ex, WebRequest request) {
         // ToDo Logging
-        String body = "Not Found";
+        String body = "Resourse Not Found";
         return handleExceptionInternal(ex, body, new HttpHeaders(), HttpStatus.NOT_FOUND, request);
     }
 }

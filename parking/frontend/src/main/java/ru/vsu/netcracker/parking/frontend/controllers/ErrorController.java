@@ -4,6 +4,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
+import ru.vsu.netcracker.parking.frontend.utils.GlobalControllerAdvice;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -31,11 +32,16 @@ public class ErrorController {
                 errorMsg = "Http Error Code: 404. Resource not found";
                 break;
             }
+            case 409: {
+                errorMsg = "Http Error Code: 409. Conflict";
+                break;
+            }
             case 500: {
                 errorMsg = "Http Error Code: 500. Internal Server Error";
                 break;
             }
         }
+        errorPage.addObject("mainPageUrl", GlobalControllerAdvice.MAINPAGE);
         errorPage.addObject("errorMsg", errorMsg);
         return errorPage;
     }

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
+import ru.vsu.netcracker.parking.backend.exceptions.ResourceNotFoundException;
 import ru.vsu.netcracker.parking.backend.exceptions.UserAlreadyExistsException;
 import ru.vsu.netcracker.parking.backend.json.JsonConverter;
 import ru.vsu.netcracker.parking.backend.models.Obj;
@@ -142,7 +143,7 @@ public class PostgresObjectsDAO implements ObjectsDAO {
     public Obj getObj(long objectId) {
         Obj obj = getBasicObjInfo(objectId);
         if(obj.getTypeId() == 1L){
-            throw new EmptyResultDataAccessException(1);
+            throw new ResourceNotFoundException("No object with such id exists");
         }
         Map<Long, String> values = new HashMap<>();
         Map<Long, Timestamp> dateValues = new HashMap<>();
@@ -183,6 +184,9 @@ public class PostgresObjectsDAO implements ObjectsDAO {
     @Override
     public JsonNode getObjAsJSON(long objectId) {
         Obj obj = getBasicObjInfo(objectId);
+        if(obj.getTypeId() == 1L){
+            throw new ResourceNotFoundException("No object with such id exists");
+        }
         Map<Long, String> values = new HashMap<>();
         Map<Long, Timestamp> dateValues = new HashMap<>();
         Map<Long, String> listValues = new HashMap<>();
