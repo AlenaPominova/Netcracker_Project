@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <#assign security=JspTaglibs["http://www.springframework.org/security/tags"] />
 <head>
-    <title>Parkings</title>
     <#setting locale="en">
     <#setting number_format="0.######">
     <#assign url = springMacroRequestContext.getPathToServlet() >
@@ -19,6 +18,7 @@
 
     <#include "js/Leaflet.GoogleMutant.js">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ParkinGo - аренда парковочных мест</title>
 </head>
 <body>
 <div class="loading-window">

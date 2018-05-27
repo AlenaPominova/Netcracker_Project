@@ -3,13 +3,13 @@
 <#import "/spring.ftl" as spring/>
 <!doctype html>
 <head>
-    <title>Тестовая страница</title>
     <meta charset="utf-8" />
     <link href="http://yastatic.net/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
     <script src="http://yastatic.net/jquery/2.1.4/jquery.min.js"></script>
     <script src="http://yastatic.net/bootstrap/3.3.4/js/bootstrap.min.js"></script>
     <#include "css/login_styles.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Вход/Регистрация</title>
 </head>
 <body>
 

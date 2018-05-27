@@ -14,6 +14,7 @@
     <script src="http://yastatic.net/jquery/2.1.4/jquery.min.js"></script>
     <script src="http://yastatic.net/bootstrap/3.3.4/js/bootstrap.min.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Изменение информации о парковке</title>
     <script type="text/javascript">
         function submitform(){
             <#--var values = [];-->

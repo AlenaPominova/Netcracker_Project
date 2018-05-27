@@ -14,6 +14,7 @@
     <script src="http://yastatic.net/bootstrap/3.3.4/js/bootstrap.min.js"></script>
     <script src='https://www.google.com/recaptcha/api.js'></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Аренда парковки</title>
 </head>
 <body>
 <nav class="navbar navbar-default">
@@ -141,14 +142,13 @@
                             <div class="main-checkbox">
                                 <input value="confirmed" id="checkbox1" name="status" type="checkbox">
                                 <label for="checkbox1"></label>
-                                <br><br><br><br><br><br>
-                                <div class="g-recaptcha" data-sitekey="6Lfqp1sUAAAAAPUCtlILo-XUBl6ezI-aqP8yPPew"></div>
                             </div>
                             <span class="text">С правилами об аренде парковочного места ознакомлен и принимаю их.</span>
                         </div>
+                        <div class="g-recaptcha" data-sitekey="6Lfqp1sUAAAAAPUCtlILo-XUBl6ezI-aqP8yPPew"></div>
                         <button type="submit" class="btn-chg">АРЕНДОВАТЬ</button>
                         <#if error??>
-                            <h4>${error} Try again!</h4>
+                            <h4 style="color: red;"><b>${error} Try again!</b></h4>
                         </#if>
                     </form>
                 </div>
@@ -161,5 +161,34 @@
         </#if>
     </div>
 </div>
+<!-- The Modal -->
+<div id="myModal" class="modal">
+    <!-- Modal content -->
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <p>Поздравляем ! Вы успешно арендовали парковку !</p>
+    </div>
+</div>
+<script>
+    $(document).ready(function(){
+        var modal = document.getElementById('myModal');
+        var span = document.getElementsByClassName("close")[0];
+        <#if success??>
+            // When the user clicks the button, open the modal
+            modal.style.display = "block";
+        </#if>
+        // When the user clicks on <span> (x), close the modal
+        span.onclick = function() {
+            modal.style.display = "none";
+        }
+
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+    });
+</script>
 </body>
 </html>

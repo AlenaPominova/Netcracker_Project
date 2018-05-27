@@ -5,7 +5,6 @@
 <#setting locale="en">
 <#setting number_format="0.######">
 <#assign url = springMacroRequestContext.getPathToServlet() >
-
     <meta charset="utf-8" />
     <!-- Stylesheet -->
     <link href="http://yastatic.net/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
@@ -14,6 +13,7 @@
     <script src="http://yastatic.net/jquery/2.1.4/jquery.min.js"></script>
     <script src="http://yastatic.net/bootstrap/3.3.4/js/bootstrap.min.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Профиль пользователя</title>
 </head>
 <body>
 <div class="bg"></div>
@@ -158,9 +158,11 @@
                         <h3><b>Свободные часы:</b> с ${(parking.dateValues?api.get(305?long))?time} до ${parking.dateValues?api.get(306?long)?time}</h3>
                         <h3><b>Свободно мест:</b> ${parking.values?api.get(307?long)}</h3>
                         <h3><b>Рейтинг парковки:</b> ${parking.values?api.get(100?long)?number}</h3>
-                        <h3><b>Овертайм:</b> ${parking.values?api.get(309?long)}</h3>
-                        <#if parking.values?api.get(309?long) == "Повышенние стоимости аренды">
-                            <h3><b>Коэффициент:</b> х${parking.values?api.get(310?long)}</h3>
+                        <h3><b>Овертайм:</b> ${parking.listValues?api.get(309?long)!'отсутствует'}</h3>
+                        <#if parking.listValues?api.get(309?long)??>
+                            <#if parking.listValues?api.get(309?long) == "Повышенние стоимости аренды">
+                                <h3><b>Коэффициент:</b> х${parking.values?api.get(310?long)}</h3>
+                            </#if>
                         </#if>
                         <#if parking.listValues?api.get(308?long) == "Occupied">
                             <h3><b>Статус:</b> Занято </h3>
