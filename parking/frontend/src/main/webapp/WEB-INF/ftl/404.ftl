@@ -26,7 +26,7 @@
         </ul>
     </div>
     <div class="col-lg-6 col-md-12 image">
-        <img src="https://i.pinimg.com/originals/2e/df/34/2edf34c8ab6e9615916f9a9ba89466d3.png" />
+        <img src="https://i.imgur.com/l70aziT.jpg" />
     </div>
 </div>
 </body>

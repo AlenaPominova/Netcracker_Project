@@ -497,4 +497,56 @@ input[type=submit] {
     animation: flash 1.5s;
 }
 
+
+.main-checkbox{
+    width: 20px;
+    height: 20px;
+    background: transparent;
+    float: left;
+    margin: 0px;
+    margin-left: 50px;
+    border: 1px solid white;
+    position: relative;
+}
+
+.main-checkbox label{
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    cursor: pointer;
+}
+
+.text{
+    font-size: 15px;
+    font-weight: bold;
+    color: white;
+    margin-left: 15px;
+    padding-top: 5px;
+}
+
+.main-checkbox label:after{
+    content: "";
+    width: 10px;
+    height: 5px;
+    position: absolute;
+    top: 5px;
+    left: 4px;
+    border: 3px solid white;
+    border-top: none;
+    border-right: none;
+    background: transparent;
+    opacity: 0;
+    -webkit-transform: rotate(-45deg);
+    transform: rotate(-45deg);
+}
+
+.main-checkbox input[type=checkbox]{
+    visibility: hidden;
+}
+.main-checkbox input[type=checkbox]:checked + label:after{
+    opacity: 1;
+}
+
 </style>

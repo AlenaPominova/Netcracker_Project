@@ -102,46 +102,36 @@
         <div class="col-lg-9" style="padding: 0;">
             <div id="map" class="map"></div>
             <script>
-                var mapopts =  {
-                    //      zoomSnap: 0.1
-                };
+                var mapopts =  {};
                 var map = L.map('map', mapopts).setView([51.6755,39.2089], 14);
-                var trafficMutant = L.gridLayer.googleMutant({
-                    maxZoom: 24,
-                    type:'roadmap'
-                }).addTo(map);
+                var trafficMutant = L.gridLayer.googleMutant({maxZoom: 24, type:'roadmap'}).addTo(map);
                 trafficMutant.addGoogleLayer('TrafficLayer');
 
-                var greenIcon = L.icon({
-                    iconUrl: 'https://i.imgur.com/HlgBDB6.png',
-                    iconSize: [60,50]
-                });
-                var blueIcon = L.icon({
-                    iconUrl: 'https://i.imgur.com/KU4ct7n.png',
-                    iconSize: [60,50]
-                });
-                var redIcon = L.icon({
-                    iconUrl: 'https://i.imgur.com/yU4qi9n.png',
-                    iconSize: [60,50]
-                });
+                var greenIcon = L.icon({iconUrl: 'https://i.imgur.com/HlgBDB6.png', iconSize: [60,50]});
+                var blueIcon = L.icon({iconUrl: 'https://i.imgur.com/KU4ct7n.png', iconSize: [60,50]});
+                var redIcon = L.icon({iconUrl: 'https://i.imgur.com/yU4qi9n.png', iconSize: [60,50]});
 
                 var markers = new L.FeatureGroup();
+
                 <#list parkingsList?keys as key>
                     <#assign parkin = parkingsList?api.get(key)>
                 var url = '${url}'
                 var parking = [];
                 parking.id = '${parkin.id}';
                 parking.name = '${parkin.name}';
-                parking.address = '${parkin.values?api.get(101?long)}'
-                parking.latitude = '${parkin.values?api.get(301?long)}'
-                parking.longitude = '${parkin.values?api.get(302?long)}'
-                parking.price = '${parkin.values?api.get(304?long)}'
-                parking.open_time = '${(parkin.dateValues?api.get(305?long))?time}'
-                parking.close_time = '${parkin.dateValues?api.get(306?long)?time}'
-                parking.free_spots_count = '${parkin.values?api.get(307?long)}'
-                parking.rating = '${parkin.values?api.get(100?long)?number}'
-                parking.status = '${parkin.listValues?api.get(308?long)}'
-                parking.owner_id = '${parkin.references?api.get(300?long)}'
+                parking.address = '${parkin.values?api.get(101?long)}';
+                parking.latitude = '${parkin.values?api.get(301?long)}';
+                parking.longitude = '${parkin.values?api.get(302?long)}';
+                parking.price = '${parkin.values?api.get(304?long)}';
+                parking.open_time = '${(parkin.dateValues?api.get(305?long))?time}';
+                parking.close_time = '${parkin.dateValues?api.get(306?long)?time}';
+                parking.free_spots_count = '${parkin.values?api.get(307?long)}';
+                parking.rating = '${parkin.values?api.get(100?long)?number}';
+                parking.status = '${parkin.listValues?api.get(308?long)}';
+                parking.owner_id = '${parkin.references?api.get(300?long)}';
+                parking.overtime = '${parkin.listValues?api.get(309?long)!'отсутствует'}';
+                parking.koeff = '${parkin.values?api.get(310?long)!'отсутствует'}';
+                parking.parking_photo = '${parkin.values?api.get(102?long)!'https://renderman.pixar.com/assets/camaleon_cms/image-not-found-4a963b95bf081c3ea02923dceaeb3f8085e1a654fc54840aac61a57a60903fef.png'}';
                 createMarker(parking);
                 </#list>
 
@@ -149,107 +139,102 @@
 
                 function createMarker(parking) {
                     var marker;
+                    var isAnonymous;
+
+                    <@security.authorize access="isAuthenticated()">
+                        isAnonymous = false;
+                    </@security.authorize>
+                    <@security.authorize access="!isAuthenticated()">
+                        isAnonymous = true;
+                    </@security.authorize>
+
                     if (parking.status == "Free") {
                         if (parking.free_spots_count > 1) {
-                            marker = L.marker([parking.latitude, parking.longitude], {icon: blueIcon});
-                            <@security.authorize access="isAuthenticated()">
-                                marker.bindPopup("<h4><b>" + parking.name + "</b></h4><br>" +
-                                        "<b>Адрес: </b>" + parking.address + "<br>" +
-                                        "<b>Открыта с: </b>" + parking.open_time + "<b> до:</b>" + parking.close_time + "<br>" +
-                                        "<b>Цена: </b>" + parking.price + " руб/час<br>" +
-                                        "<b>Рейтинг: </b>" + parking.rating + "<br>" +
-                                        "<b>Свободных мест: </b>" + parking.free_spots_count + "<br>" +
-                                        '<br><a href="${url}/profiles/' + parking.owner_id + '"> Страница владельца: </a>' +
-                                        '<form method="get" action="' + url + '/parkings/' + parking.id + '/rent">' +
-                                        '<button type="submit" style="background-color: #d8d8d8; border: 1px solid #d8d8d8; color: d8d8d8;" class="btn btn-rent" disabled>АРЕНДОВАТЬ</button>' +
-                                        '</form>'
-                                );
-                            </@security.authorize>
+                            marker = fillMarker(parking, 1, isAnonymous);
                         } else {
-                            marker = L.marker([parking.latitude, parking.longitude], {icon: greenIcon});
-                            <@security.authorize access="isAuthenticated()">
-                                marker.bindPopup("<h4><b>" + parking.name + "</b></h4><br>" +
-                                        "<b>Адрес: </b>" + parking.address + "<br>" +
-                                        "<b>Открыта с: </b>" + parking.open_time + "<b> до:</b>" + parking.close_time + "<br>" +
-                                        "<b>Цена: </b>" + parking.price + " руб/час<br>" +
-                                        "<b>Рейтинг: </b>" + parking.rating + "<br>" +
-                                        "<b>Свободных мест: </b>" + parking.free_spots_count + "<br>" +
-                                        '<br><a href="${url}/profiles/' + parking.owner_id + '"> Страница владельца: </a>' +
-                                        '<form method="get" action="' + url + '/parkings/' + parking.id + '/rent">' +
-                                        '<button type="submit" class="btn btn-rent">АРЕНДОВАТЬ</button>'+
-                                        '</form>'
-                                );
-                            </@security.authorize>
+                            marker = fillMarker(parking, 0, isAnonymous);
                         }
                     } else {
-                        marker = L.marker([parking.latitude, parking.longitude], {icon: redIcon});
-                        <@security.authorize access="isAuthenticated()">
-                            marker.bindPopup("<h4><b>" + parking.name + "</b></h4><br>" +
-                                    "<b>Адрес: </b>" + parking.address + "<br>" +
-                                    "<b>Открыта с: </b>" + parking.open_time + "<b> до:</b>" + parking.close_time + "<br>" +
-                                    "<b>Цена: </b>" + parking.price + " руб/час<br>" +
-                                    "<b>Рейтинг: </b>" + parking.rating + "<br>" +
-                                    "<b>Свободных мест: </b>" + parking.free_spots_count + "<br>" +
-                                    '<br><a href="${url}/profiles/' + parking.owner_id + '"> Страница владельца: </a>' +
-                                    '<form method="get" action="' + url + '/parkings/' + parking.id + '/rent">' +
-                                    '<button type="submit" style="background-color: #d8d8d8; border: 1px solid #d8d8d8; color: d8d8d8;" class="btn btn-rent" disabled>АРЕНДОВАТЬ</button>'+
-                                    '</form>'
-                            );
-                        </@security.authorize>
+                        marker = fillMarker(parking, 2, isAnonymous);
                     }
-
-                    <@security.authorize access="!isAuthenticated()">
-                        marker.bindPopup("<h4><b>" + parking.name + "</b></h4><br>" +
-                            "<b>Адрес: </b>" + parking.address + "<br>" +
-                            "<b>Открыта с: </b>" + parking.open_time + "<b> до:</b>" + parking.close_time + "<br>" +
-                            "<b>Цена: </b>" + parking.price + " руб/час<br>" +
-                            "<b>Рейтинг: </b>" + parking.rating + "<br>" +
-                            "<b>Свободных мест: </b>" + parking.free_spots_count);
-                    </@security.authorize>
                     markers.addLayer(marker);
                 }
+
                 function createFilterMarker(parking) {
+                    var isAnonymous;
                     var marker;
+                    <@security.authorize access="isAuthenticated()">
+                        isAnonymous = false;
+                    </@security.authorize>
+                    <@security.authorize access="!isAuthenticated()">
+                        isAnonymous = true;
+                    </@security.authorize>
+
                     if (parking.status == "Free") {
                         if (parking.free_spots_count > 1) {
-                            marker = L.marker([parking.latitude, parking.longitude], {icon: blueIcon});
-                            marker.bindPopup("<h4><b>" + parking.name + "</b></h4><br>" +
-                                    "<b>Адрес: </b>" + parking.address + "<br>" +
-                                    "<b>Открыта с: </b>" + parking.open_time + "<b> до:</b>" + parking.close_time + "<br>" +
-                                    "<b>Цена: </b>" + parking.price + " руб/час<br>" +
-                                    "<b>Рейтинг: </b>" + parking.rating + "<br>" +
-                                    "<b>Свободных мест: </b>" + parking.free_spots_count + "<br>" +
-                                    "<a href=\"/objects/' + parking.owner_id + '\">Страница владельца</a><br><br>" +
-                                    "<button type=\"submit\" style=\"background-color: #d8d8d8; border: 1px solid #d8d8d8; color: d8d8d8;\" class=\"btn btn-rent\" disabled>Взять в аренду</button>");
-                        }else{
-                            marker = L.marker([parking.latitude, parking.longitude], {icon: greenIcon});
-                            marker.bindPopup("<h4><b>" + parking.name + "</b></h4><br>" +
-                                    "<b>Адрес: </b>" + parking.address + "<br>" +
-                                    "<b>Открыта с: </b>" + parking.open_time + "<b> до:</b>" + parking.close_time + "<br>" +
-                                    "<b>Цена: </b>" + parking.price + " руб/час<br>" +
-                                    "<b>Рейтинг: </b>" + parking.rating + "<br>" +
-                                    "<b>Свободных мест: </b>" + parking.free_spots_count + "<br>" +
-                                    "<a href=\"/objects/' + parking.owner_id + '\">Страница владельца</a><br><br>" +
-                                    "<button type=\"submit\" class=\"btn btn-rent\">Взять в аренду</button>");
+                            marker = fillMarker(parking, 1, isAnonymous);
+                        } else {
+                            marker = fillMarker(parking, 0, isAnonymous);
                         }
-
                     } else {
-                        marker = L.marker([parking.latitude, parking.longitude], {icon: redIcon});
-                        marker.bindPopup("<h4><b>" + parking.name + "</b></h4><br>" +
-                                "<b>Адрес: </b>" + parking.address + "<br>" +
-                                "<b>Открыта с: </b>" + parking.open_time + "<b> до:</b>" + parking.close_time + "<br>" +
-                                "<b>Цена: </b>" + parking.price + " руб/час<br>" +
-                                "<b>Рейтинг: </b>" + parking.rating + "<br>" +
-                                "<b>Свободных мест: </b>" + parking.free_spots_count + "<br>" +
-                                "<a href=\"/objects/' + parking.owner_id + '\">Страница владельца</a><br><br>" +
-                                "<button type=\"submit\" style=\"background-color: #d8d8d8; border: 1px solid #d8d8d8; color: d8d8d8;\" class=\"btn btn-rent\" disabled>Взять в аренду</button>");
+                        marker = fillMarker(parking, 2, isAnonymous);
                     }
                     /* Check valid for parking spot */
                     if (
-                            checkOnValid('#fromPriceInput', '#toPriceInput', parking.price) &&
-                            checkOnValid('#fromRatingInput', '#toRatingInput', parking.rating)
+                            checkOnValid('#fromPriceInput', '#toPriceInput', parseInt(parking.price)) &&
+                            checkOnValid('#fromRatingInput', '#toRatingInput', parseInt(parking.rating))&&
+                            checkOnValidTime(parking.open_time, parking.close_time) &&
+                            checkCheckboxes(parking.free_spots_count)
                     )
                         markers.addLayer(marker);
+                }
+
+                // Status properties:
+                // 0 - free small parking spot
+                // 1 - free big parking spot
+                // 2 - occupied parking spot
+                function fillMarker(parking, status, isAnonymous) {
+                    var _marker;
+                    var anonymousStr =  "<img src=" + parking.parking_photo + " width='100' height='60'>" +
+                                        "<h4><b>" + parking.name + "</b></h4><br>" +
+                                        "<b>Адрес: </b>" + parking.address + "<br>" +
+                                        "<b>Открыта с: </b>" + parking.open_time + "<b> до:</b>" + parking.close_time + "<br>" +
+                                        "<b>Цена: </b>" + parking.price + " руб/час<br>" +
+                                        "<b>Рейтинг: </b>" + parking.rating + "<br>" +
+                                        "<b>Овертайм: </b>" + parking.overtime + "<br>";
+
+                    if (parking.overtime == 'Повышенние стоимости аренды')
+                        anonymousStr += "<b>Коэффициент: </b>x" + parking.koeff + "<br>";
+
+                    anonymousStr += "<b>Свободных мест: </b>" + parking.free_spots_count + "<br>";
+
+                    var userFree =  '<br><a href="${url}/profiles/' + parking.owner_id + '"> Страница владельца: </a>' +
+                                    '<form method="get" action="' + url + '/parkings/' + parking.id + '/rent">' +
+                                    '<button type="submit" class="btn btn-rent">АРЕНДОВАТЬ</button>'+
+                                    '</form>';
+
+                    var userBig =   '<br><a href="${url}/profiles/' + parking.owner_id + '"> Страница владельца: </a>' +
+                                    '<form method="get" action="' + url + '/parkings/' + parking.id + '/rent">' +
+                                    '<button type="submit" style="background-color: #d8d8d8; border: 1px solid #d8d8d8; color: d8d8d8;" class="btn btn-rent" disabled>АРЕНДОВАТЬ</button>' +
+                                    '</form>';
+
+                    switch (status){
+                        case 0:
+                            _marker = L.marker([parking.latitude, parking.longitude], {icon: greenIcon});
+                            _marker.bindPopup(isAnonymous ? anonymousStr : anonymousStr + userFree);
+                            break;
+                        case 1:
+                            _marker = L.marker([parking.latitude, parking.longitude], {icon: blueIcon});
+                            _marker.bindPopup(isAnonymous ? anonymousStr : anonymousStr + userBig);
+                            break;
+                        case 2:
+                            _marker = L.marker([parking.latitude, parking.longitude], {icon: redIcon});
+                            _marker.bindPopup(isAnonymous ? anonymousStr : anonymousStr + userBig);
+                            break;
+                        default:
+                            break;
+                    }
+                    return _marker;
                 }
                 function checkOnValid(idAttFrom, idAttTo, valueToComp) {
                     if ($(idAttFrom).val() < $(idAttTo).val()){
@@ -262,27 +247,65 @@
                     }
                     return false;
                 }
+
+                function checkOnValidTime(openTime, closeTime) {
+                    var ot = openTime.toString().split(':');
+                    var ct = closeTime.toString().split(':');
+                    var fti = $('#fromTimeInput').val().toString().split(':');
+                    var tti = $('#toTimeInput').val().toString().split(':');
+
+                    var mOt = parseInt(ot[0])*60+parseInt(ot[1]);
+                    var mCt = parseInt(ct[0])*60+parseInt(ct[1]);
+                    var mFti = parseInt(fti[0])*60+parseInt(fti[1]);
+                    var mTti = parseInt(tti[0])*60+parseInt(tti[1]);
+
+                    if (mFti < mTti){
+                        if (mFti <= mOt && mTti >= mCt){
+                            return true;
+                        }
+                    } else {
+                        if (mFti <= mOt)
+                            return true;
+                    }
+                    return false;
+                }
                 function removeAllMarkers(){
                     map.removeLayer(markers);
                     markers = new L.FeatureGroup();
                 <#list parkingsList?keys as key>
                     <#assign parkin = parkingsList?api.get(key)>
-                    var url = '${url}'
+                    var url = '${url}';
                     var parking = [];
                     parking.name = '${parkin.name}';
-                    parking.address = '${parkin.values?api.get(101?long)}'
-                    parking.latitude = '${parkin.values?api.get(301?long)}'
-                    parking.longitude = '${parkin.values?api.get(302?long)}'
-                    parking.price = '${parkin.values?api.get(304?long)}'
-                    parking.open_time = '${(parkin.dateValues?api.get(305?long))?time}'
-                    parking.close_time = '${parkin.dateValues?api.get(306?long)?time}'
-                    parking.free_spots_count = '${parkin.values?api.get(307?long)}'
-                    parking.rating = '${parkin.values?api.get(100?long)?number}'
-                    parking.status = '${parkin.listValues?api.get(308?long)}'
-                    parking.owner_id = '${parkin.references?api.get(300?long)}'
+                    parking.address = '${parkin.values?api.get(101?long)}';
+                    parking.latitude = '${parkin.values?api.get(301?long)}';
+                    parking.longitude = '${parkin.values?api.get(302?long)}';
+                    parking.price = '${parkin.values?api.get(304?long)}';
+                    parking.open_time = '${(parkin.dateValues?api.get(305?long))?time}';
+                    parking.close_time = '${parkin.dateValues?api.get(306?long)?time}';
+                    parking.free_spots_count = '${parkin.values?api.get(307?long)}';
+                    parking.rating = '${parkin.values?api.get(100?long)?number}';
+                    parking.status = '${parkin.listValues?api.get(308?long)}';
+                    parking.owner_id = '${parkin.references?api.get(300?long)}';
+                    parking.overtime = '${parkin.listValues?api.get(309?long)!'отсутствует'}';
+                    parking.koeff = '${parkin.values?api.get(310?long)!'отсутствует'}';
+                    parking.parking_photo = '${parkin.values?api.get(102?long)!'https://renderman.pixar.com/assets/camaleon_cms/image-not-found-4a963b95bf081c3ea02923dceaeb3f8085e1a654fc54840aac61a57a60903fef.png'}';
                     createFilterMarker(parking);
                 </#list>
                     map.addLayer(markers);
+                }
+
+                function checkCheckboxes(free_spots_count){
+                    if ($("#checkbox1").prop('checked'))
+                        if (free_spots_count == 0)
+                            return false;
+                    if ($("#checkbox2").prop('checked'))
+                        if (free_spots_count > 1)
+                            return false;
+                    if ($("#checkbox3").prop('checked'))
+                        if (free_spots_count < 2)
+                            return false;
+                    return true;
                 }
             </script>
         </div>
@@ -292,9 +315,9 @@
                 <p class="filter-label"><span class="glyphicon glyphicon-time" style="padding-right: 10px;"></span> Свободное время </p>
                 <div class="form-group">
                     <p class="label"> От</p>
-                    <input class="input-type-time" type="time" value="13:45:00" id="example-time-input">
+                    <input class="input-type-time" type="time" value="01:45:00" id="fromTimeInput">
                     <p class="label" style="margin-left: 10px;"> До </p>
-                    <input class="input-type-time" type="time" value="13:45:00" id="example-time-input">
+                    <input class="input-type-time" type="time" value="23:45:00" id="toTimeInput">
                 </div>
 
                 <p class="filter-label"><span class="glyphicon glyphicon-usd" style="padding-right: 10px;"></span> Стоимость парковки </p>
@@ -313,21 +336,47 @@
                     <input class="input-type-price" type="number" min="1" max="5" step="1" value="5" id="toRatingInput">
                 </div>
 
+                <div class="form-group" style="text-align: left;">
+                    <div class="main-checkbox">
+                        <input value="confirmed" id="checkbox1" name="status" type="checkbox">
+                        <label for="checkbox1"></label>
+                    </div>
+                    <span class="text">Показывать только свободные</span>
+                </div>
+                <div class="form-group" style="text-align: left;">
+                    <div class="main-checkbox">
+                        <input value="confirmed" id="checkbox2" name="status" type="checkbox">
+                        <label for="checkbox2"></label>
+                    </div>
+                    <span class="text">Показывать только частные</span>
+                </div>
+                <div class="form-group" style="text-align: left;">
+                    <div class="main-checkbox">
+                        <input value="confirmed" id="checkbox3" name="status" type="checkbox">
+                        <label for="checkbox3"></label>
+                    </div>
+                    <span class="text">Показывать только большие</span>
+                </div>
+
                 <div class="form-group">
                     <button class="btn btn-default" onclick="removeAllMarkers()">Применить фильтр</button>
                 </div>
             </div>
 
-            <div class="warning" style="height: 300px; margin-top: 20px; ">
-                <img src="http://icons.iconarchive.com/icons/custom-icon-design/pretty-office-6/256/warning-icon.png">
-                <h1> ВНИМАНИЕ </h1>
-                <p class="warning-text">В нашей системе действует служба телепортации. В связи с этим рекомендуем вам вовремя забирать свое транспортное
-                    средства с места парковки. Уведовляем наших пользователей, что в случае несоблюдения правил сервиса владелец парковки
-                    в праве вызвать телепартационную службу, либо списать с вашего счета <b>х10</b> стоимости часа.
-                    <br>
-                    <br>
-                </p>
-                <p style="font-style: italic;">С уважение, Администрация ParkinGo</p>
+            <div class="warning" style="margin-top: 20px; ">
+                <h1>МАРКЕРЫ</h1>
+                <div class="form-group" style="text-align: left;">
+                    <img src="https://i.imgur.com/HlgBDB6.png" width="50" height="40">
+                    <p class="label"> - Свободная парковка</p>
+                </div>
+                <div class="form-group" style="text-align: left;">
+                    <img src="https://i.imgur.com/KU4ct7n.png" width="50" height="40">
+                    <p class="label"> - Большая коммерческая парковка</p>
+                </div>
+                <div class="form-group" style="text-align: left;">
+                    <img src="https://i.imgur.com/yU4qi9n.png" width="50" height="40">
+                    <p class="label"> - Занятая парковка</p>
+                </div>
             </div>
         </div>
     </div>

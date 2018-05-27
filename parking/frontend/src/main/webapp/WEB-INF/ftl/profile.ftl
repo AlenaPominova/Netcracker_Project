@@ -116,7 +116,7 @@
                                 <#if parking.values?api.get(331?long)??>
                                     <#if parking.values?api.get(331?long) == "Completed" >
                                         <form method="get" action="${mainPageUrl}/parkings/${parking.id}/evac">
-                                            <button type="submit" class="btn-chg">ЭВАКУИРОВАТЬ</button>
+                                            <button type="submit" class="btn-chg">ПЕРЕМЕСТИТЬ</button>
                                         </form>
                                     </#if>
                                     <#if parking.values?api.get(331?long) == "Created">
@@ -131,7 +131,7 @@
                                     </#if>
                                 <#else>
                                     <form method="get" action="${mainPageUrl}/parkings/${parking.id}/evac">
-                                        <button type="submit" class="btn-chg">ЭВАКУИРОВАТЬ</button>
+                                        <button type="submit" class="btn-chg">ПЕРЕМЕСТИТЬ</button>
                                     </form>
                                 </#if>
                             </#if>
@@ -158,10 +158,12 @@
                         <h3><b>Свободные часы:</b> с ${(parking.dateValues?api.get(305?long))?time} до ${parking.dateValues?api.get(306?long)?time}</h3>
                         <h3><b>Свободно мест:</b> ${parking.values?api.get(307?long)}</h3>
                         <h3><b>Рейтинг парковки:</b> ${parking.values?api.get(100?long)?number}</h3>
-                        <#--<h3><b>Овертайм:</b> ${parking.values?api.get(309?long)}</h3>-->
-                        <#--<#if parking.values?api.get(309?long) == "Повышенние стоимости аренды">-->
-                            <#--<h3><b>Коэффициент:</b> х${parking.values?api.get(310?long)}</h3>-->
-                        <#--</#if>-->
+                        <h3><b>Овертайм:</b> ${parking.listValues?api.get(309?long)!'отсутствует'}</h3>
+                        <#if parking.listValues?api.get(309?long)??>
+                            <#if parking.listValues?api.get(309?long) == "Повышенние стоимости аренды">
+                                <h3><b>Коэффициент:</b> х${parking.values?api.get(310?long)}</h3>
+                            </#if>
+                        </#if>
                         <#if parking.listValues?api.get(308?long) == "Occupied">
                             <h3><b>Статус:</b> Занято </h3>
                         <#else>

@@ -115,10 +115,12 @@
                         <@spring.formInput "parking.dateValues['${306?long}']", "class='input-type-time'", "time"/>
                         <h3><b>Свободно мест:</b> ${parking.values?api.get(307?long)}</h3>
                         <h3><b>Рейтинг парковки:</b> ${parking.values?api.get(100?long)?number}</h3>
-                        <#--<h3><b>Овертайм:</b> ${parking.values?api.get(309?long)}</h3>-->
-                        <#--<#if parking.values?api.get(309?long) == "Повышенние стоимости аренды">-->
-                            <#--<h3><b>Коэффициент:</b> х${parking.values?api.get(310?long)}</h3>-->
-                        <#--</#if>-->
+                        <h3><b>Овертайм:</b> ${parking.listValues?api.get(309?long)!'отсутствует'}</h3>
+                        <#if parking.listValues?api.get(309?long)??>
+                            <#if parking.listValues?api.get(309?long) == "Повышенние стоимости аренды">
+                                <h3><b>Коэффициент:</b> х${parking.values?api.get(310?long)}</h3>
+                            </#if>
+                        </#if>
                         <h3><b>Статус:</b> ${parking.listValues?api.get(308?long)}</h3>
                         <button class="btn-chg" type="submit">Сохранить</button>
                     </div>
