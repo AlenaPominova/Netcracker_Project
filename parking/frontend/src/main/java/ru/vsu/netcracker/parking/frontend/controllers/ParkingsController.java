@@ -12,8 +12,10 @@ import org.springframework.web.servlet.ModelAndView;
 import ru.vsu.netcracker.parking.frontend.objects.Obj;
 import ru.vsu.netcracker.parking.frontend.services.ObjService;
 import ru.vsu.netcracker.parking.frontend.utils.CustomTimestampConverter;
+import ru.vsu.netcracker.parking.frontend.utils.VerifyCaptcha;
 
 import javax.jws.WebParam;
+import javax.servlet.http.HttpServletRequest;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
@@ -75,13 +77,48 @@ public class ParkingsController {
         return "redirect:/profiles/" + currentUserId;
     }
 
-    @GetMapping(value = "/{parkingId}/rent")
+//    @GetMapping(value = "/{parkingId}/rent")
+//    public String rentParking(@PathVariable long parkingId,
+//                              Model model,
+//                              @RequestParam(value = "status", required = false) String status) {
+//        Obj obj = objService.get(parkingId);
+//        model.addAttribute("parking", obj);
+//        if (status != null) {
+//            if (status.equals("confirmed")) {
+//                try {
+//                    objService.takeParking(obj);
+//                    model.addAttribute("success", "Аренда прошла успешно");
+//                } catch (IllegalArgumentException e) {
+//                    model.addAttribute("error", "Ошибка");
+//                }
+//            }
+//        }
+//        return "confirmation";
+//    }
+
+//    @PostMapping(value = "/{parkingId}/rent")
+//    public String reCapcha(@PathVariable long parkingId, HttpServletRequest request, Model model) {
+//        String gRecaptchaResponse = request.getParameter("g-recaptcha-response");
+//        boolean verified = VerifyCaptcha.verify(gRecaptchaResponse);
+//        Obj obj = null; //objService.get(parkingId);
+//        model.addAttribute("parking", obj);
+//        return "confirmation";
+//    }
+
+    @PostMapping(value = "/{parkingId}/rent")
     public String rentParking(@PathVariable long parkingId,
+                              HttpServletRequest request,
                               Model model,
                               @RequestParam(value = "status", required = false) String status) {
+        String gRecaptchaResponse = request.getParameter("g-recaptcha-response");
+        boolean verified = VerifyCaptcha.verify(gRecaptchaResponse);
         Obj obj = objService.get(parkingId);
         model.addAttribute("parking", obj);
         if (status != null) {
+            if(!verified){
+                model.addAttribute("error", "Captcha validation failed");
+                return "confirmation";
+            }
             if (status.equals("confirmed")) {
                 try {
                     objService.takeParking(obj);

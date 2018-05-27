@@ -12,6 +12,7 @@
     <!-- JS -->
     <script src="http://yastatic.net/jquery/2.1.4/jquery.min.js"></script>
     <script src="http://yastatic.net/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
@@ -125,21 +126,36 @@
                     </div>
                 </div>
                 <div class="col-lg-12 col-md-12">
-                    <form method="get" action="/parkings/${parking.id}/rent">
+                    <#--<form method="get" action="/parkings/${parking.id}/rent">-->
+                        <#--<div class="form-group">-->
+                            <#--<div class="main-checkbox">-->
+                                <#--<input value="confirmed" id="checkbox1" name="status" type="checkbox">-->
+                                <#--<label for="checkbox1"></label>-->
+                            <#--</div>-->
+                            <#--<span class="text">С правилами об аренде парковочного места ознакомлен и принимаю их.</span>-->
+                        <#--</div>-->
+                        <#--<button type="submit" class="btn-chg">АРЕНДОВАТЬ</button>-->
+                    <#--</form>-->
+                    <form method="post" action="/parkings/${parking.id}/rent">
                         <div class="form-group">
                             <div class="main-checkbox">
                                 <input value="confirmed" id="checkbox1" name="status" type="checkbox">
                                 <label for="checkbox1"></label>
+                                <br><br><br><br><br><br>
+                                <div class="g-recaptcha" data-sitekey="6Lfqp1sUAAAAAPUCtlILo-XUBl6ezI-aqP8yPPew"></div>
                             </div>
                             <span class="text">С правилами об аренде парковочного места ознакомлен и принимаю их.</span>
                         </div>
                         <button type="submit" class="btn-chg">АРЕНДОВАТЬ</button>
+                        <#if error??>
+                            <h4>${error} Try again!</h4>
+                        </#if>
                     </form>
                 </div>
             </div>
         <#else>
             <form method="get" action="${mainPageUrl}">
-                <#--<h4>К сожалению аренда данной парковки невозможна.</h4>-->
+                <h4>${success}</h4>
                 <button type="submit" class="btn-chg">ВЕРНУТЬСЯ НА ГЛАВНУЮ</button>
             </form>
         </#if>

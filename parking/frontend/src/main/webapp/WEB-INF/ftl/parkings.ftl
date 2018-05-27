@@ -209,12 +209,12 @@
                     anonymousStr += "<b>Свободных мест: </b>" + parking.free_spots_count + "<br>";
 
                     var userFree =  '<br><a href="${url}/profiles/' + parking.owner_id + '"> Страница владельца: </a>' +
-                                    '<form method="get" action="' + url + '/parkings/' + parking.id + '/rent">' +
+                                    '<form method="post" action="' + url + '/parkings/' + parking.id + '/rent">' +
                                     '<button type="submit" class="btn btn-rent">АРЕНДОВАТЬ</button>'+
                                     '</form>';
 
                     var userBig =   '<br><a href="${url}/profiles/' + parking.owner_id + '"> Страница владельца: </a>' +
-                                    '<form method="get" action="' + url + '/parkings/' + parking.id + '/rent">' +
+                                    '<form method="post" action="' + url + '/parkings/' + parking.id + '/rent">' +
                                     '<button type="submit" style="background-color: #d8d8d8; border: 1px solid #d8d8d8; color: d8d8d8;" class="btn btn-rent" disabled>АРЕНДОВАТЬ</button>' +
                                     '</form>';
 
